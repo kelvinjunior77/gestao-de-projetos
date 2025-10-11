@@ -1,10 +1,8 @@
 <template>
-    <div>
-        Testando tp arquivo
-    </div>
+    <NavBar></NavBar>
 </template>
 
 <script setup>
-
+import NavBar from './Componets/NavBar.vue'
 
 </script>
