@@ -1,6 +1,6 @@
 <template>
     <div>
-        Deu certo
+        Testando tp arquivo
     </div>
 </template>
 
