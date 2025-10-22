@@ -336,7 +336,8 @@
 </template>
 
 <script setup>
-import NavBar from '../Pages/Dashboard/NavBar.vue';
-import Header from '../Pages/Dashboard/Header.vue';
-import Main from '../Pages/Dashboard/Main.vue';
+import NavBar from './Dashboard/NavBar.vue';
+import Header from './Dashboard/Header.vue';
+import Main from './Dashboard/Main.vue';
+
 </script>
