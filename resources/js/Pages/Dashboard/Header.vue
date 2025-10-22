@@ -22,7 +22,7 @@
       </a>
       <div class="dropdown-menu pc-h-dropdown drp-search">
         <form class="px-2 py-1">
-          <input type="search" class="form-control !border-0 !shadow-none" placeholder="Search here. . ." />
+          <input type="search" class="form-control !border-0 !shadow-none" placeholder="Pesquisar aqui. . ." />
         </form>
       </div>
     </li>
@@ -39,18 +39,18 @@
       <div class="dropdown-menu dropdown-menu-end pc-h-dropdown">
         <a href="#!" class="dropdown-item" onclick="layout_change('dark')">
           <i data-feather="moon"></i>
-          <span>Dark</span>
+          <span>Escuro</span>
         </a>
 
      
 
         <a href="#!" class="dropdown-item" onclick="layout_change('light')">
           <i data-feather="sun"></i>
-          <span>Light</span>
+          <span>Claro</span>
         </a>
         <a href="#!" class="dropdown-item" onclick="layout_change_default()">
           <i data-feather="settings"></i>
-          <span>Default</span>
+          <span>Padrão</span>
         </a>
       </div>
     </li>
@@ -62,23 +62,23 @@
       <div class="dropdown-menu dropdown-menu-end pc-h-dropdown">
         <a href="#!" class="dropdown-item">
           <i class="ti ti-user"></i>
-          <span>My Account</span>
+          <span>Minha Conta</span>
         </a>
         <a href="#!" class="dropdown-item">
           <i class="ti ti-settings"></i>
-          <span>Settings</span>
+          <span>Configurações</span>
         </a>
         <a href="#!" class="dropdown-item">
           <i class="ti ti-headset"></i>
-          <span>Support</span>
+          <span>Suporte</span>
         </a>
         <a href="#!" class="dropdown-item">
           <i class="ti ti-lock"></i>
-          <span>Lock Screen</span>
+          <span>Bloquear Tela</span>
         </a>
         <a href="#!" class="dropdown-item">
           <i class="ti ti-power"></i>
-          <span>Logout</span>
+          <span>Sair</span>
         </a>
       </div>
     </li>
@@ -90,20 +90,20 @@
       </a>
       <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown p-2">
         <div class="dropdown-header flex items-center justify-between py-4 px-5">
-          <h5 class="m-0">Notifications</h5>
-          <a href="#!" class="btn btn-link btn-sm">Mark all read</a>
+          <h5 class="m-0">Notificações</h5>
+          <a href="#!" class="btn btn-link btn-sm">Marcar todas como lidas</a>
         </div>
         <div class="dropdown-body header-notification-scroll relative py-4 px-5"
           style="max-height: calc(100vh - 215px)">
-          <p class="text-span mb-3">Today</p>
+          <p class="text-span mb-3">Hoje</p>
           <div class="card mb-2">
             <div class="card-body">
               <div class="flex gap-4">
                 <div class="shrink-0">
-                  <img class="img-radius w-12 h-12 rounded-0" src="../assets/images/user/avatar-1.jpg" alt="Generic placeholder image" />
+                  <img class="img-radius w-12 h-12 rounded-0" :src="avatar1" alt="Generic placeholder image" />
                 </div>
                 <div class="grow">
-                  <span class="float-end text-sm text-muted">2 min ago</span>
+                  <span class="float-end text-sm text-muted">2 minutos atrás</span>
                   <h5 class="text-body mb-2">UI/UX Design</h5>
                   <p class="mb-0">
                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
@@ -118,30 +118,28 @@
             <div class="card-body">
               <div class="flex gap-4">
                 <div class="shrink-0">
-                  <img class="img-radius w-12 h-12 rounded-0" src="../assets/images/user/avatar-2.jpg" alt="Generic placeholder image" />
+                  <img class="img-radius w-12 h-12 rounded-0" :src="avatar2" alt="Generic placeholder image" />
                 </div>
                 <div class="grow">
-                  <span class="float-end text-sm text-muted">1 hour ago</span>
-                  <h5 class="text-body mb-2">Message</h5>
-                  <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500.</p>
+                  <span class="float-end text-sm text-muted">1 hora atrás</span>
+                  <h5 class="text-body mb-2">Messagem</h5>
+                  <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab perspiciatis pariatur earum. Reprehenderit, nesciunt. Ratione</p>
                 </div>
               </div>
             </div>
           </div>
-          <p class="text-span mb-3 mt-4">Yesterday</p>
+          <p class="text-span mb-3 mt-4">Ontem</p>
           <div class="card mb-2">
             <div class="card-body">
               <div class="flex gap-4">
                 <div class="shrink-0">
-                  <img class="img-radius w-12 h-12 rounded-0" src="../assets/images/user/avatar-3.jpg" alt="Generic placeholder image" />
+                  <img class="img-radius w-12 h-12 rounded-0" :src="avatar3" alt="Generic placeholder image" />
                 </div>
                 <div class="grow ms-3">
-                  <span class="float-end text-sm text-muted">2 hour ago</span>
-                  <h5 class="text-body mb-2">Forms</h5>
+                  <span class="float-end text-sm text-muted">2 horas atrás</span>
+                  <h5 class="text-body mb-2"></h5>
                   <p class="mb-0">
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of
-                    type and scrambled it to make a type
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam porro earum possimus, nobis quas dolorum veritatis repellendus ratione tenetur. Porro, deleniti illum sint earum quas perspiciatis reiciendis ipsa ad ea!
                   </p>
                 </div>
               </div>
@@ -151,7 +149,7 @@
             <div class="card-body">
               <div class="flex gap-4">
                 <div class="shrink-0">
-                  <img class="img-radius w-12 h-12 rounded-0" src="../assets/images/user/avatar-4.jpg" alt="Generic placeholder image" />
+                  <img class="img-radius w-12 h-12 rounded-0" :src="avatar4" alt="Generic placeholder image" />
                 </div>
                 <div class="grow ms-3">
                   <span class="float-end text-sm text-muted">12 hour ago</span>
@@ -170,7 +168,7 @@
             <div class="card-body">
               <div class="flex gap-4">
                 <div class="shrink-0">
-                  <img class="img-radius w-12 h-12 rounded-0" src="../assets/images/user/avatar-5.jpg" alt="Generic placeholder image" />
+                  <img class="img-radius w-12 h-12 rounded-0" :src="avatar5" alt="Generic placeholder image" />
                 </div>
                 <div class="grow ms-3">
                   <span class="float-end text-sm text-muted">5 hour ago</span>
@@ -201,7 +199,7 @@
         <div class="dropdown-header flex items-center justify-between py-4 px-5 bg-primary-500">
           <div class="flex mb-1 items-center">
             <div class="shrink-0">
-              <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="w-10 rounded-full" />
+              <img :src="avatar2" alt="user-image" class="w-10 rounded-full" />
             </div>
             <div class="grow ms-3">
               <h6 class="mb-1 text-white">Carson Darrin 🖖</h6>
@@ -254,6 +252,10 @@
 </template>
 
 <script setup>
-
+import avatar1 from '@images/user/avatar-1.jpg';
+import avatar2 from '@images/user/avatar-2.jpg';
+import avatar3 from '@images/user/avatar-3.jpg';
+import avatar4 from '@images/user/avatar-4.jpg';
+import avatar5 from '@images/user/avatar-5.jpg';
 
 </script>
