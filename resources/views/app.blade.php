@@ -31,12 +31,14 @@
   </head>
   <body>
     <div class="loader-bg fixed inset-0 bg-white dark:bg-themedark-cardbg z-[1034]">
-      ...
+      
     </div>
 
     @inertia
 
-    <div class="floting-button fixed bottom-[50px] right-[30px] z-[1030]"></div>
+    <div class="floting-button fixed bottom-[50px] right-[30px] z-[1030]">
+
+    </div>
 
     <!-- Chamadas iniciais: use os valores corretos -->
     <script>

@@ -1,8 +1,8 @@
 <template>
-<Dashboard/>
+<Dashboard />
 </template>
 
 <script setup>
-import Dashboard from '../Auth/Dashboard.vue';
+import Dashboard from './Auth/Dashboard.vue';
 
 </script>

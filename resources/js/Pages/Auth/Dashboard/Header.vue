@@ -41,9 +41,6 @@
           <i data-feather="moon"></i>
           <span>Escuro</span>
         </a>
-
-     
-
         <a href="#!" class="dropdown-item" onclick="layout_change('light')">
           <i data-feather="sun"></i>
           <span>Claro</span>
@@ -53,7 +50,10 @@
           <span>Padrão</span>
         </a>
       </div>
+      
+   
     </li>
+  
     <li class="dropdown pc-h-item">
       <a class="pc-head-link dropdown-toggle me-0" data-pc-toggle="dropdown" href="#" role="button"
         aria-haspopup="false" aria-expanded="false">
@@ -81,6 +81,7 @@
           <span>Sair</span>
         </a>
       </div>
+     
     </li>
     <li class="dropdown pc-h-item">
       <a class="pc-head-link dropdown-toggle me-0" data-pc-toggle="dropdown" href="#" role="button"
@@ -252,6 +253,8 @@
 </template>
 
 <script setup>
+//import ThemeToggle from '../../Components/ThemeToggle.vue';
+
 import avatar1 from '@images/user/avatar-1.jpg';
 import avatar2 from '@images/user/avatar-2.jpg';
 import avatar3 from '@images/user/avatar-3.jpg';

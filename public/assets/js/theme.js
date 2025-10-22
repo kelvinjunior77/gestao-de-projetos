@@ -15,17 +15,27 @@ var rtl_flag = false;
 var dark_flag = false;
 
 document.addEventListener('DOMContentLoaded', function () {
-  if (typeof Storage !== 'undefined') {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      layout_change(savedTheme);
-    } else {
-      // fallback para a preferência do sistema quando não houver tema salvo
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      layout_change(prefersDark ? 'dark' : 'light');
-    }
+  if (typeof Storage === 'undefined') return;
+
+  // se o Vue já aplicou a classe 'dark' no <html>, não força nada
+  const html = document.documentElement;
+  const alreadySetByVue = html.classList.contains('dark') || html.classList.contains('light');
+
+  if (alreadySetByVue) {
+    // não sobrescreve o tema aplicado pelo Vue
+    return;
+  }
+
+  // caso contrário, aplica o tema padrão do localStorage ou sistema
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light' || savedTheme === 'dark') {
+    layout_change(savedTheme);
+  } else {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    layout_change(prefersDark ? 'dark' : 'light');
   }
 });
+
 
 // Function to change layout dark/light settings
 function layout_change_default() {
