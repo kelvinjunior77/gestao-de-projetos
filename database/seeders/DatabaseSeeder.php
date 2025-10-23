@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
+            'slug' => 'test-user',
+            'avatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim('test@example.com'))) . '?d=mp&s=200',
+            'tipo' => 'admin',
             'email' => 'test@example.com',
         ]);
     }

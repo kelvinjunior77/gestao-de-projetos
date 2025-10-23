@@ -16,12 +16,17 @@ return new class extends Migration
             $table->string('nome');
             $table->string('slug')->unique();
             $table->text('descricao')->nullable();
-            $table->string('status')->default('activo');
-            $table->string('tipo')->default('média');
+
+            $table->enum('status', ['pendente', 'em_andamento', 'concluido', 'cancelado'])->default('pendente');
+
+            $table->enum('prioridade', ['baixa', 'média', 'alta'])->default('média');
+          
             $table->string('visibilidade')->default('pública');
             $table->string('github_link')->nullable();
             $table->date('data_fim')->nullable();
 
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });

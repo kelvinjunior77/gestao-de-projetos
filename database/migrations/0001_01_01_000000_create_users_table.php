@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('email')->unique();
             $table->string('avatar')->nullable();
-            $table->string('cargo')->default('Desenvolvedor Web');
-            $table->string('tipo_user')->nullable();
+            
+            $table->enum('tipo', ['admin', 'normal'])->default('normal');
+            
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
