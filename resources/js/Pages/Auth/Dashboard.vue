@@ -339,5 +339,4 @@
 import NavBar from './Dashboard/NavBar.vue';
 import Header from './Dashboard/Header.vue';
 import Main from './Dashboard/Main.vue';
-
 </script>
