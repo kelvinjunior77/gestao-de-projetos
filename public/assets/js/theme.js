@@ -15,28 +15,10 @@ var rtl_flag = false;
 var dark_flag = false;
 
 document.addEventListener('DOMContentLoaded', function () {
-  if (typeof Storage === 'undefined') return;
-
-  // se o Vue já aplicou a classe 'dark' no <html>, não força nada
-  const html = document.documentElement;
-  const alreadySetByVue = html.classList.contains('dark') || html.classList.contains('light');
-
-  if (alreadySetByVue) {
-    // não sobrescreve o tema aplicado pelo Vue
-    return;
-  }
-
-  // caso contrário, aplica o tema padrão do localStorage ou sistema
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    layout_change(savedTheme);
-  } else {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    layout_change(prefersDark ? 'dark' : 'light');
+  if (typeof Storage !== 'undefined') {
+    layout_change(localStorage.getItem('theme'));
   }
 });
-
-
 // Function to change layout dark/light settings
 function layout_change_default() {
   // Determine initial layout based on user's color scheme preference
@@ -328,32 +310,23 @@ function layout_rtl_change(value) {
 
 // Function to handle layout change (dark/light) and update related elements
 function layout_change(layout) {
-  // Valida entrada e define padrão
-  if (layout !== 'dark' && layout !== 'light') {
-    layout = 'light';
-  }
-
-  // Persiste o tema selecionado
-  if (typeof Storage !== 'undefined') {
-    localStorage.setItem('theme', layout);
-  }
-
-  // Define atributo de tema no <html>
+  // Set the theme layout attribute on the <html> tag
   document.getElementsByTagName('html')[0].setAttribute('data-pc-theme', layout);
 
-  // Remove 'active' do botão default, se existir
+  // Remove the 'active' class from the default layout button if it exists
   var btn_control = document.querySelector('.theme-layout .btn[data-value="default"]');
   if (btn_control) {
     btn_control.classList.remove('active');
   }
 
-  // Determina se é dark
+  // Determine which logos and buttons to update based on the selected layout (dark or light)
   var isDark = layout === 'dark';
   dark_flag = isDark;
 
-  // Atualiza logos conforme o tema (mantive o comportamento original)
+  // Update the logos to match the selected layout
   var logoSrc = isDark ? '../assets/images/logo-white.svg' : '../assets/images/logo-dark.svg';
 
+  // Helper function to update a specific element's logo if it exists
   function updateLogo(selector) {
     var element = document.querySelector(selector);
     if (element) {
@@ -361,26 +334,25 @@ function layout_change(layout) {
     }
   }
 
+  // Update logos in the sidebar, navbar, auth footer, and general footer
+  // updateLogo('.pc-sidebar .m-header .logo-lg');
   updateLogo('.navbar-brand .logo-lg');
   updateLogo('.auth-main.v1 .auth-sidefooter img');
   updateLogo('.auth-logo');
   updateLogo('.footer-top .footer-logo');
 
-  // Gerencia o estado 'active' dos botões de tema (corrigido)
+  // Manage the active state of theme layout buttons
   var activeControl = document.querySelector('.theme-layout .btn.active');
   if (activeControl) {
     activeControl.classList.remove('active');
   }
 
-  // Mapear layout ('light'/'dark') para valor do data-value dos botões.
-  // Seu código usa data-value="true" para light e data-value="false" para dark => respeitamos essa convenção.
-  var controlValue = layout === 'light' ? 'true' : 'false';
-  var newActiveControl = document.querySelector(`.theme-layout .btn[data-value='${controlValue}']`);
+  // Set the correct button as active based on the layout
+  var newActiveControl = document.querySelector(`.theme-layout .btn[data-value='${isDark ? 'false' : 'true'}']`);
   if (newActiveControl) {
     newActiveControl.classList.add('active');
   }
 }
-
 
 // Function to toggle box container class based on value (true/false)
 function change_box_container(value) {

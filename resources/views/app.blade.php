@@ -23,7 +23,7 @@
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
     <script src="{{ asset('assets/js/component.js') }}"></script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
+    
 
     <!-- Vite (Vue) -->
     @vite('resources/js/app.js')
