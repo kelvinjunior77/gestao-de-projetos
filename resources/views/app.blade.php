@@ -24,6 +24,7 @@
     <script src="{{ asset('assets/js/component.js') }}"></script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     
+    
 
     <!-- Vite (Vue) -->
     @vite('resources/js/app.js')
@@ -40,7 +41,7 @@
 
     </div>
 
-    <!-- Chamadas iniciais: use os valores corretos -->
+    <!-- Chamadas iniciais: use os valores corretos 
     <script>
       // theme_change espera 'light' ou 'dark'
       layout_change('dark');               // exemplo: inicia em dark. Troque para 'light' se quiser.
@@ -56,6 +57,6 @@
       preset_change('preset-1');
       // main layout
       main_layout_change('vertical');
-    </script>
+    </script>-->
   </body>
 </html>

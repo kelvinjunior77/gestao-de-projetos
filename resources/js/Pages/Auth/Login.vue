@@ -1,7 +1,5 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import Main from './Dashboard/Main.vue';
-
 
 const login = useForm({
     email: '',
