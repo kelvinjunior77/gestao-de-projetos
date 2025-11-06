@@ -1,134 +1,102 @@
-// resources/js/composables/useTheme.js
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
-export default function useTheme() {
-  // 🟢 Proteção contra SSR (caso o código rode antes do DOM existir)
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    const theme = ref('light');
-    const isDark = ref(false);
-    return {
-      theme,
-      isDark,
-      setTheme: () => {},
-      toggleTheme: () => {},
-      initTheme: () => {},
-      destroy: () => {},
-      currentTheme: ref('light'),
-    };
-  }
+/**
+ * Composable global para controle de tema e layout
+ * Funciona com Laravel + Vue + Inertia + Datta Able
+ */
+export function useTheme() {
+  // 🧱 Chaves do localStorage
+  const STORAGE = {
+    theme: 'app_theme',            // 'light' | 'dark' | 'system'
+    layout: 'app_layout',          // 'vertical' | 'horizontal' | 'compact' | 'tab'
+    sidebar: 'app_sidebar_open',   // 'true' | 'false'
+  };
 
-  const STORAGE_KEY = 'theme'; // 'light' | 'dark' | 'system'
-  const prefersDarkMq = window.matchMedia
-    ? window.matchMedia('(prefers-color-scheme: dark)')
-    : null;
+  // 🔹 Estado
+  const theme = ref(localStorage.getItem(STORAGE.theme) || 'system');
+  const layout = ref(localStorage.getItem(STORAGE.layout) || 'vertical');
+  const sidebarOpen = ref(localStorage.getItem(STORAGE.sidebar) === 'true');
 
-  // 🟢 Singleton para evitar múltiplos listeners se o composable for usado várias vezes
-  let listenerRegistered = false;
-
-  const theme = ref('system'); // 'light' | 'dark' | 'system'
-
+  // 🔹 Computed
   const isDark = computed(() => {
     if (theme.value === 'system') {
-      return prefersDarkMq ? prefersDarkMq.matches : false;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return theme.value === 'dark';
   });
 
-  // Novo: modo efetivo (light/dark), mesmo que o tema seja "system"
-  const currentTheme = computed(() => (isDark.value ? 'dark' : 'light'));
-
-  // Aplica a classe 'dark' no <html> de acordo com isDark
-  function applyHtmlClass(dark) {
+  // ✅ Aplica tema no <html>
+  const applyTheme = () => {
     const html = document.documentElement;
-    if (dark) {
+    if (isDark.value) {
       html.classList.add('dark');
       html.setAttribute('data-theme', 'dark');
     } else {
       html.classList.remove('dark');
       html.setAttribute('data-theme', 'light');
     }
-  }
+  };
 
-  function persist(value) {
-    try {
-      localStorage.setItem(STORAGE_KEY, value);
-    } catch (e) {
-      console.warn('Erro ao acessar localStorage:', e);
+  // ✅ Aplica layout no <html>
+  const applyLayout = () => {
+    const html = document.documentElement;
+    html.setAttribute('data-pc-layout', layout.value);
+  };
+
+  // ✅ Aplica estado da sidebar
+  const applySidebar = () => {
+    const body = document.body;
+    if (sidebarOpen.value) {
+      body.classList.remove('pc-sidebar-hide');
+    } else {
+      body.classList.add('pc-sidebar-hide');
     }
-  }
+  };
 
-  // 🟢 Ajuste: aplica o tema com base no valor atualizado (sem depender do computed)
-  function setTheme(value) {
-    if (!['light', 'dark', 'system'].includes(value)) value = 'system';
-    theme.value = value;
-    persist(value);
+  // 🔹 Alterações e persistência
+  watch(theme, (val) => {
+    localStorage.setItem(STORAGE.theme, val);
+    applyTheme();
+  });
 
-    const darkNow =
-      value === 'dark' ||
-      (value === 'system' && prefersDarkMq && prefersDarkMq.matches);
-    applyHtmlClass(darkNow);
-  }
+  watch(layout, (val) => {
+    localStorage.setItem(STORAGE.layout, val);
+    applyLayout();
+  });
 
-  function toggleTheme() {
-    if (theme.value === 'system') {
-      setTheme(prefersDarkMq && prefersDarkMq.matches ? 'light' : 'dark');
-      return;
-    }
-    setTheme(theme.value === 'dark' ? 'light' : 'dark');
-  }
+  watch(sidebarOpen, (val) => {
+    localStorage.setItem(STORAGE.sidebar, val);
+    applySidebar();
+  });
 
-  function handlePrefChange(e) {
-    if (theme.value === 'system') {
-      applyHtmlClass(e.matches);
-    }
-  }
+  // 🔹 Alterna entre claro e escuro
+  const toggleTheme = () => {
+    theme.value = isDark.value ? 'light' : 'dark';
+  };
 
-  function initTheme() {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === 'light' || saved === 'dark' || saved === 'system') {
-        theme.value = saved;
-      } else {
-        theme.value = 'system';
-      }
-    } catch (e) {
-      theme.value = 'system';
-    }
+  // 🔹 Alterna estado da sidebar
+  const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value;
+  };
 
-    applyHtmlClass(isDark.value);
+  // 🔹 Inicialização
+  const initTheme = () => {
+    applyTheme();
+    applyLayout();
+    applySidebar();
+  };
 
-    // 🟢 Evita registrar listener múltiplas vezes
-    if (!listenerRegistered && prefersDarkMq) {
-      if (typeof prefersDarkMq.addEventListener === 'function') {
-        prefersDarkMq.addEventListener('change', handlePrefChange);
-      } else if (typeof prefersDarkMq.addListener === 'function') {
-        prefersDarkMq.addListener(handlePrefChange);
-      }
-      listenerRegistered = true;
-    }
-  }
-
-  function destroy() {
-    if (listenerRegistered && prefersDarkMq) {
-      if (typeof prefersDarkMq.removeEventListener === 'function') {
-        prefersDarkMq.removeEventListener('change', handlePrefChange);
-      } else if (typeof prefersDarkMq.removeListener === 'function') {
-        prefersDarkMq.removeListener(handlePrefChange);
-      }
-      listenerRegistered = false;
-    }
-  }
-
-  onMounted(() => initTheme());
-  onBeforeUnmount(() => destroy());
+  onMounted(initTheme);
 
   return {
     theme,
+    layout,
+    sidebarOpen,
     isDark,
-    currentTheme, // 🆕 Retorna modo efetivo
-    setTheme,
     toggleTheme,
+    toggleSidebar,
+    setTheme: (val) => (theme.value = val),
+    setLayout: (val) => (layout.value = val),
     initTheme,
-    destroy,
   };
 }

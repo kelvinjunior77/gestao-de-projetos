@@ -22,6 +22,8 @@ import { createInertiaApp, router } from '@inertiajs/vue3'
 import '../js/template/script.js'
 import '../js/template/layout-horizontal.js'
 import { initTemplate } from './utils/initTemplate.js';
+import { useTheme } from './Composables/useTheme.js';
+
 
 createInertiaApp({
 
@@ -33,6 +35,10 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .mount(el)
+
+        // 🟢 Inicializa o tema/layout
+        const theme = useTheme();
+        theme.initTheme();
 
         // 🟢 Inicializa scripts na primeira renderização
         setTimeout(initTemplate, 100);
