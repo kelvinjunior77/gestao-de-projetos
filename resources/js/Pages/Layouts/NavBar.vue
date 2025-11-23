@@ -1,224 +1,153 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import logo from '@images/logo-white.svg';
-import logoLight from '@images/favicon.svg';
+import { computed } from 'vue';
 
-/// estado reativo do path atual
-const currentPath = ref(window.location.pathname || '/')
+// Seus logos (ajuste os caminhos conforme necessário)
+// import logo from '@images/logo-dark.svg'; 
+// import logoLight from '@images/logo-light.svg';
 
-// atualiza currentPath quando Inertia muda a página (fallback)
-const page = usePage()
+// Simulação de logos para visualização
+const logo = 'https://placehold.co/120x30?text=Datta+Able'; 
 
-// atualiza quando o histórico do navegador muda (back/forward)
-function onPopState() {
-    currentPath.value = window.location.pathname || '/'
-}
+const page = usePage();
 
-onMounted(() => {
-    window.addEventListener('popstate', onPopState)
+// Função simplificada para gerar classes
+// Usa a URL atual do Inertia diretamente, que é reativa
+const getLinkClass = (path) => {
+    const currentUrl = page.url;
+    
+    // Verifica se é a URL exata ou se é uma sub-rota (ex: /projetos/criar ativa /projetos)
+    const isActive = currentUrl === path || currentUrl.startsWith(path + '/');
 
-    // também observa page.url se disponível (Inertia)
-    if (page && page.url) {
-        // caso page.url mude via Inertia, atualizamos
-        currentPath.value = page.url.startsWith('/') ? page.url : new URL(page.url).pathname
-    }
-})
+    // Estilos Base (Layout, Espaçamento, Transição)
+    const baseClasses = 'flex items-center gap-3 py-3 px-5 hover:bg-base-200 transition-all duration-200 group';
 
-onBeforeUnmount(() => {
-    window.removeEventListener('popstate', onPopState)
-})
+    // Estilo Ativo (Borda Azul, Fundo sutil, Texto colorid)
+    const activeClasses = 'border-l-4 border-primary bg-primary/5 text-primary font-medium';
 
-// função que retorna classes (string)
-// aplica border-l-4 border-l-blue-900 quando ativo
-function linkClass(path) {
-    const base = ['pc-item']
-    const inactive = 'pc-item'
-    const activeBorder = 'home'
+    // Estilo Inativo (Borda transparente para manter alinhamento, Texto cinza)
+    const inactiveClasses = 'border-l-4 border-transparent text-base-content/70 hover:text-base-content';
 
-    // considera ativo quando currentPath começa com path
-    // ex: /projetos/123 considera /projetos ativo
-    const isActive = currentPath.value === path || currentPath.value.startsWith(path + (path === '/' ? '' : '/'))
+    return isActive ? `${baseClasses} ${activeClasses}` : `${baseClasses} ${inactiveClasses}`;
+};
 
-    return isActive ? `${base} ${activeBorder}` : `${base} ${inactive}`
-}
-
+// Atalho para verificar permissão de admin (opcional, para limpar o template)
+const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
 </script>
 
-
 <template>
-    <nav class="pc-sidebar">
-        <div class="navbar-wrapper ">
-            <div class="m-header flex items-center py-4 px-6 h-header-height">
-                <a href="../dashboard/index.html" class="b-brand flex items-center gap-3">
-                    <!-- ========   Change your logo from here   ============ -->
-                    <img :src="logo" class="img-fluid logo logo-lg" alt="logo" />
-
-                    <img :src="logoLight" class="img-fluid logo logo-sm" alt="logo" />
-                </a>
-            </div>
-            <div class="navbar-content h-[calc(100vh_-_74px)] py-2.5">
-                <ul class="pc-navbar">
-                    <li class="pc-item pc-caption">
-                        <label>Navegação</label>
-                    </li>
-                    <!---- class="pc-item home"-->
-                    <li :class="linkClass('/admin/dashboard')">
-                        <Link href="/admin/dashboard" class="pc-link">
-                        <span class="pc-micon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-house-icon lucide-house">
-                                <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-                                <path
-                                    d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                            </svg>
-                        </span>
-                        <span class="pc-mtext">Dashboard</span>
-                        </Link>
-                    </li>
-                    <!------
-                    <li class="pc-item pc-hasmenu">
-                        <Link href="/admin/cadastrar/usuario" class="pc-link">
-                            <span class="pc-micon"> <i data-feather="edit"></i></span>
-                            <span class="pc-mtext">Color</span>
-                        </Link>
-                    </li>------>
-
-                    <li class="pc-item pc-caption" v-if="$page.props.auth.user.tipo === 'admin'">
-                        <label>Usuarios</label>
-                        <i data-feather="feather"></i>
-                    </li>
-                    <li class="pc-item pc-hasmenu" v-if="$page.props.auth.user.tipo === 'admin'">
-
-                        <Link :class="linkClass('/admin/cadastrar/usuario')" href="/admin/cadastrar/usuario" class="pc-link"><span class="pc-micon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-user-round-plus-icon lucide-user-round-plus">
-                                <path d="M2 21a8 8 0 0 1 13.292-6" />
-                                <circle cx="10" cy="8" r="5" />
-                                <path d="M19 16v6" />
-                                <path d="M22 19h-6" />
-                            </svg>
-                        </span><span class="pc-mtext">Cadastrar</span><span class="pc-arrow">
-                        </span>
-                        </Link>
-
-                    </li>
-
-
-                    <li class="pc-item pc-hasmenu">
-                        <a href="../elements/bc_color.html" class="pc-link">
-                            <span class="pc-micon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-users-round-icon lucide-users-round">
-                                    <path d="M18 21a8 8 0 0 0-16 0" />
-                                    <circle cx="10" cy="8" r="5" />
-                                    <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" />
-                                </svg></span>
-
-                            <span class="pc-mtext">Desenvolvedores</span>
-                        </a>
-                    </li>
-
-
-                    <li class="pc-item pc-caption">
-                        <label>Projetos</label>
-                        <i data-feather="monitor"></i>
-                    </li>
-                    <li class="pc-item pc-hasmenu">
-                        <a href="#trstr" class="pc-link"><span class="pc-micon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-folder-kanban-icon lucide-folder-kanban">
-                                    <path
-                                        d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
-                                    <path d="M8 10v4" />
-                                    <path d="M12 10v2" />
-                                    <path d="M16 10v6" />
-                                </svg>
-
-                            </span><span class="pc-mtext">Adicionar</span><span class="pc-arrow"></span></a>
-
-                    </li>
-                    <li class="pc-item pc-hasmenu">
-                        <a href="../pages/register-v1.html" class="pc-link" target="_blank">
-                            <span class="pc-micon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-folder-git2-icon lucide-folder-git-2">
-                                    <path
-                                        d="M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5" />
-                                    <circle cx="13" cy="12" r="2" />
-                                    <path d="M18 19c-2.8 0-5-2.2-5-5v8" />
-                                    <circle cx="20" cy="19" r="2" />
-                                </svg></span>
-                            <span class="pc-mtext">Projetos</span>
-                        </a>
-                    </li>
-                    <li class="pc-item pc-caption">
-                        <label>Tarefas</label>
-                        <i data-feather="monitor"></i>
-                    </li>
-                    <li class="pc-item pc-hasmenu">
-                        <a href="../pages/register-v1.html" class="pc-link" target="_blank">
-                            <span class="pc-micon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-clipboard-list-icon lucide-clipboard-list">
-                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                                    <path
-                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                                    <path d="M12 11h4" />
-                                    <path d="M12 16h4" />
-                                    <path d="M8 11h.01" />
-                                    <path d="M8 16h.01" />
-                                </svg></span>
-                            <span class="pc-mtext">Adicionar</span>
-                        </a>
-                    </li>
-                    <li class="pc-item pc-hasmenu">
-                        <a href="../pages/register-v1.html" class="pc-link" target="_blank">
-                            <span class="pc-micon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="lucide lucide-clipboard-list-icon lucide-clipboard-list">
-                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                                    <path
-                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                                    <path d="M12 11h4" />
-                                    <path d="M12 16h4" />
-                                    <path d="M8 11h.01" />
-                                    <path d="M8 16h.01" />
-                                </svg></span>
-                            <span class="pc-mtext">Tarefas</span>
-                        </a>
-                    </li>
-
-                    <li class="pc-item pc-caption">
-                        <label>Other</label>
-                        <i data-feather="sidebar"></i>
-                    </li>
-
-                    <li class="pc-item">
-                        <a href="../other/sample-page.html" class="pc-link">
-                            <span class="pc-micon">
-                                <i data-feather="sidebar"></i>
-                            </span>
-                            <span class="pc-mtext">Pagina Simples</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <aside class="w-64 h-screen bg-base-100 border-r border-base-200 flex flex-col sticky top-0 z-40 shadow-sm overflow-hidden">
+        
+        <div class="h-16 flex items-center px-6 border-b border-base-200 shrink-0">
+            <Link href="/admin/dashboard" class="flex items-center gap-2">
+               <!---<img :src="logo" class="h-8 w-auto" alt="Logo do Sistema"/>--> 
+               <h1 class="text-2xl uppercase font-bold">Dashboard</h1>
+            </Link>
         </div>
-    </nav>
+
+        <div class="flex-1 overflow-y-auto py-4 custom-scroll">
+            <ul class="menu w-full p-0 text-sm">
+                
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-2 px-6">
+                    Navegação
+                </li>
+                
+                <li>
+                    <Link href="/admin/dashboard" :class="getLinkClass('/admin/dashboard')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                        <span>Dashboard</span>
+                    </Link>
+                </li>
+
+                <template v-if="isAdmin">
+                    <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                        Administração
+                    </li>
+
+                    <li>
+                        <Link href="/admin/cadastrar/usuario" :class="getLinkClass('/admin/cadastrar/usuario')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" x2="20" y1="8" y2="14"/><line x1="23" x2="17" y1="11" y2="11"/></svg>
+                            <span>Desenvolvedor</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/admin/listar/usuarios" :class="getLinkClass('/admin/listar/usuarios')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span>Desenvolvedores</span>
+                        </Link>
+                    </li>
+                </template>
+
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                    Projetos
+                </li>
+
+                <li>
+                    <Link href="/projetos/criar" :class="getLinkClass('/projetos/criar')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M20 9v11"/><path d="M10 3v6a2 2 0 0 1-2 2H4"/><path d="M16 14h2"/><path d="M16 10h2"/><path d="M16 18h2"/></svg>
+                        <span>Novo Projeto</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/projetos" :class="getLinkClass('/projetos')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><circle cx="12" cy="10" r="2"/></svg>
+                        <span>Meus Projetos</span>
+                    </Link>
+                </li>
+
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                    Tarefas
+                </li>
+
+                <li>
+                    <Link href="/tarefas/criar" :class="getLinkClass('/tarefas/criar')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+                        <span>Adicionar Tarefa</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/tarefas" :class="getLinkClass('/tarefas')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
+                        <span>Minhas Tarefas</span>
+                    </Link>
+                </li>
+
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                    Habilidades - Cargos
+                </li>
+                <li>
+                    <Link href="/pagina-simples" :class="getLinkClass('/pagina-simples')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" x2="9" y1="3" y2="21"/></svg>
+                        <span>Cadastrar</span>
+                    </Link>
+                </li>
+
+                <li>
+                    <Link href="/pagina-simples" :class="getLinkClass('/pagina-simples')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" x2="9" y1="3" y2="21"/></svg>
+                        <span>Cargos</span>
+                    </Link>
+                </li>
+
+            </ul>
+        </div>
+    </aside>
 </template>
 
 <style scoped>
-.home {
-    border-left: #079bdf 4px solid;
+/* Personalização opcional da barra de rolagem para ficar fina e elegante */
+.custom-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #e5e7eb; /* gray-200 */
+    border-radius: 10px;
+}
+.custom-scroll:hover::-webkit-scrollbar-thumb {
+    background: #d1d5db; /* gray-300 */
 }
 </style>

@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'avatar',
+        'cargo',
         'email',
         'password',
     ];
@@ -45,4 +47,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function projetos()
+    {
+        // um para muitos
+        return $this->hasMany(Projeto::class);
+    }
+ 
+    public function tarefas()
+    {
+        // um para muitos
+        return $this->hasMany(Tarefa::class, 'atribuida_para');
+    }
+
+
+
 }

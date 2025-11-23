@@ -32,4 +32,5 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get("/admin/cadastrar/usuario", [AdminController::class, 'create'])->name('admin.cad.usuario');
+    Route::get("/admin/listar/usuarios", [AdminController::class, 'listUsers'])->name('admin.list.usuarios');
 });

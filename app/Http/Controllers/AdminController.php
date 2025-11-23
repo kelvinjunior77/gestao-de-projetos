@@ -18,4 +18,10 @@ class AdminController extends Controller
         return Inertia::render('Admin/User/UserCreate');
 
     }
+
+    public function listUsers() {
+
+        return Inertia::render('Admin/User/UserList');
+
+    }
 }

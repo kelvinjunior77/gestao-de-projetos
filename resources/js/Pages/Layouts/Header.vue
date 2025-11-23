@@ -1,278 +1,157 @@
+<script setup>
+import { ref, onMounted } from "vue";
+import { Link, usePage, router } from '@inertiajs/vue3';
+
+// Dados do usuário
+const user = usePage().props.auth.user ?? {
+  name: "User",
+  email: "user@example.com",
+  avatar_url: "https://i.pravatar.cc/150"
+};
+
+// Notificações fake
+const notifications = ref(3);
+
+// Dropdowns
+const dSearch = ref(false);
+
+const dSettings = ref(false);
+const dNotify = ref(false);
+const dProfile = ref(false);
+
+// Fecha todos os dropdowns
+function closeAll() {
+  dSearch.value = false;
+  dSettings.value = false;
+  dNotify.value = false;
+  dProfile.value = false;
+}
+
+const currentTheme = ref("light");
+
+// Carrega o tema salvo
+onMounted(() => {
+  const saved = localStorage.getItem("theme");
+  currentTheme.value = saved || "light";
+  document.documentElement.setAttribute("data-theme", currentTheme.value);
+});
+
+// Alterna entre claro/escuro
+const toggleTheme = () => {
+  currentTheme.value = currentTheme.value === "light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", currentTheme.value);
+  localStorage.setItem("theme", currentTheme.value);
+};
+
+
+// Logout
+function logout() {
+  router.post(route('logout'));
+}
+</script>
+
 <template>
-  <!-- [ Header Topbar ] start -->
-  <header class="pc-header">
-    <div class="header-wrapper flex max-sm:px-[15px] px-[25px] grow"><!-- [Mobile Media Block] start -->
-      <div class="me-auto pc-mob-drp">
-        <ul class="inline-flex *:min-h-header-height *:inline-flex *:items-center">
-          <!-- ======= Menu collapse Icon ===== -->
-          <li class="pc-h-item pc-sidebar-collapse max-lg:hidden lg:inline-flex">
-            <a href="#" class="pc-head-link ltr:!ml-0 rtl:!mr-0" id="sidebar-hide">
-              <i data-feather="menu"></i>
-            </a>
+  <header class="navbar bg-base-100 shadow-sm sticky top-0 z-40 px-4">
+    <!-- LEFT -->
+    <div class="navbar-start gap-2">
+
+      <!-- Mobile toggle -->
+      <button class="btn btn-ghost btn-circle lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+      </button>
+
+      <!-- Desktop toggle -->
+      <button class="btn btn-ghost btn-circle hidden lg:flex">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <!-- SEARCH DROPDOWN -->
+      <div class="dropdown" @click.stop="closeAll(); dSearch = !dSearch">
+        <button class="btn btn-ghost btn-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+
+        <div v-show="dSearch" class="dropdown-content z-50 mt-3 w-64 p-3 bg-base-100 border rounded-box shadow">
+          <input type="text" placeholder="Pesquisar..." class="input input-bordered w-full" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="navbar-end gap-1">
+
+      <button class="btn btn-ghost btn-circle" @click="toggleTheme" title="Mudar Tema">
+        <!-- Ícone do Sol (tema claro) -->
+        <svg v-if="currentTheme === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+        </svg>
+
+        <!-- Ícone da Lua (tema escuro) -->
+        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3
+           7 7 0 0 0 21 12.79z">
+          </path>
+        </svg>
+      </button>
+
+
+      <!-- NOTIFICAÇÕES -->
+      <div class="dropdown dropdown-end" @click.stop="closeAll(); dNotify = !dNotify">
+        <button class="btn btn-ghost btn-circle">
+          <div class="indicator">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 17h5l-1.4-1.4A2 2 0 0118 14v-3a6 6 0 00-9.3-5" />
+            </svg>
+            <span v-if="notifications" class="badge badge-xs badge-error indicator-item"></span>
+          </div>
+        </button>
+
+        <div v-show="dNotify"
+          class="dropdown-content z-50 mt-3 w-72 bg-base-100 border rounded-box shadow max-h-80 overflow-y-auto p-3">
+          <h3 class="font-bold mb-2">Notificações</h3>
+          <p class="text-sm opacity-70">Nenhuma notificação nova.</p>
+        </div>
+      </div>
+
+      <!-- USER DROPDOWN -->
+      <div class="dropdown dropdown-end" @click.stop="closeAll(); dProfile = !dProfile">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-10 rounded-full">
+            <img :src="user.avatar_url" />
+          </div>
+        </div>
+
+        <ul v-show="dProfile" class="dropdown-content z-50 mt-3 w-56 bg-base-100 border rounded-box shadow p-2">
+          <li class="px-3 py-2 border-b">
+            <div class="font-bold">{{ user.name }}</div>
+            <div class="text-xs opacity-70">{{ user.email }}</div>
           </li>
-          <li class="pc-h-item pc-sidebar-popup lg:hidden">
-            <a href="#" class="pc-head-link ltr:!ml-0 rtl:!mr-0" id="mobile-collapse">
-              <i data-feather="menu"></i>
-            </a>
-          </li>
-          <li class="dropdown pc-h-item">
-            <a class="pc-head-link dropdown-toggle me-0" data-pc-toggle="dropdown" href="#" role="button"
-              aria-haspopup="false" aria-expanded="false">
-              <i data-feather="search"></i>
-            </a>
-            <div class="dropdown-menu pc-h-dropdown drp-search">
-              <form class="px-2 py-1">
-                <input type="search" class="form-control !border-0 !shadow-none" placeholder="Pesquisar aqui. . ." />
-              </form>
-            </div>
-          </li>
+          <li><a href="">Minha Conta</a></li>
+          <li><button @click="logout" class="text-error">Sair</button></li>
         </ul>
       </div>
-      <!-- [Mobile Media Block end] -->
-      <div class="ms-auto">
-        <ul class="inline-flex *:min-h-header-height *:inline-flex *:items-center">
-          <li class="dropdown pc-h-item">
-            <a class="pc-head-link dropdown-toggle me-0" data-pc-toggle="dropdown" href="#" role="button"
-              aria-haspopup="false" aria-expanded="false">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-sun-icon lucide-sun">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2" />
-                <path d="M12 20v2" />
-                <path d="m4.93 4.93 1.41 1.41" />
-                <path d="m17.66 17.66 1.41 1.41" />
-                <path d="M2 12h2" />
-                <path d="M20 12h2" />
-                <path d="m6.34 17.66-1.41 1.41" />
-                <path d="m19.07 4.93-1.41 1.41" />
-              </svg>
-            </a>
 
-            <div class="dropdown-menu dropdown-menu-end pc-h-dropdown">
-              <a href="#!" class="dropdown-item" onclick="layout_change('dark')">
-                <i data-feather="moon"></i>
-                <span>Escuro</span>
-              </a>
-              <a href="#!" class="dropdown-item" onclick="layout_change('light')">
-                <i data-feather="sun"></i>
-                <span>Claro</span>
-              </a>
-              <a href="#!" class="dropdown-item" onclick="layout_change_default()">
-                <i data-feather="settings"></i>
-                <span>Padrão</span>
-              </a>
-            </div>
-          </li>
-
-          <li class="dropdown pc-h-item">
-            <a class="pc-head-link dropdown-toggle me-0" data-pc-toggle="dropdown" href="#" role="button"
-              aria-haspopup="false" aria-expanded="false">
-              <i data-feather="settings"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end pc-h-dropdown">
-              <a href="#!" class="dropdown-item">
-                <i class="ti ti-user"></i>
-                <span>Minha Conta</span>
-              </a>
-              <a href="#!" class="dropdown-item">
-                <i class="ti ti-settings"></i>
-                <span>Configurações</span>
-              </a>
-              <a href="#!" class="dropdown-item">
-                <i class="ti ti-headset"></i>
-                <span>Suporte</span>
-              </a>
-              <a href="#!" class="dropdown-item">
-                <i class="ti ti-lock"></i>
-                <span>Bloquear Tela</span>
-              </a>
-              <a href="#!" class="dropdown-item">
-                <i class="ti ti-power"></i>
-                <span>Sair</span>
-              </a>
-            </div>
-
-          </li>
-          <li class="dropdown pc-h-item">
-            <a class="pc-head-link dropdown-toggle me-0" data-pc-toggle="dropdown" href="#" role="button"
-              aria-haspopup="false" aria-expanded="false">
-              <i data-feather="bell"></i>
-              <span class="badge bg-success-500 text-white rounded-full z-10 absolute right-0 top-0">3</span>
-            </a>
-            <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown p-2">
-              <div class="dropdown-header flex items-center justify-between py-4 px-5">
-                <h5 class="m-0">Notificações</h5>
-                <a href="#!" class="btn btn-link btn-sm">Marcar todas como lidas</a>
-              </div>
-              <div class="dropdown-body header-notification-scroll relative py-4 px-5"
-                style="max-height: calc(100vh - 215px)">
-                <p class="text-span mb-3">Hoje</p>
-                <div class="card mb-2">
-                  <div class="card-body">
-                    <div class="flex gap-4">
-                      <div class="shrink-0">
-                        <img class="img-radius w-12 h-12 rounded-0" :src="avatar1" alt="Generic placeholder image" />
-                      </div>
-                      <div class="grow">
-                        <span class="float-end text-sm text-muted">2 minutos atrás</span>
-                        <h5 class="text-body mb-2">UI/UX Design</h5>
-                        <p class="mb-0">
-                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                          printer took a galley of
-                          type and scrambled it to make a type
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card mb-2">
-                  <div class="card-body">
-                    <div class="flex gap-4">
-                      <div class="shrink-0">
-                        <img class="img-radius w-12 h-12 rounded-0" :src="avatar2" alt="Generic placeholder image" />
-                      </div>
-                      <div class="grow">
-                        <span class="float-end text-sm text-muted">1 hora atrás</span>
-                        <h5 class="text-body mb-2">Messagem</h5>
-                        <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab perspiciatis
-                          pariatur earum. Reprehenderit, nesciunt. Ratione</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-span mb-3 mt-4">Ontem</p>
-                <div class="card mb-2">
-                  <div class="card-body">
-                    <div class="flex gap-4">
-                      <div class="shrink-0">
-                        <img class="img-radius w-12 h-12 rounded-0" :src="avatar3" alt="Generic placeholder image" />
-                      </div>
-                      <div class="grow ms-3">
-                        <span class="float-end text-sm text-muted">2 horas atrás</span>
-                        <h5 class="text-body mb-2"></h5>
-                        <p class="mb-0">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam porro earum possimus,
-                          nobis quas dolorum veritatis repellendus ratione tenetur. Porro, deleniti illum sint earum
-                          quas perspiciatis reiciendis ipsa ad ea!
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card mb-2">
-                  <div class="card-body">
-                    <div class="flex gap-4">
-                      <div class="shrink-0">
-                        <img class="img-radius w-12 h-12 rounded-0" :src="avatar4" alt="Generic placeholder image" />
-                      </div>
-                      <div class="grow ms-3">
-                        <span class="float-end text-sm text-muted">12 hour ago</span>
-                        <h5 class="text-body mb-2">Challenge invitation</h5>
-                        <p class="mb-2">
-                          <strong>Jonny aber</strong>
-                          invites to join the challenge
-                        </p>
-                        <button class="btn btn-sm btn-outline-secondary me-2">Decline</button>
-                        <button class="btn btn-sm btn-primary">Accept</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card mb-2">
-                  <div class="card-body">
-                    <div class="flex gap-4">
-                      <div class="shrink-0">
-                        <img class="img-radius w-12 h-12 rounded-0" :src="avatar5" alt="Generic placeholder image" />
-                      </div>
-                      <div class="grow ms-3">
-                        <span class="float-end text-sm text-muted">5 hour ago</span>
-                        <h5 class="text-body mb-2">Security</h5>
-                        <p class="mb-0">
-                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                          printer took a galley of
-                          type and scrambled it to make a type
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="text-center py-2">
-                <a href="#!" class="text-danger-500 hover:text-danger-600 focus:text-danger-600 active:text-danger-600">
-                  Clear all Notifications
-                </a>
-              </div>
-            </div>
-          </li>
-          <li class="dropdown pc-h-item header-user-profile">
-            <a class="pc-head-link dropdown-toggle arrow-none me-0" data-pc-toggle="dropdown" href="#" role="button"
-              aria-haspopup="false" data-pc-auto-close="outside" aria-expanded="false">
-              <i data-feather="user"></i>
-            </a>
-            <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown p-2 overflow-hidden">
-              <div class="dropdown-header flex items-center justify-between py-4 px-5 bg-primary-500">
-                <div class="flex mb-1 items-center">
-                  <div class="shrink-0">
-                    <img :src="avatar2" alt="user-image" class="w-10 rounded-full" />
-                  </div>
-                  <div class="grow ms-3">
-                    <h6 class="mb-1 text-white">Carson Darrin 🖖</h6>
-                    <span class="text-white">carson.darrin@company.io</span>
-                  </div>
-                </div>
-              </div>
-              <div class="dropdown-body py-4 px-5">
-                <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
-                  <a href="#" class="dropdown-item">
-                    <span>
-                      <svg class="pc-icon text-muted me-2 inline-block">
-                        <use xlink:href="#custom-setting-outline"></use>
-                      </svg>
-                      <span>Settings</span>
-                    </span>
-                  </a>
-                  <a href="#" class="dropdown-item">
-                    <span>
-                      <svg class="pc-icon text-muted me-2 inline-block">
-                        <use xlink:href="#custom-share-bold"></use>
-                      </svg>
-                      <span>Share</span>
-                    </span>
-                  </a>
-                  <a href="#" class="dropdown-item">
-                    <span>
-                      <svg class="pc-icon text-muted me-2 inline-block">
-                        <use xlink:href="#custom-lock-outline"></use>
-                      </svg>
-                      <span>Change Password</span>
-                    </span>
-                  </a>
-                  <div class="grid my-3">
-                    <button class="btn btn-primary flex items-center justify-center">
-                      <svg class="pc-icon me-2 w-[22px] h-[22px]">
-                        <use xlink:href="#custom-logout-1-outline"></use>
-                      </svg>
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
     </div>
   </header>
-  <!-- [ Header ] end -->
+
+  <!-- FECHAR DROPDOWNS AO CLICAR FORA -->
+  <div @click="closeAll"></div>
 </template>
-
-<script setup>
-//import ThemeToggle from '../../Components/ThemeToggle.vue';
-import avatar1 from '@images/user/avatar-1.jpg';
-import avatar2 from '@images/user/avatar-2.jpg';
-import avatar3 from '@images/user/avatar-3.jpg';
-import avatar4 from '@images/user/avatar-4.jpg';
-import avatar5 from '@images/user/avatar-5.jpg';
-
-</script>

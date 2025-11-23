@@ -1,353 +1,222 @@
-<template>
-    <!------
-  <div v-if="$page.props.auth.user">
-            <div class="">
-                <p>ID do usuário: {{ $page.props.auth.user.id }}</p>
-                <p>Nome: {{ $page.props.auth.user.name }}</p>
-                <p>Tipo: {{ $page.props.auth.user.tipo }}</p>
-            </div> 
-        </div>-->
-
-    <Layout>
-        <template #main-content>
-              <div class="grid grid-cols-12 gap-x-6">
-          <div class="col-span-12 xl:col-span-4 md:col-span-6">
-            <a href="">
-              <div class="card">
-              <div class="card-header !pb-0 !border-b-0">
-                <h5>Projetos</h5>
-          
-              </div>
-              <div class="card-body">
-                <div class="flex items-center justify-between gap-3 flex-wrap">
-                  <h3 class="font-light flex items-center mb-0">
-                  <!---  <i class="feather icon-arrow-up text-success-500 text-[30px] mr-1.5"></i>-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-git2-icon lucide-folder-git-2"><path d="M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5"/><circle cx="13" cy="12" r="2"/><path d="M18 19c-2.8 0-5-2.2-5-5v8"/><circle cx="20" cy="19" r="2"/></svg>
-                  </h3>
-                  <p class="mb-0" style="font-size: 24px!important;">10</p>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mt-6 dark:bg-themedark-bodybg">
-                  <div class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar"
-                    style="width: 100%"></div>
-                </div>
-              </div>
-            </div>
-            </a>
-            
-          </div>
-          <div class="col-span-12 xl:col-span-4 md:col-span-6">
-            <a href="">
-              <div class="card">
-              <div class="card-header !pb-0 !border-b-0">
-                <h5>Projetos Finalizado</h5>
-          
-              </div>
-              <div class="card-body">
-                <div class="flex items-center justify-between gap-3 flex-wrap">
-                  <h3 class="font-light flex items-center mb-0">
-                  <!---  <i class="feather icon-arrow-up text-success-500 text-[30px] mr-1.5"></i>-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-check-icon lucide-folder-check"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="m9 13 2 2 4-4"/></svg>
-                  </h3>
-                  <p class="mb-0" style="font-size: 24px!important;">10</p>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mt-6 dark:bg-themedark-bodybg">
-                  <div class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar"
-                    style="width: 100%"></div>
-                </div>
-              </div>
-            </div>
-            </a>
-            
-          </div>
-          <div class="col-span-12 xl:col-span-4 md:col-span-6">
-            <a href=""> 
-              <div class="card">
-              <div class="card-header !pb-0 !border-b-0">
-                <h5>Tarefas</h5>
-              </div>
-              <div class="card-body">
-                <div class="flex items-center justify-between gap-3 flex-wrap">
-                  <h3 class="font-light flex items-center mb-0">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list-icon lucide-clipboard-list"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
-                    
-                  </h3>
-                  <p class="mb-0" style="font-size: 24px!important;">36</p>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mt-6 dark:bg-themedark-bodybg">
-                  <div class="bg-theme-bg-2 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar"
-                    style="width: 100%"></div>
-                </div>
-              </div>
-            </div>
-          </a>
-           
-          </div>
-          <div class="col-span-12 xl:col-span-4">
-            <a href="">
-              <div class="card">
-              <div class="card-header !pb-0 !border-b-0">
-                <h5>Tarefas Finalizado</h5>
-              </div>
-              <div class="card-body">
-                <div class="flex items-center justify-between gap-3 flex-wrap">
-                  <h3 class="font-light flex items-center mb-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-check-icon lucide-clipboard-check"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
-                  </h3>
-                  <p class="mb-0" style="font-size: 24px!important;">80</p>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mt-6 dark:bg-themedark-bodybg">
-                  <div class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar"
-                    style="width: 100%"></div>
-                </div>
-              </div>
-            </div>
-            </a>
-            
-          </div>
-
-            <div class="col-span-12 xl:col-span-4">
-            <a href="">
-              <div class="card">
-              <div class="card-header !pb-0 !border-b-0">
-                <h5>Desenvolvedores</h5>
-              </div>
-              <div class="card-body">
-                <div class="flex items-center justify-between gap-3 flex-wrap">
-                  <h3 class="font-light flex items-center mb-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round-icon lucide-users-round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
-                  </h3>
-                  <p class="mb-0" style="font-size: 24px!important;">80</p>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mt-6 dark:bg-themedark-bodybg">
-                  <div class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar"
-                    style="width: 100%"></div>
-                </div>
-              </div>
-            </div>
-            </a>
-            
-          </div>
-
-          <!------
-          <div class="col-span-12 xl:col-span-4">
-            <div class="card card-social">
-              <div class="card-body border-b border-theme-border dark:border-themedark-border">
-                <div class="flex items-center justify-center">
-                  <div class="shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-round-icon lucide-users-round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
-                  </div>
-                  <div class="grow ltr:text-right rtl:text-left">
-                    <h3 class="mb-2">22</h3>
-                    <h5 class="text-success-500 mb-0"><span class="text-muted">Desenvolvedores</span></h5>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                  <div class="col-span-6">
-                    
-                    <div class="w-full bg-theme-bodybg rounded-lg h-1.5 dark:bg-themedark-bodybg">
-                      <div class="bg-theme-bg-2 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar" style="width: 100%"></div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-span-12 xl:col-span-4 md:col-span-6">
-            <div class="card card-social">
-              <div class="card-body border-b border-theme-border dark:border-themedark-border">
-                <div class="flex items-center justify-center">
-                  <div class="shrink-0">
-                    <i class="fab fa-google-plus-g text-danger-500 text-[36px]"></i>
-                  </div>
-                  <div class="grow ltr:text-right rtl:text-left">
-                    <h3 class="mb-2">10,500</h3>
-                    <h5 class="text-purple-500 mb-0">+5.9% <span class="text-muted">Total Likes</span></h5>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="grid grid-cols-12 gap-x-6">
-                  <div class="col-span-6">
-                    <h6 class="text-center mb-2.5"><span class="text-muted m-r-5">Target:</span>25,998</h6>
-                    <div class="w-full bg-theme-bodybg rounded-lg h-1.5 dark:bg-themedark-bodybg">
-                      <div class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar" style="width: 80%"></div>
-                    </div>
-                  </div>
-                  <div class="col-span-6">
-                    <h6 class="text-center mb-2.5"><span class="text-muted m-r-5">Duration:</span>900</h6>
-                    <div class="w-full bg-theme-bodybg rounded-lg h-1.5 dark:bg-themedark-bodybg">
-                      <div class="bg-theme-bg-2 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]" role="progressbar" style="width: 50%"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>--->
-
-      
-          <div class="col-span-12 xl:col-span-8 md:col-span-6">
-            <div class="card table-card">
-              <div class="card-header">
-                <h5>Tarefas Finalizadas Recentes</h5>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <tbody>
-                      <tr class="unread">
-                        <td>
-                          <img class="rounded-full max-w-10" style="width: 40px" :src="avatar-1" alt="activity-user" />
-                        </td>
-                        <td>
-                          <h6 class="mb-1">Isabella Christensen</h6>
-                          <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                        </td>
-                        <td>
-                          <h6 class="text-muted">
-                            <i class="fas fa-circle text-success text-[10px] ltr:mr-4 rtl:ml-4"></i>
-                            11 MAY 12:56
-                          </h6>
-                        </td>
-                        <td>
-                          <a href="#!" class="badge bg-theme-bg-2 text-white text-[12px] mx-2">Rejeitar</a>
-                          <a href="#!" class="badge bg-theme-bg-1 text-white text-[12px]">Aprovar</a>
-                        </td>
-                      </tr>
-                      <tr class="unread">
-                        <td>
-                          <img class="rounded-full max-w-10" style="width: 40px" src="../assets/images/user/avatar-2.jpg" alt="activity-user" />
-                        </td>
-                        <td>
-                          <h6 class="mb-1">Mathilde Andersen</h6>
-                          <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                        </td>
-                        <td>
-                          <h6 class="text-muted">
-                            <i class="fas fa-circle text-danger text-[10px] ltr:mr-4 rtl:ml-4"></i>
-                            11 MAY 10:35
-                          </h6>
-                        </td>
-                        <td>
-                          <a href="#!" class="badge bg-theme-bg-2 text-white text-[12px] mx-2">Rejeitar</a>
-                          <a href="#!" class="badge bg-theme-bg-1 text-white text-[12px]">Aprovar</a>
-                        </td>
-                      </tr>
-                   
-                   
-                    
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-              <div class="col-span-12 xl:col-span-4 md:col-span-6">
-            <div class="card user-list">
-              <div class="card-header">
-                <h5>Avaliação</h5>
-              </div>
-              <div class="card-body">
-                <div class="flex items-center justify-between gap-1 mb-5">
-                  <h2 class="font-light flex items-center m-0">
-                    4.7
-                    <i class="fas fa-star text-[10px] ml-2.5 text-warning-500"></i>
-                  </h2>
-                  <h6 class="flex items-center m-0">
-                    0.4
-                    <i class="fas fa-caret-up text-success text-[22px] ml-2.5"></i>
-                  </h6>
-                </div>
-
-                <div class="flex items-center justify-between gap-2 mb-2">
-                  <h6 class="flex items-center gap-1">
-                    <i class="fas fa-star text-[10px] mr-2.5 text-warning-500"></i>
-                    5
-                  </h6>
-                  <h6>384</h6>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mb-6 mt-3 dark:bg-themedark-bodybg">
-                  <div
-                    class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]"
-                    role="progressbar"
-                    style="width: 70%"
-                  ></div>
-                </div>
-
-                <div class="flex items-center justify-between gap-2 mb-2">
-                  <h6 class="flex items-center gap-1">
-                    <i class="fas fa-star text-[10px] mr-2.5 text-warning-500"></i>
-                    4
-                  </h6>
-                  <h6>145</h6>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mb-6 mt-3 dark:bg-themedark-bodybg">
-                  <div
-                    class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]"
-                    role="progressbar"
-                    style="width: 35%"
-                  ></div>
-                </div>
-
-                <div class="flex items-center justify-between gap-2 mb-2">
-                  <h6 class="flex items-center gap-1">
-                    <i class="fas fa-star text-[10px] mr-2.5 text-warning-500"></i>
-                    3
-                  </h6>
-                  <h6>24</h6>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mb-6 mt-3 dark:bg-themedark-bodybg">
-                  <div
-                    class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]"
-                    role="progressbar"
-                    style="width: 25%"
-                  ></div>
-                </div>
-
-                <div class="flex items-center justify-between gap-2 mb-2">
-                  <h6 class="flex items-center gap-1">
-                    <i class="fas fa-star text-[10px] mr-2.5 text-warning-500"></i>
-                    2
-                  </h6>
-                  <h6>1</h6>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mb-6 mt-3 dark:bg-themedark-bodybg">
-                  <div
-                    class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]"
-                    role="progressbar"
-                    style="width: 10%"
-                  ></div>
-                </div>
-
-                <div class="flex items-center justify-between gap-2 mb-2">
-                  <h6 class="flex items-center gap-1">
-                    <i class="fas fa-star text-[10px] mr-2.5 text-warning-500"></i>
-                    1
-                  </h6>
-                  <h6>0</h6>
-                </div>
-                <div class="w-full bg-theme-bodybg rounded-lg h-1.5 mt-4 dark:bg-themedark-bodybg">
-                  <div
-                    class="bg-theme-bg-1 h-full rounded-lg shadow-[0_10px_20px_0_rgba(0,0,0,0.3)]"
-                    role="progressbar"
-                    style="width: 0%"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        </template>
-    </Layout>
-
-</template>
-
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import Header from '../Layouts/Header.vue';
-import NavBar from '../Layouts/NavBar.vue';
-import Main from '../Layouts/Main.vue';
+import { Head, Link } from '@inertiajs/vue3';
+
 import Layout from '../Layouts/Layout.vue';
 
+
+// Props que virão do seu Controller Laravel (Exemplo)
+const props = defineProps({
+    stats: {
+        type: Object,
+        default: () => ({
+            projects: 10,
+            projectsFinished: 10,
+            tasks: 36,
+            tasksFinished: 80,
+            developers: 22
+        })
+    },
+    recentTasks: {
+        type: Array,
+        default: () => ([
+            { id: 1, name: 'Isabella Christensen', desc: 'Design da Home', date: '11 MAI 12:56', avatar: 'https://i.pravatar.cc/150?u=1', status: 'pending' },
+            { id: 2, name: 'Mathilde Andersen', desc: 'Correção de Bugs API', date: '11 MAI 10:35', avatar: 'https://i.pravatar.cc/150?u=2', status: 'rejected' },
+            { id: 3, name: 'Karla Sorenson', desc: 'Deploy Produção', date: '10 MAI 09:00', avatar: 'https://i.pravatar.cc/150?u=3', status: 'approved' },
+        ])
+    }
+});
 </script>
+
+<template>
+    <Head title="Dashboard" />
+
+    <Layout>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
+            
+            <div class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title text-base font-normal text-base-content/70">Projetos</h2>
+                            <p class="text-3xl font-bold mt-2">{{ stats.projects }}</p>
+                        </div>
+                        <div class="p-3 bg-primary/10 rounded-full text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5"/><circle cx="13" cy="12" r="2"/><path d="M18 19c-2.8 0-5-2.2-5-5v8"/><circle cx="20" cy="19" r="2"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <progress class="progress progress-primary w-full" value="70" max="100"></progress>
+                        <p class="text-xs text-base-content/50 mt-1">70% da meta atingida</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title text-base font-normal text-base-content/70">Finalizados</h2>
+                            <p class="text-3xl font-bold mt-2">{{ stats.projectsFinished }}</p>
+                        </div>
+                        <div class="p-3 bg-success/10 rounded-full text-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="m9 13 2 2 4-4"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <progress class="progress progress-success w-full" value="100" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title text-base font-normal text-base-content/70">Tarefas</h2>
+                            <p class="text-3xl font-bold mt-2">{{ stats.tasks }}</p>
+                        </div>
+                        <div class="p-3 bg-warning/10 rounded-full text-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <progress class="progress progress-warning w-full" value="40" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title text-base font-normal text-base-content/70">Tarefas Feitas</h2>
+                            <p class="text-3xl font-bold mt-2">{{ stats.tasksFinished }}</p>
+                        </div>
+                        <div class="p-3 bg-info/10 rounded-full text-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <progress class="progress progress-info w-full" value="85" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-sm border border-base-200 hover:shadow-md transition-shadow">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title text-base font-normal text-base-content/70">Devs Ativos</h2>
+                            <p class="text-3xl font-bold mt-2">{{ stats.developers }}</p>
+                        </div>
+                        <div class="p-3 bg-error/10 rounded-full text-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <progress class="progress progress-error w-full" value="20" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            
+            <div class="col-span-1 xl:col-span-2 card bg-base-100 shadow-sm border border-base-200">
+                <div class="card-body p-0">
+                    <div class="p-5 border-b border-base-200">
+                        <h3 class="font-bold text-lg">Tarefas Recentes</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Usuário</th>
+                                    <th>Atividade</th>
+                                    <th>Data</th>
+                                    <th class="text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="task in recentTasks" :key="task.id" class="hover">
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar">
+                                                <div class="mask mask-squircle w-10 h-10">
+                                                    <img :src="task.avatar" alt="Avatar" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">{{ task.name }}</div>
+                                                <div class="text-xs opacity-50">Dev Team</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ task.desc }}
+                                        <br/>
+                                        <span class="badge badge-ghost badge-sm">Web Design</span>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center gap-2 text-xs text-base-content/70">
+                                            <span class="w-2 h-2 rounded-full bg-success"></span>
+                                            {{ task.date }}
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <button class="btn btn-xs btn-error btn-outline mr-2">Rejeitar</button>
+                                        <button class="btn btn-xs btn-success text-white">Aprovar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-sm border border-base-200">
+                <div class="card-body">
+                    <h3 class="card-title text-lg mb-4 border-b border-base-200 pb-2">Avaliação Geral</h3>
+                    
+                    <div class="flex items-end gap-2 mb-6">
+                        <span class="text-5xl font-bold">4.7</span>
+                        <div class="flex flex-col mb-1">
+                            <div class="flex text-warning">
+                                <svg v-for="i in 5" :key="i" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <span class="text-xs text-success font-semibold flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                                +0.4 pts
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div v-for="star in [5, 4, 3, 2, 1]" :key="star" class="flex items-center gap-3">
+                            <span class="flex items-center gap-1 text-sm w-12">
+                                {{ star }} <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-warning fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </span>
+                            <progress 
+                                class="progress w-full" 
+                                :class="{
+                                    'progress-success': star >= 4, 
+                                    'progress-warning': star === 3, 
+                                    'progress-error': star <= 2 
+                                }"
+                                :value="star === 5 ? 70 : (star === 4 ? 35 : (star === 3 ? 25 : 10))" 
+                                max="100">
+                            </progress>
+                            <span class="text-xs w-8 text-right opacity-60">
+                                {{ star === 5 ? 384 : (star === 4 ? 145 : 20) }}
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </Layout>
+</template>

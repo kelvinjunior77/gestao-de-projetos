@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('email')->unique();
+
+            $table->string('cargo')->default('Dev web')->nullable();
+
             $table->string('avatar')->nullable();
             
             $table->enum('tipo', ['admin', 'normal'])->default('normal');

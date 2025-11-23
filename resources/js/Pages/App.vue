@@ -1,14 +1,12 @@
 <template>
     <div>
        
-
-        <Link href="/login">
+        <Link href="/login" class="text-red-700">
         <h2>Login</h2>
         </Link>
         <Link href="/logout" method="post">
         <h2>sair</h2>
         </Link>
-        
     </div>
 
     <!----
