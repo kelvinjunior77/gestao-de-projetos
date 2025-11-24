@@ -117,10 +117,10 @@ function goTo(link) {
                                             <div class="avatar">
                                                 <div class="w-12 h-12 rounded-full">
                                                     <img
-                                                        :src="user.avatar ? `/public/avatars/${user.avatar}` : 'https://placehold.co/100x100?text=Avatar'" />
+                                                        :src="user.avatar ? `/storage/${user.avatar}` : 'https://placehold.co/100x100?text=Avatar'" />
                                                 </div>
                                             </div>
-
+                                             
                                             <div>
                                                 <p class="font-semibold">{{ user.name }}</p>
                                                 <p class="text-sm text-base-content/60">
