@@ -1,107 +1,184 @@
+<script setup>
+import Layout from "../../Layouts/Layout.vue";
+import { ref, watch } from "vue";
+import { Link, router, usePage } from "@inertiajs/vue3";
+
+// Props Inertia
+const page = usePage();
+
+const props = defineProps({
+    users: Object,
+    filters: Object,
+});
+
+
+// Estados dos filtros
+const search = ref(page.props.filters?.search ?? "");
+const cargo = ref(page.props.filters?.cargo ?? "");
+const tipo = ref(page.props.filters?.tipo ?? "");
+
+// Atualiza listagem sempre que filtro mudar
+watch([search, cargo, tipo], () => {
+    applyFilters();
+});
+
+// Função de filtros
+function applyFilters(page = 1) {
+    router.get(
+        "/admin/listar/usuarios",
+        {
+            search: search.value,
+            cargo: cargo.value,
+            tipo: tipo.value,
+            page,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        }
+    );
+}
+
+// Paginação corrigida
+function goTo(link) {
+    if (!link.url) return;
+
+    // extrai "page" da URL (...?page=3)
+    const urlObj = new URL(link.url);
+    const pageNumber = urlObj.searchParams.get("page");
+
+    applyFilters(pageNumber);
+}
+</script>
+
+
 <template>
-   <Layout>
-        <div class="max-w-10xl h-10 mb-6">
-            <div
-                class="flex flex-col md:flex-row md:items-center justify-between bg-base-100 border border-base-200 rounded-xl px-1 py-1 shadow-sm">
-                <!-- Título -->
-                <div>
+    <Layout>
+        <div class="p-6 max-w-7xl mx-auto">
 
-                    <!-- Breadcrumb -->
-                    <nav class="text-sm breadcrumbs mt-1 p-2 opacity-70">
-                        <ul>
-                            <li>
-                                <Link href="/admin/dashboard">
-                                Home
-                                </Link>
-                            </li>
+            <!-- HEADER -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Usuários / Desenvolvedores</h2>
 
-                            <li class="font-medium text-primary">
-                                Lista de Desenvolvedores
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <Link href="/admin/cadastrar/usuario" class="btn btn-primary">
+                + Novo Usuário
+                </Link>
             </div>
-        </div>
+
+            <!-- FILTROS -->
+            <div class="flex gap-4 mb-6">
+
+                <!-- Buscar -->
+                <input v-model="search" type="text" placeholder="Pesquisar usuário..."
+                    class="input input-bordered w-full" />
+
+                <!-- Cargo -->
+                <select v-model="cargo" class="select select-bordered w-48">
+                    <option value="">Cargo (todos)</option>
+                    <option value="designer">Designer</option>
+                    <option value="desenvolvedor">Desenvolvedor</option>
+                    <option value="gestor">Gestor</option>
+                    <option value="suporte">Suporte</option>
+                </select>
+
+                <!-- Tipo -->
+                <select v-model="tipo" class="select select-bordered w-40">
+                    <option value="">Tipo (todos)</option>
+                    <option value="admin">Admin</option>
+                    <option value="normal">Normal</option>
+                </select>
+
+            </div>
 
 
-          
-            <div class="col-span-1 xl:col-span-2 card bg-base-100 shadow-sm border border-base-200">
-                <div class="card-body p-0">
-                    <div class="p-5 border-b border-base-200">
-                        <h3 class="font-bold text-lg">Desenvolvedores</h3>
-                    </div>
+
+
+            <!-- LISTA -->
+            <div class="card bg-base-100 shadow-sm border border-base-200">
+                <div class="card-body">
+
                     <div class="overflow-x-auto">
                         <table class="table table-zebra w-full">
                             <thead>
-                                <tr>
+                                <tr class="text-sm text-base-content/70">
                                     <th>Usuário</th>
-                                    <th>Atividade</th>
-                                    <th>Data</th>
+                                    <th>Cargo</th>
+                                    <th>Tipo</th>
                                     <th class="text-right">Ações</th>
                                 </tr>
                             </thead>
+
                             <tbody>
-                                <tr v-for="task in recentTasks" :key="task.id" class="hover">
+                                <tr v-for="user in users.data" :key="user.id">
+
                                     <td>
                                         <div class="flex items-center gap-3">
                                             <div class="avatar">
-                                                <div class="mask mask-squircle w-10 h-10">
-                                                    <img :src="task.avatar" alt="Avatar" />
+                                                <div class="w-12 h-12 rounded-full">
+                                                    <img
+                                                        :src="user.avatar ? `/public/avatars/${user.avatar}` : 'https://placehold.co/100x100?text=Avatar'" />
                                                 </div>
                                             </div>
+
                                             <div>
-                                                <div class="font-bold">{{ task.name }}</div>
-                                                <div class="text-xs opacity-50">Dev Team</div>
+                                                <p class="font-semibold">{{ user.name }}</p>
+                                                <p class="text-sm text-base-content/60">
+                                                    {{ user.email }}
+                                                </p>
                                             </div>
                                         </div>
                                     </td>
+
+                                    <td>{{ user.cargo || "-" }}</td>
+
                                     <td>
-                                        {{ task.desc }}
-                                        <br/>
-                                        <span class="badge badge-ghost badge-sm">Web Design</span>
+                                        <span class="badge" :class="user.tipo === 'admin'
+                                            ? 'badge-primary'
+                                            : 'badge-neutral'">
+                                            {{ user.tipo }}
+                                        </span>
                                     </td>
-                                    <td>
-                                        <div class="flex items-center gap-2 text-xs text-base-content/70">
-                                            <span class="w-2 h-2 rounded-full bg-success"></span>
-                                            {{ task.date }}
+
+                                    <td class="text-right">
+                                        <div class="flex justify-end gap-2">
+
+                                            <Link :href="`/admin/usuario/${user.slug}`" class="btn btn-sm btn-ghost">
+                                            Ver
+                                            </Link>
+
+                                            <Link :href="`/admin/usuario/${user.slug}/editar`"
+                                                class="btn btn-sm btn-info text-white">
+                                            Editar
+                                            </Link>
                                         </div>
                                     </td>
-                                    <td class="text-right">
-                                        <button class="btn btn-xs btn-error btn-outline mr-2">Rejeitar</button>
-                                        <button class="btn btn-xs btn-success text-white">Aprovar</button>
-                                    </td>
+
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- PAGINAÇÃO -->
+                    <div class="flex justify-between items-center mt-6">
+
+                        <p class="text-sm opacity-70">
+                            Página {{ users.current_page }} de {{ users.last_page }}
+                        </p>
+
+                        <div class="join">
+                            <button v-for="(link, index) in users.links" :key="index" class="btn join-item" :class="{
+                                'btn-primary': link.active,
+                                'btn-ghost': !link.active,
+                                'pointer-events-none opacity-40': link.url === null
+                            }" v-html="link.label" @click="goTo(link)"></button>
+                        </div>
+
+                    </div>
+
+
                 </div>
             </div>
-   </Layout>
+        </div>
+    </Layout>
 </template>
-
-<script setup>
-import Layout from '../../Layouts/Layout.vue';
-
-// Props que virão do seu Controller Laravel (Exemplo)
-const props = defineProps({
-    stats: {
-        type: Object,
-        default: () => ({
-            projects: 10,
-            projectsFinished: 10,
-            tasks: 36,
-            tasksFinished: 80,
-            developers: 22
-        })
-    },
-    recentTasks: {
-        type: Array,
-        default: () => ([
-            { id: 1, name: 'Isabella Christensen', desc: 'Design da Home', date: '11 MAI 12:56', avatar: 'https://i.pravatar.cc/150?u=1', status: 'pending' },
-            { id: 2, name: 'Mathilde Andersen', desc: 'Correção de Bugs API', date: '11 MAI 10:35', avatar: 'https://i.pravatar.cc/150?u=2', status: 'rejected' },
-            { id: 3, name: 'Karla Sorenson', desc: 'Deploy Produção', date: '10 MAI 09:00', avatar: 'https://i.pravatar.cc/150?u=3', status: 'approved' },
-        ])
-    }
-});
-</script>
