@@ -55,26 +55,45 @@ function goTo(link) {
 
 <template>
     <Layout>
+
+         <div class="max-w-10xl h-10 mb-6">
+            <div
+                class="flex flex-col md:flex-row md:items-center justify-between bg-base-100 border border-base-200 rounded-xl px-1 py-1 shadow-sm">
+                <!-- Título -->
+                <div>
+
+                    <!-- Breadcrumb -->
+                    <nav class="text-sm breadcrumbs mt-1 p-2 opacity-70">
+                        <ul>
+                            <li>
+                                <Link href="/admin/dashboard">
+                                Home
+                                </Link>
+                            </li>
+
+                            <li class="font-medium text-primary">
+                                Lista de usuarios
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
         <div class="p-6 max-w-7xl mx-auto">
 
-            <!-- HEADER -->
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Usuários / Desenvolvedores</h2>
-
-                <Link href="/admin/cadastrar/usuario" class="btn btn-primary">
-                + Novo Usuário
-                </Link>
-            </div>
+          
 
             <!-- FILTROS -->
             <div class="flex gap-4 mb-6">
 
                 <!-- Buscar -->
                 <input v-model="search" type="text" placeholder="Pesquisar usuário..."
-                    class="input input-bordered w-full" />
+                    class="input input-bordered w-full outline-0" />
 
                 <!-- Cargo -->
-                <select v-model="cargo" class="select select-bordered w-48">
+                <select v-model="cargo" class="select select-bordered w-48 outline-0">
                     <option value="">Cargo (todos)</option>
                     <option value="designer">Designer</option>
                     <option value="desenvolvedor">Desenvolvedor</option>
@@ -83,7 +102,7 @@ function goTo(link) {
                 </select>
 
                 <!-- Tipo -->
-                <select v-model="tipo" class="select select-bordered w-40">
+                <select v-model="tipo" class="select select-bordered w-40 outline-0">
                     <option value="">Tipo (todos)</option>
                     <option value="admin">Admin</option>
                     <option value="normal">Normal</option>

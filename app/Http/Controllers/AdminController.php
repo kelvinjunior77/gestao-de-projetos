@@ -71,7 +71,7 @@ class AdminController extends Controller
             $query->where('tipo', $request->tipo);
         }
 
-        $users = $query->paginate(10)->withQueryString();
+        $users = $query->paginate(4)->withQueryString();
 
         return Inertia::render("Admin/User/UserList", [
             "users" => $users,
