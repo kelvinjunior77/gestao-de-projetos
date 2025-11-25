@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="assets/images/favicon.svg" type="image/x-icon" />
 
+    @routes
     <!-- Vite (Vue) -->
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')

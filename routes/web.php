@@ -38,5 +38,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get("/admin/listar/usuarios", [AdminController::class, 'listUsers'])->name('admin.list.usuarios');
     Route::get("/admin/perfil/usuario/{usuario:slug}", [AdminController::class, 'perfilUser'])->name('admin.perfil.usuario');
 
-    //Route::get("/admin/editar/usuario/{id}", [AdminController::class, 'edit'])->name('admin.edit.usuario');
+    Route::get("/admin/editar/usuario/{usuario:slug}", [AdminController::class, 'edit'])->name('admin.edit.usuario');
 });

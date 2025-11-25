@@ -92,4 +92,14 @@ class AdminController extends Controller
 
         ]);
     }
+
+    public function edit(User $usuario)
+    {
+        $cargos = Cargo::all();
+
+        return Inertia::render('Admin/User/UserEdit', [
+            'user' => $usuario,
+            'cargos' => $cargos,
+        ]);
+    }
 }

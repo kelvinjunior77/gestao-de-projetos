@@ -1,6 +1,7 @@
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
 import { ref, watch } from "vue";
+import { route } from 'ziggy-js';
 import { Link, router, usePage } from "@inertiajs/vue3";
 
 // Props Inertia
@@ -164,7 +165,13 @@ function goTo(link) {
                                             Ver
                                             </Link>
 
-                                            <Link :href="`/admin/usuario/${user.slug}/editar`"
+                                            <!---
+                                            <Link :href="`/admin/editar/usuario/${user.slug}`"
+                                                class="btn btn-sm btn-info text-white">
+                                            Editar
+                                            </Link>--->
+
+                                             <Link :href="route('admin.edit.usuario', user.slug)"
                                                 class="btn btn-sm btn-info text-white">
                                             Editar
                                             </Link>
