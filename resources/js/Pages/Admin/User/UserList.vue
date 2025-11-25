@@ -9,7 +9,9 @@ const page = usePage();
 const props = defineProps({
     users: Object,
     filters: Object,
+    id: Array,
 });
+
 
 
 // Estados dos filtros
@@ -166,6 +168,11 @@ function goTo(link) {
                                                 class="btn btn-sm btn-info text-white">
                                             Editar
                                             </Link>
+
+                                            <a v-if="id !== user.id" href="" class="btn btn-sm btn-error">
+                                                Excluir
+                                            </a>
+
                                         </div>
                                     </td>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Models\Cargo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -53,6 +54,10 @@ class AdminController extends Controller
 
     public function listUsers(Request $request)
     {
+        $user_auth = Auth::user();
+        $id = $user_auth->id;
+
+
         $query = User::query();
 
         // Search
@@ -76,6 +81,7 @@ class AdminController extends Controller
         return Inertia::render("Admin/User/UserList", [
             "users" => $users,
             "filters" => $request->only(["search", "cargo", "tipo"]),
+            "id" => $id,
         ]);
     }
 
@@ -83,6 +89,7 @@ class AdminController extends Controller
     {
         return Inertia::render('Admin/User/UserPerfil', [
             'user' => $usuario,
+
         ]);
     }
 }
