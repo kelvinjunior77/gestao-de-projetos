@@ -78,4 +78,11 @@ class AdminController extends Controller
             "filters" => $request->only(["search", "cargo", "tipo"]),
         ]);
     }
+
+    public function perfilUser(User $usuario)
+    {
+        return Inertia::render('Admin/User/UserPerfil', [
+            'user' => $usuario,
+        ]);
+    }
 }

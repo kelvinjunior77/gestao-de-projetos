@@ -36,4 +36,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post("/admin/cadastrar/usuario", [AdminController::class, 'store'])->name('admin.users.store');
 
     Route::get("/admin/listar/usuarios", [AdminController::class, 'listUsers'])->name('admin.list.usuarios');
+    Route::get("/admin/perfil/usuario/{usuario:slug}", [AdminController::class, 'perfilUser'])->name('admin.perfil.usuario');
+
+    //Route::get("/admin/editar/usuario/{id}", [AdminController::class, 'edit'])->name('admin.edit.usuario');
 });

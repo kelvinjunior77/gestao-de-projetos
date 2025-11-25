@@ -83,8 +83,6 @@ function goTo(link) {
         </div>
         <div class="p-6 max-w-7xl mx-auto">
 
-          
-
             <!-- FILTROS -->
             <div class="flex gap-4 mb-6">
 
@@ -109,8 +107,6 @@ function goTo(link) {
                 </select>
 
             </div>
-
-
 
 
             <!-- LISTA -->
@@ -162,7 +158,7 @@ function goTo(link) {
                                     <td class="text-right">
                                         <div class="flex justify-end gap-2">
 
-                                            <Link :href="`/admin/usuario/${user.slug}`" class="btn btn-sm btn-ghost">
+                                            <Link :href="`/admin/perfil/usuario/${user.slug}`" class="btn btn-sm btn-ghost">
                                             Ver
                                             </Link>
 
