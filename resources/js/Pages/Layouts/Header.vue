@@ -3,11 +3,8 @@ import { ref, onMounted } from "vue";
 import { Link, usePage, router } from '@inertiajs/vue3';
 
 // Dados do usuário
-const user = usePage().props.auth.user ?? {
-  name: "User",
-  email: "user@example.com",
-  avatar_url: "https://i.pravatar.cc/150"
-};
+const page = usePage();
+const user = page.props.auth.user;
 
 // Notificações fake
 const notifications = ref(3);
@@ -112,13 +109,15 @@ function logout() {
 
 
       <!-- NOTIFICAÇÕES -->
-      <div class="dropdown dropdown-end" @click.stop="closeAll(); dNotify = !dNotify">
+      <div class="dropdown dropdown-end ml-0 mr-3" @click.stop="closeAll(); dNotify = !dNotify">
         <button class="btn btn-ghost btn-circle">
           <div class="indicator">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 17h5l-1.4-1.4A2 2 0 0118 14v-3a6 6 0 00-9.3-5" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-bell-icon lucide-bell">
+              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+              <path
+                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
             </svg>
             <span v-if="notifications" class="badge badge-xs badge-error indicator-item"></span>
           </div>
@@ -135,7 +134,9 @@ function logout() {
       <div class="dropdown dropdown-end" @click.stop="closeAll(); dProfile = !dProfile">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
-            <img :src="user.avatar_url" />
+            <img :src="user.avatar
+              ? `/storage/${user.avatar}`
+              : 'https://placehold.co/100x100?text=User'" alt="Avatar do Usuário" />
           </div>
         </div>
 
@@ -145,8 +146,9 @@ function logout() {
             <div class="text-xs opacity-70">{{ user.email }}</div>
           </li>
           <li><a href="">Minha Conta</a></li>
-          <li><button @click="logout" class="text-error">Sair</button></li>
+          <li><button @click="logout" class="text-error">Sair </button></li>
         </ul>
+
       </div>
 
     </div>

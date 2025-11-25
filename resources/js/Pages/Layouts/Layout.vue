@@ -1,7 +1,6 @@
 <script setup>
 import NavBar from './NavBar.vue'; // Sua Sidebar Lateral
 import Header from './Header.vue'; // Seu Topo
-// import Main from './Main.vue'; // Geralmente não é necessário um componente Main wrapper, usamos a tag <main> direto
 
 </script>
 
