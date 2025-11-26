@@ -146,7 +146,7 @@ function logout() {
             <div class="text-xs opacity-70">{{ user.email }}</div>
           </li>
           <li><a href="">Minha Conta</a></li>
-          <li><button @click="logout" class="text-error">Sair </button></li>
+          <li><Link method="post" href="/logout" class="text-error">Sair</Link></li>
         </ul>
 
       </div>

@@ -33,13 +33,14 @@ const getLinkClass = (path) => {
 
 // Atalho para verificar permissão de admin (opcional, para limpar o template)
 const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
+
 </script>
 
 <template>
     <aside class="w-64 h-screen bg-base-100 border-r border-base-200 flex flex-col sticky top-0 z-40 shadow-sm overflow-hidden">
         
         <div class="h-16 flex items-center px-6 border-b border-base-200 shrink-0">
-            <Link href="/admin/dashboard" class="flex items-center gap-2">
+            <Link href="/" class="flex items-center gap-2">
                <!---<img :src="logo" class="h-8 w-auto" alt="Logo do Sistema"/>--> 
                <h1 class="text-2xl uppercase font-bold">Dashboard</h1>
             </Link>
@@ -53,7 +54,7 @@ const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
                 </li>
                 
                 <li>
-                    <Link href="/admin/dashboard" :class="getLinkClass('/admin/dashboard')">
+                    <Link href="/" :class="getLinkClass('/')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
                         <span>Dashboard</span>
                     </Link>
@@ -77,7 +78,7 @@ const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
                             <span>Desenvolvedores</span>
                         </Link>
                     </li>
-                </template>
+                
 
                 <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
                     Projetos
@@ -95,6 +96,7 @@ const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
                         <span>Meus Projetos</span>
                     </Link>
                 </li>
+                </template>
 
                 <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
                     Tarefas
@@ -113,6 +115,7 @@ const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
                     </Link>
                 </li>
 
+                <template v-if="isAdmin">
                 <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
                     Habilidades - Cargos
                 </li>
@@ -128,7 +131,8 @@ const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" x2="9" y1="3" y2="21"/></svg>
                         <span>Cargos</span>
                     </Link>
-                </li>
+                </li> 
+               </template>
 
             </ul>
         </div>

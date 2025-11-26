@@ -20,6 +20,8 @@ Route::middleware('guest')->group(function () {
 // Rotas protegidas
 Route::middleware(['auth'])->group(function () {
 
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Área do Usuário normal
