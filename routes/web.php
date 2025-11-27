@@ -44,4 +44,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get("/admin/editar/usuario/{usuario:slug}", [AdminController::class, 'edit'])->name('admin.edit.usuario');
     Route::post("/admin/editar/usuario/{usuario}", [AdminController::class, 'update'])->name('admin.update.usuario');
+
+    Route::delete("/admin/deletar/usuario/{usuario}", [AdminController::class, 'destroy'])->name('admin.delete.usuario');
 });

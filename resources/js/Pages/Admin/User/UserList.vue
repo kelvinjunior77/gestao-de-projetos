@@ -3,8 +3,8 @@ import Layout from "../../Layouts/Layout.vue";
 import { ref, watch } from "vue";
 import { route } from 'ziggy-js';
 import { Link, router, usePage } from "@inertiajs/vue3";
+import ModalConfirm from "../../../Components/ModalConfirm.vue";
 
-// Props Inertia
 const page = usePage();
 
 const props = defineProps({
@@ -12,7 +12,6 @@ const props = defineProps({
     filters: Object,
     id: Array,
 });
-
 
 
 // Estados dos filtros
@@ -53,13 +52,36 @@ function goTo(link) {
 
     applyFilters(pageNumber);
 }
+
+// modal
+const showDeleteModal = ref(false);
+const userToDelete = ref(null);
+
+// Abre o modal recebendo o usuário
+const confirmDelete = (user) => {
+    userToDelete.value = user;
+    showDeleteModal.value = true;
+};
+
+// Envia requisição para excluir
+const deleteUser = () => {
+    if (!userToDelete.value) return;
+
+    router.delete(`/admin/deletar/usuario/${userToDelete.value.id}`, {
+        onSuccess: () => {
+            showDeleteModal.value = false;
+            userToDelete.value = null;
+        },
+    });
+};
+// --->
 </script>
 
 
 <template>
     <Layout>
 
-         <div class="max-w-10xl h-10 mb-6">
+        <div class="max-w-10xl h-10 mb-6">
             <div
                 class="flex flex-col md:flex-row md:items-center justify-between bg-base-100 border border-base-200 rounded-xl px-1 py-1 shadow-sm">
                 <!-- Título -->
@@ -110,10 +132,22 @@ function goTo(link) {
                 </select>
 
             </div>
-
+    
+            
+            <div role="alert" class="alert alert-success mb-4 mt-0" v-if="$page.props.flash.success">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{{ $page.props.flash.success }}</span>
+                </div>
 
             <!-- LISTA -->
             <div class="card bg-base-100 shadow-sm border border-base-200">
+
+                
+
                 <div class="card-body">
 
                     <div class="overflow-x-auto">
@@ -138,7 +172,7 @@ function goTo(link) {
                                                         :src="user.avatar ? `/storage/${user.avatar}` : 'https://placehold.co/100x100?text=Avatar'" />
                                                 </div>
                                             </div>
-                                             
+
                                             <div>
                                                 <p class="font-semibold">{{ user.name }}</p>
                                                 <p class="text-sm text-base-content/60">
@@ -161,7 +195,8 @@ function goTo(link) {
                                     <td class="text-right">
                                         <div class="flex justify-end gap-2">
 
-                                            <Link :href="`/admin/perfil/usuario/${user.slug}`" class="btn btn-sm btn-ghost">
+                                            <Link :href="`/admin/perfil/usuario/${user.slug}`"
+                                                class="btn btn-sm btn-ghost">
                                             Ver
                                             </Link>
 
@@ -171,14 +206,22 @@ function goTo(link) {
                                             Editar
                                             </Link>--->
 
-                                             <Link :href="route('admin.edit.usuario', user.slug)"
+                                            <Link :href="route('admin.edit.usuario', user.slug)"
                                                 class="btn btn-sm btn-info text-white">
                                             Editar
                                             </Link>
 
-                                            <a v-if="id !== user.id" href="" class="btn btn-sm btn-error">
+                                            <!-----
+                                            <button v-if="id !== user.id" href="" @click="confirmDelete(user)"
+                                                class="btn btn-sm btn-error">
                                                 Excluir
-                                            </a>
+                                            </button> -->
+
+                                            <button class="btn btn-error btn-sm" @click="confirmDelete(user)"
+                                                v-if="id !== user.id">
+                                                Excluir
+                                            </button>
+
 
                                         </div>
                                     </td>
@@ -209,5 +252,53 @@ function goTo(link) {
                 </div>
             </div>
         </div>
+
+
+        <!-- MODAL DE CONFIRMAÇÃO -->
+        <dialog class="modal" :open="showDeleteModal">
+            <div class="modal-box border border-base-300 shadow-xl">
+
+                <h3 class="font-bold text-lg text-error flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-error" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zM11 7h2v6h-2V7zm0 8h2v2h-2v-2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Confirmar exclusão
+                </h3>
+
+                <p class="py-4 text-base-content/80 mt-4 mb-0">
+                    Tem certeza que deseja excluir o usuário
+                    <strong class="text-primary font-bold">{{ userToDelete?.name }}</strong> ?
+
+                <p>Esta ação não pode ser desfeita.</p>
+                </p>
+
+
+                <div class="modal-action">
+                    <button class="btn" @click="showDeleteModal = false">
+                        Cancelar
+                    </button>
+
+                    <button class="btn btn-error" @click="deleteUser">
+                        Confirmar
+                    </button>
+                </div>
+
+            </div>
+
+            Fundo escuro
+            <form method="dialog" class="modal-backdrop">
+                <button @click="showDeleteModal = false">close</button>
+            </form>
+        </dialog>
+
     </Layout>
+
 </template>
+
+<style scoped>
+.model {
+    margin-top: 100px !important;
+}
+</style>

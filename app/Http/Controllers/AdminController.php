@@ -123,4 +123,17 @@ class AdminController extends Controller
                 ->withInput(); 
         }
     }
+
+    public function destroy(User $usuario)
+    {
+        try {
+            $usuario->delete();
+
+            return redirect()->route('admin.list.usuarios')
+                ->with('success', 'Usuário deletado com sucesso!');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Erro ao deletar o usuário.');
+        }
+    }
 }
