@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+        Route::get('/usuario/lista', [UserController::class, 'lista-usuario'])->name('usuario.lista');
     });
 });
 
@@ -41,4 +43,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get("/admin/perfil/usuario/{usuario:slug}", [AdminController::class, 'perfilUser'])->name('admin.perfil.usuario');
 
     Route::get("/admin/editar/usuario/{usuario:slug}", [AdminController::class, 'edit'])->name('admin.edit.usuario');
+    Route::post("/admin/editar/usuario/{usuario}", [AdminController::class, 'update'])->name('admin.update.usuario');
 });

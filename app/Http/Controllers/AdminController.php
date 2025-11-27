@@ -95,11 +95,32 @@ class AdminController extends Controller
 
     public function edit(User $usuario)
     {
-        $cargos = Cargo::all();
-
+       
         return Inertia::render('Admin/User/UserEdit', [
-            'user' => $usuario,
-            'cargos' => $cargos,
+            'user' => $usuario
         ]);
+    }
+
+    public function update(Request $request, User $usuario)
+    {
+        try {
+            $data = $request->all();
+
+            // Processar avatar
+            if ($request->hasFile('avatar')) {
+                $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            }
+
+            $data['slug'] = Str::slug($data['name']);
+
+            $usuario->update($data);
+
+            return redirect()->route('admin.list.usuarios')
+                ->with('success', 'Usuário atualizado com sucesso!');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'Erro ao atualizar o usuário.')
+                ->withInput(); 
+        }
     }
 }
