@@ -144,9 +144,9 @@ function logout() {
           <li class="px-3 py-2 border-b">
             <div class="font-bold">{{ user.name }}</div>
             <div class="text-xs opacity-70">{{ user.email }}</div>
-          </li>
-          <li><a href="">Minha Conta</a></li>
-          <li><Link method="post" href="/logout" class="text-error">Sair</Link></li>
+          </li> <br>
+          <li><a href="" class="">Minha Conta</a></li>
+          <li><Link method="post" href="/logout" class="text-error cursor-pointer mt-3">Sair</Link></li>
         </ul>
 
       </div>
