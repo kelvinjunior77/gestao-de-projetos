@@ -287,7 +287,7 @@ const deleteUser = () => {
 
             </div>
 
-            Fundo escuro
+             .
             <form method="dialog" class="modal-backdrop">
                 <button @click="showDeleteModal = false">close</button>
             </form>
@@ -299,6 +299,6 @@ const deleteUser = () => {
 
 <style scoped>
 .model {
-    margin-top: 100px !important;
+    margin-top: 40px!important;
 }
 </style>

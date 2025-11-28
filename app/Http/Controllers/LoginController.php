@@ -35,12 +35,15 @@ class LoginController extends Controller
             $user = Auth::user();
 
             // Verifica se é admin
+            /*
             if ($user->tipo === 'admin') {
                 //dd('User tipo: ' . $user->tipo);
                 return to_route('admin.dashboard')->with('success', 'Bem-vindo, administrador!');
             } else {
                 return to_route('user.dashboard')->with('success', 'Login realizado com sucesso!');
-            }
+            }*/
+            return to_route('dashboard')->with('success', 'Login realizado com sucesso!');
+            
         }
 
         // Caso falhe o login
