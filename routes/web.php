@@ -7,12 +7,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia('App');
-});
 
 Route::middleware('guest')->group(function () {
-   
+
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
 });
@@ -24,6 +21,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::get('/lista/usuarios', [UserController::class, 'index'])->name('usuario.lista');
+    Route::post('/perfil', [UserController::class, 'updatePerfil'])->name('usuario.update.perfil');
+
 
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {

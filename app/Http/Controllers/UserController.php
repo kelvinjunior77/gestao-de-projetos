@@ -4,16 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+     public function index(Request $request)
     {
-        
-        
+        $user_auth = Auth::user(); 
+        $id = $user_auth->id; 
+
+        $query = User::query();
+
+        // Search
+        if ($request->search) {
+            $query->where('name', 'like', "%{$request->search}%")
+                ->orWhere('email', 'like', "%{$request->search}%");
+        }
+
+        // Cargo
+        if ($request->cargo) {
+            $query->where('cargo', $request->cargo);
+        }
+
+        // Tipo
+        if ($request->tipo) {
+            $query->where('tipo', $request->tipo);
+        }
+
+        $users = $query->paginate(4)->withQueryString();
+
+        return Inertia::render("Public/User/UserList", [
+            "users" => $users,
+            "filters" => $request->only(["search", "cargo", "tipo"]),
+            "id" => $id,
+        ]);
     }
 
     /**

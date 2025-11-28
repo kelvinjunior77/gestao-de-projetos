@@ -78,7 +78,7 @@ class AdminController extends Controller
 
         $users = $query->paginate(4)->withQueryString();
 
-        return Inertia::render("Admin/User/UserList", [
+        return Inertia::render("Public/User/UserList", [
             "users" => $users,
             "filters" => $request->only(["search", "cargo", "tipo"]),
             "id" => $id,

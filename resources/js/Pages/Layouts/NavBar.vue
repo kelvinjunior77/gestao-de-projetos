@@ -31,7 +31,7 @@ const getLinkClass = (path) => {
     return isActive ? `${baseClasses} ${activeClasses}` : `${baseClasses} ${inactiveClasses}`;
 };
 
-// Atalho para verificar permissão de admin (opcional, para limpar o template)
+// Atalho para verificar permissão de admin e usuario normal.
 const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
 
 const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
@@ -107,7 +107,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                         Usuarios
                     </li>
                     <li>
-                        <Link href="/admin/listar/usuarios" :class="getLinkClass('/admin/listar/usuarios')">
+                        <Link href="/lista/usuarios" :class="getLinkClass('/lista/usuarios')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>

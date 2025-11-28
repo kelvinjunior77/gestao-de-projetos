@@ -1,9 +1,9 @@
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { route } from 'ziggy-js';
 import { Link, router, usePage } from "@inertiajs/vue3";
-import ModalConfirm from "../../../Components/ModalConfirm.vue";
+
 
 const page = usePage();
 
@@ -13,18 +13,24 @@ const props = defineProps({
     id: Array,
 });
 
+// Atalho para verificar permissão de admin e usuario normal.
+const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
+const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
+
 
 // Estados dos filtros
 const search = ref(page.props.filters?.search ?? "");
 const cargo = ref(page.props.filters?.cargo ?? "");
 const tipo = ref(page.props.filters?.tipo ?? "");
 
+
 // Atualiza listagem sempre que filtro mudar
 watch([search, cargo, tipo], () => {
     applyFilters();
+    applyFiltersNormal();
 });
 
-// Função de filtros
+// Função de filtros admin
 function applyFilters(page = 1) {
     router.get(
         "/admin/listar/usuarios",
@@ -33,6 +39,26 @@ function applyFilters(page = 1) {
             cargo: cargo.value,
             tipo: tipo.value,
             page,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        }
+    );
+}
+
+
+// Função de filtros
+function applyFiltersNormal(page = 1) {
+    router.get(
+        "/lista/usuarios",
+        {
+            search: search.value,
+            cargo: cargo.value,
+            tipo: tipo.value,
+            page,
+
         },
         {
             preserveState: true,
@@ -91,7 +117,7 @@ const deleteUser = () => {
                     <nav class="text-sm breadcrumbs mt-1 p-2 opacity-70">
                         <ul>
                             <li>
-                                <Link href="/admin/dashboard">
+                                <Link href="/">
                                 Home
                                 </Link>
                             </li>
@@ -108,8 +134,8 @@ const deleteUser = () => {
         </div>
         <div class="p-6 max-w-7xl mx-auto">
 
-            <!-- FILTROS -->
-            <div class="flex gap-4 mb-6">
+            <!-- FILTROS  admin-->
+            <div class="flex gap-4 mb-6" v-if="isAdmin">
 
                 <!-- Buscar -->
                 <input v-model="search" type="text" placeholder="Pesquisar usuário..."
@@ -132,21 +158,46 @@ const deleteUser = () => {
                 </select>
 
             </div>
-    
-            
+
+            <!-- FILTROS  usuario normal-->
+            <div class="flex gap-4 mb-6" v-if="isNormal">
+
+                <!-- Buscar -->
+                <input v-model="search" type="text" placeholder="Pesquisar usuário..."
+                    class="input input-bordered w-full outline-0" />
+
+                <!-- Cargo -->
+                <select v-model="cargo" class="select select-bordered w-48 outline-0">
+                    <option value="">Cargo (todos)</option>
+                    <option value="designer">Designer</option>
+                    <option value="desenvolvedor">Desenvolvedor</option>
+                    <option value="gestor">Gestor</option>
+                    <option value="suporte">Suporte</option>
+                </select>
+
+                <!-- Tipo -->
+                <select v-model="tipo" class="select select-bordered w-40 outline-0">
+                    <option value="">Tipo (todos)</option>
+                    <option value="admin">Admin</option>
+                    <option value="normal">Normal</option>
+                </select>
+
+            </div>
+
+
             <div role="alert" class="alert alert-success mb-4 mt-0" v-if="$page.props.flash.success">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{{ $page.props.flash.success }}</span>
-                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ $page.props.flash.success }}</span>
+            </div>
 
             <!-- LISTA -->
             <div class="card bg-base-100 shadow-sm border border-base-200">
 
-                
+
 
                 <div class="card-body">
 
@@ -287,10 +338,8 @@ const deleteUser = () => {
 
             </div>
 
-             .
-            <form method="dialog" class="modal-backdrop">
-                <button @click="showDeleteModal = false">close</button>
-            </form>
+
+
         </dialog>
 
     </Layout>
@@ -298,7 +347,7 @@ const deleteUser = () => {
 </template>
 
 <style scoped>
-.model {
-    margin-top: 40px!important;
+.modal-box {
+    margin-top: -500px !important;
 }
 </style>
