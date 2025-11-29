@@ -30,14 +30,12 @@ class LoginController extends Controller
         ]);
 
         // Tenta autenticar o usuário
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            $user = User::find(Auth::id()); 
-            if ($user) {
-                $user->last_login_at = now();
-                $user->save();
-            }
+            Auth::user()->update([
+                'last_login_at' => now(),
+            ]);
 
             // Pega o usuário autenticado
            // $user = Auth::user();

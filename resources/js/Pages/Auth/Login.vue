@@ -6,7 +6,7 @@ import { useForm } from "@inertiajs/vue3";
 const login = useForm({
   email: "",
   password: "",
-  remember: false,
+  remember_token: false,
 });
 </script>
 
