@@ -87,7 +87,7 @@ class AdminController extends Controller
 
     public function perfilUser(User $usuario)
     {
-        return Inertia::render('Admin/User/UserPerfil', [
+        return Inertia::render('Public/User/UserPerfil', [
             'user' => $usuario,
 
         ]);

@@ -12,10 +12,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-     public function index(Request $request)
+    public function index(Request $request)
     {
-        $user_auth = Auth::user(); 
-        $id = $user_auth->id; 
+        $user_auth = Auth::user();
+        $id = $user_auth->id;
 
         $query = User::query();
 
@@ -47,10 +47,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -63,9 +60,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $usuario)
     {
-        //
+
+        return Inertia::render('Public/User/UserPerfil', [
+            'user' => $usuario,
+        ]);
     }
 
     /**

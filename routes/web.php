@@ -23,13 +23,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/lista/usuarios', [UserController::class, 'index'])->name('usuario.lista');
-    Route::post('/perfil', [UserController::class, 'updatePerfil'])->name('usuario.update.perfil');
+    Route::get('/usuario/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.update.perfil');
 
 
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
-        Route::get('/usuario/lista', [UserController::class, 'lista-usuario'])->name('usuario.lista');
+        //Route::get('/usuario/lista', [UserController::class, 'lista-usuario'])->name('usuario.lista');
     });
 });
 

@@ -246,7 +246,12 @@ const deleteUser = () => {
                                     <td class="text-right">
                                         <div class="flex justify-end gap-2">
 
-                                            <Link :href="`/admin/perfil/usuario/${user.slug}`"
+                                            <Link v-if="isAdmin" :href="`/admin/perfil/usuario/${user.slug}`"
+                                                class="btn btn-sm btn-ghost">
+                                            Ver
+                                            </Link>
+
+                                             <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
                                                 class="btn btn-sm btn-ghost">
                                             Ver
                                             </Link>
@@ -257,7 +262,7 @@ const deleteUser = () => {
                                             Editar
                                             </Link>--->
 
-                                            <Link :href="route('admin.edit.usuario', user.slug)"
+                                            <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)"
                                                 class="btn btn-sm btn-info text-white">
                                             Editar
                                             </Link>
@@ -269,7 +274,7 @@ const deleteUser = () => {
                                             </button> -->
 
                                             <button class="btn btn-error btn-sm" @click="confirmDelete(user)"
-                                                v-if="id !== user.id">
+                                                v-if="id !== user.id && isAdmin">
                                                 Excluir
                                             </button>
 
