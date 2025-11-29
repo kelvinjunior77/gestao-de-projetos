@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -20,19 +21,26 @@ class LoginController extends Controller
         // Validação simples dos campos
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required', 'min:8'],
         ], [
             'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'Por favor, insira um email válido.',
             'password.required' => 'O campo senha é obrigatório.',
+            'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
         ]);
 
         // Tenta autenticar o usuário
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
 
+            $user = User::find(Auth::id()); 
+            if ($user) {
+                $user->last_login_at = now();
+                $user->save();
+            }
+
             // Pega o usuário autenticado
-            $user = Auth::user();
+           // $user = Auth::user();
 
             // Verifica se é admin
             /*
@@ -48,8 +56,8 @@ class LoginController extends Controller
 
         // Caso falhe o login
         return back()->withErrors([
-            'email' => 'As credenciais fornecidas não conferem.',
-        ])->onlyInput('email');
+            'mensagem' => 'As credenciais fornecidas não conferem.',
+        ])->onlyInput('mensagem');
     }
 
 
