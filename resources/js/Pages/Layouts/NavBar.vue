@@ -13,23 +13,29 @@ const page = usePage();
 
 // Função simplificada para gerar classes
 // Usa a URL atual do Inertia diretamente, que é reativa
-const getLinkClass = (path) => {
+const getLinkClass = (...paths) => {
     const currentUrl = page.url;
 
-    // Verifica se é a URL exata ou se é uma sub-rota (ex: /projetos/criar ativa /projetos)
-    const isActive = currentUrl === path || currentUrl.startsWith(path + '/');
+    // Verifica se alguma das rotas deve ativar o link
+    const isActive = paths.some(path =>
+        currentUrl === path || currentUrl.startsWith(path + '/')
+    );
 
     // Estilos Base (Layout, Espaçamento, Transição)
-    const baseClasses = 'flex items-center gap-3 py-3 px-5 hover:bg-base-200 transition-all duration-200 group';
+    const baseClasses =
+        'flex items-center gap-3 py-3 px-5 hover:bg-base-200 transition-all duration-200 group';
 
-    // Estilo Ativo (Borda Azul, Fundo sutil, Texto colorid)
-    const activeClasses = 'border-l-4 border-primary bg-primary/5 text-primary font-medium';
+    // Ativo
+    const activeClasses =
+        'border-l-4 border-primary bg-primary/5 text-primary font-medium';
 
-    // Estilo Inativo (Borda transparente para manter alinhamento, Texto cinza)
-    const inactiveClasses = 'border-l-4 border-transparent text-base-content/70 hover:text-base-content';
+    // Inativo
+    const inactiveClasses =
+        'border-l-4 border-transparent text-base-content/70 hover:text-base-content';
 
     return isActive ? `${baseClasses} ${activeClasses}` : `${baseClasses} ${inactiveClasses}`;
 };
+
 
 // Atalho para verificar permissão de admin e usuario normal.
 const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
@@ -82,12 +88,13 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                             <line x1="20" x2="20" y1="8" y2="14" />
                             <line x1="23" x2="17" y1="11" y2="11" />
                         </svg>
-                        <span>Desenvolvedor</span>
+                        <span>Usuario</span>
                         </Link>
                     </li>
 
                     <li>
-                        <Link href="/admin/listar/usuarios" :class="getLinkClass('/admin/listar/usuarios')">
+                        <Link href="/admin/listar/usuarios" 
+                        :class="getLinkClass('/admin/listar/usuarios', '/admin/editar/usuario')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -95,7 +102,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                             <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
-                        <span>Desenvolvedores</span>
+                        <span>Lista de Usuarios</span>
                         </Link>
                     </li>
 
