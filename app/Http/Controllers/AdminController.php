@@ -106,15 +106,15 @@ class AdminController extends Controller
 {
     try {
         $data = $request->validate([
-            'name'   => 'required|string|max:255',
-            'email'  => 'required|email|unique:users,email,' . $usuario->id,
-            'avatar' => 'nullable|image',
+            'name'=> 'required|string|max:255',
+            'email'=> 'required|email|unique:users,email,' . $usuario->id,
+            'avatar'=> 'nullable|image',
         ], [
-            'name.required'   => 'O campo nome é obrigatório.',
-            'email.required'  => 'O campo email é obrigatório.',
-            'email.email'     => 'Por favor, insira um email válido.',
-            'email.unique'    => 'Este email já está em uso.',
-            'avatar.image'    => 'O arquivo enviado deve ser uma imagem.',
+            'name.required'=> 'O campo nome é obrigatório.',
+            'email.required'=> 'O campo email é obrigatório.',
+            'email.email'=> 'Por favor, insira um email válido.',
+            'email.unique'=> 'Este email já está em uso.',
+            'avatar.image'=> 'O arquivo enviado deve ser uma imagem.',
         ]);
 
         // Processar avatar

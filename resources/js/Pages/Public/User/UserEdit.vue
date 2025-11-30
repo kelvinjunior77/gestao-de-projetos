@@ -1,8 +1,9 @@
 <script setup>
-import { useForm, Link} from "@inertiajs/vue3";
+import { useForm, Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 import Layout from "../../Layouts/Layout.vue";
 import { route } from "ziggy-js";
+import Navegacao from "../../../Components/Navegacao.vue";
 
 const props = defineProps({
     user: Object,
@@ -37,29 +38,22 @@ const handleAvatar = (event) => {
 
     <Layout>
 
+
         <div class="max-w-10xl h-10 mb-6">
             <div
                 class="flex flex-col md:flex-row md:items-center justify-between bg-base-100 border border-base-200 rounded-xl px-1 py-1 shadow-sm">
-                <!-- Título -->
-                <div>
 
-                    <!-- Breadcrumb -->
-                    <nav class="text-sm breadcrumbs mt-1 p-2 opacity-70">
-                        <ul>
-                            <li>
-                                <Link href="/admin/dashboard">
-                                Home
-                                </Link>
-                            </li>
-
-                            <li class="font-medium text-primary">
-                                Editar desenvolvedor
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <Navegacao 
+                    :link="route('admin.list.usuarios')" 
+                    title="Lista de usuarios" 
+                    pagina_ativo=" Editar usuário"
+                    :user="user" />
             </div>
         </div>
+
+
+
+
 
         <div class="p-6 max-w-10xl mx-auto">
 
@@ -79,7 +73,7 @@ const handleAvatar = (event) => {
                                 <label class="label">
                                     <span class="font-medium">Nome</span>
                                 </label>
-                                <input v-model="form.name" type="text" class="input input-bordered w-full"
+                                <input v-model="form.name" type="text" class="input input-bordered outline-0 w-full"
                                     placeholder="Nome do usuário" />
                                 <p v-if="form.errors.name" class="text-error text-sm mt-1">
                                     {{ form.errors.name }}
@@ -91,7 +85,7 @@ const handleAvatar = (event) => {
                                 <label class="label">
                                     <span class="font-medium">Email</span>
                                 </label>
-                                <input v-model="form.email" type="email" class="input input-bordered w-full"
+                                <input v-model="form.email" type="email" class="input input-bordered outline-0 w-full"
                                     placeholder="email@empresa.com" />
                                 <p v-if="form.errors.email" class="text-error text-sm mt-1">
                                     {{ form.errors.email }}
@@ -103,7 +97,7 @@ const handleAvatar = (event) => {
                                 <label class="label">
                                     <span class="font-medium">Cargo</span>
                                 </label>
-                                <select v-model="form.cargo" class="select select-bordered w-full">
+                                <select v-model="form.cargo" class="select select-bordered outline-0 w-full">
                                     <option value="designer">Designer</option>
                                     <option value="desenvolvedor">Desenvolvedor</option>
                                     <option value="gestor">Gestor</option>
@@ -122,7 +116,7 @@ const handleAvatar = (event) => {
                                 <label class="label">
                                     <span class="font-medium">Tipo de Usuário</span>
                                 </label>
-                                <select v-model="form.tipo" class="select select-bordered w-full">
+                                <select v-model="form.tipo" class="select select-bordered outline-0 w-full">
                                     <option value="admin">Administrador</option>
                                     <option value="normal">Normal</option>
                                 </select>
@@ -158,10 +152,10 @@ const handleAvatar = (event) => {
                             <span v-else class="loading loading-spinner"></span>
                         </button>
 
-                     
+
 
                         <Link :href="route('admin.list.usuarios')" class="btn btn-ghost">
-                            Voltar
+                        Voltar
                         </Link>
                     </div>
 
