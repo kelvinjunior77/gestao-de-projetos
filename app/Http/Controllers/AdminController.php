@@ -102,8 +102,7 @@ class AdminController extends Controller
         ]);
     }
 
-   public function update(Request $request, User $usuario)
-{
+   public function update(Request $request, User $usuario) {
     try {
         $data = $request->validate([
             'name'=> 'required|string|max:255',
@@ -148,7 +147,7 @@ class AdminController extends Controller
             ->with('error', 'Erro ao atualizar o usuário.')
             ->withInput();
     }
-}
+ }
 
 
     public function destroy(User $usuario)

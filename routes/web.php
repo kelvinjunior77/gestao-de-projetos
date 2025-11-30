@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lista/usuarios', [UserController::class, 'index'])->name('usuario.lista');
     Route::get('/usuario/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.update.perfil');
 
+    Route::get('/usuario/editar/{usuario:slug}', [UserController::class, 'edit'])->name('usuario.edit');
+    Route::post('/usuario/editar/{usuario}', [UserController::class, 'update'])->name('usuario.update');
+
 
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {

@@ -58,7 +58,7 @@ const handleAvatar = (event) => {
         <div class="p-6 max-w-10xl mx-auto">
 
             <!-- CARD -->
-            <form @submit.prevent="form.post(`/admin/editar/usuario/${props.user.id}`)">
+            <form @submit.prevent="form.post(`/usuario/editar/${props.user.id}`)">
 
                 <div class="card bg-base-100 shadow-md border border-base-200 p-6">
 

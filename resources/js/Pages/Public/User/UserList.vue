@@ -267,6 +267,11 @@ const deleteUser = () => {
                                             Editar
                                             </Link>
 
+                                            <Link v-if="isNormal && $page.props.auth.user.id === user.id" :href="route('usuario.edit', user.slug)"
+                                                class="btn btn-sm btn-info text-white">
+                                            Editar
+                                            </Link>
+
                                             <!-----
                                             <button v-if="id !== user.id" href="" @click="confirmDelete(user)"
                                                 class="btn btn-sm btn-error">

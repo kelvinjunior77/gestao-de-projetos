@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -71,17 +73,62 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $usuario)
     {
-        //
+
+        return Inertia::render('Public/User/UserEdit', [
+            'user' => $usuario
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $usuario)
     {
-        //
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $usuario->id,
+                'avatar' => 'nullable|image',
+            ], [
+                'name.required' => 'O campo nome é obrigatório.',
+                'email.required' => 'O campo email é obrigatório.',
+                'email.email' => 'Por favor, insira um email válido.',
+                'email.unique' => 'Este email já está em uso.',
+                'avatar.image' => 'O arquivo enviado deve ser uma imagem.',
+            ]);
+
+            // Processar avatar
+            if ($request->hasFile('avatar')) {
+
+                // Deleta avatar antigo se existir
+                if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
+                    Storage::disk('public')->delete($usuario->avatar); 
+                }
+
+                // Salva novo avatar
+                $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            } else {
+                // Mantém o avatar atual
+                $data['avatar'] = $usuario->avatar;
+            }
+
+            // Atualiza slug
+            $data['slug'] = Str::slug($data['name']); 
+
+            // Atualizar usuário
+            $usuario->update($data);
+
+            return redirect()
+                ->route('usuario.lista')
+                ->with('success', 'Usuário atualizado com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()
+                ->with('error', 'Erro ao atualizar o usuário.')
+                ->withInput();
+        }
     }
 
     /**
