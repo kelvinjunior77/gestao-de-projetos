@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -84,27 +86,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $usuario)
+    public function update(UpdateUserRequest $request, User $usuario)
     {
         try {
-            $data = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $usuario->id,
-                'avatar' => 'nullable|image',
-            ], [
-                'name.required' => 'O campo nome é obrigatório.',
-                'email.required' => 'O campo email é obrigatório.',
-                'email.email' => 'Por favor, insira um email válido.',
-                'email.unique' => 'Este email já está em uso.',
-                'avatar.image' => 'O arquivo enviado deve ser uma imagem.',
-            ]);
+            $data = $request->validated();
+
 
             // Processar avatar
             if ($request->hasFile('avatar')) {
 
                 // Deleta avatar antigo se existir
                 if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
-                    Storage::disk('public')->delete($usuario->avatar); 
+                    Storage::disk('public')->delete($usuario->avatar);
                 }
 
                 // Salva novo avatar
@@ -114,8 +107,15 @@ class UserController extends Controller
                 $data['avatar'] = $usuario->avatar;
             }
 
+            // Senha (somente se foi enviada)
+            if (!empty($data['password'])) {
+                $data['password'] = bcrypt($data['password']);
+            } else {
+                unset($data['password']);
+            }
+
             // Atualiza slug
-            $data['slug'] = Str::slug($data['name']); 
+            $data['slug'] = Str::slug($data['name']);
 
             // Atualizar usuário
             $usuario->update($data);

@@ -1,9 +1,15 @@
 <script setup>
-import { useForm, Link } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { useForm, Link, usePage } from "@inertiajs/vue3";
+import { ref, computed } from "vue";
 import Layout from "../../Layouts/Layout.vue";
 import { route } from "ziggy-js";
 import Navegacao from "../../../Components/Navegacao.vue";
+
+const page = usePage();
+
+// Atalho para verificar permissão de admin e usuario normal.
+const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
+const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
 
 const props = defineProps({
     user: Object,
@@ -13,6 +19,8 @@ const props = defineProps({
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
+    password: '',
+    password_confirmation: '',
     cargo: props.user.cargo,
     tipo: props.user.tipo,
     avatar: null,
@@ -43,10 +51,7 @@ const handleAvatar = (event) => {
             <div
                 class="flex flex-col md:flex-row md:items-center justify-between bg-base-100 border border-base-200 rounded-xl px-1 py-1 shadow-sm">
 
-                <Navegacao 
-                    :link="route('admin.list.usuarios')" 
-                    title="Lista de usuarios" 
-                    pagina_ativo=" Editar usuário"
+                <Navegacao :link="route('admin.list.usuarios')" title="Lista de usuarios" pagina_ativo=" Editar usuário"
                     :user="user" />
             </div>
         </div>
@@ -108,11 +113,10 @@ const handleAvatar = (event) => {
                                     {{ form.errors.cargo }}
                                 </p>
 
-
                             </div>
 
                             <!-- Tipo -->
-                            <div class="form-control">
+                            <div v-if="isAdmin" class="form-control">
                                 <label class="label">
                                     <span class="font-medium">Tipo de Usuário</span>
                                 </label>
@@ -123,6 +127,30 @@ const handleAvatar = (event) => {
 
                                 <p v-if="form.errors.tipo" class="text-error text-sm mt-1">
                                     {{ form.errors.tipo }}
+                                </p>
+                            </div>
+
+                            <!-- Senha -->
+                            <div v-if="$page.props.auth.user.id === user.id" class="form-control">
+                                <label class="label">
+                                    <span class="font-medium">Nova Senha</span>
+                                </label>
+                                <input v-model="form.password" type="password" class="input input-bordered outline-0 w-full"
+                                    placeholder="Digite a nova senha" />
+                                <p v-if="form.errors.password == 'A senha deve ter pelo menos 6 caracteres.'" class="text-error text-sm mt-1">
+                                    {{ form.errors.password }}
+                                </p>
+                            </div>
+
+
+                            <div v-if="$page.props.auth.user.id === user.id" class="form-control">
+                                <label class="label">
+                                    <span class="font-medium">Confirmar Senha</span>
+                                </label>
+                                <input v-model="form.password_confirmation" type="password" class="input input-bordered outline-0 w-full"
+                                    placeholder="Confirme a nova senha" />
+                                <p v-if="form.errors.password == 'A confirmação da senha não corresponde.'" class="text-error text-sm mt-1">
+                                    {{ form.errors.password }}
                                 </p>
                             </div>
                         </div>
