@@ -21,7 +21,7 @@ const form = useForm({
 const avatarPreview = ref(
     props.user.avatar
         ? `/storage/${props.user.avatar}`
-        : "https://placehold.co/150x150?text=Avatar"
+        : "https://placehold.co/200x200?text=Avatar"
 );
 
 const handleAvatar = (event) => {
@@ -136,7 +136,7 @@ const handleAvatar = (event) => {
                         <!-- AVATAR (COLUNA DIREITA) -->
                         <div class="flex flex-col items-center justify-start">
 
-                            <img :src="avatarPreview"
+                            <img :src="avatarPreview" alt="Avatar do Usuário"
                                 class="w-32 h-32 rounded-full shadow object-cover ring ring-primary ring-offset-base-100 ring-offset-2" />
 
                             <label class="btn btn-outline btn-sm mt-4">

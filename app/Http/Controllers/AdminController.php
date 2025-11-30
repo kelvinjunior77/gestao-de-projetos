@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Models\Cargo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -95,34 +96,60 @@ class AdminController extends Controller
 
     public function edit(User $usuario)
     {
-       
-        return Inertia::render('Admin/User/UserEdit', [
+
+        return Inertia::render('Public/User/UserEdit', [
             'user' => $usuario
         ]);
     }
 
-    public function update(Request $request, User $usuario)
-    {
-        try {
-            $data = $request->all();
+   public function update(Request $request, User $usuario)
+{
+    try {
+        $data = $request->validate([
+            'name'   => 'required|string|max:255',
+            'email'  => 'required|email|unique:users,email,' . $usuario->id,
+            'avatar' => 'nullable|image',
+        ], [
+            'name.required'   => 'O campo nome é obrigatório.',
+            'email.required'  => 'O campo email é obrigatório.',
+            'email.email'     => 'Por favor, insira um email válido.',
+            'email.unique'    => 'Este email já está em uso.',
+            'avatar.image'    => 'O arquivo enviado deve ser uma imagem.',
+        ]);
 
-            // Processar avatar
-            if ($request->hasFile('avatar')) {
-                $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        // Processar avatar
+        if ($request->hasFile('avatar')) {
+
+            // Deleta avatar antigo se existir
+            if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
+                Storage::disk('public')->delete($usuario->avatar);
             }
 
-            $data['slug'] = Str::slug($data['name']);
-
-            $usuario->update($data);
-
-            return redirect()->route('admin.list.usuarios')
-                ->with('success', 'Usuário atualizado com sucesso!');
-        } catch (\Exception $e) {
-            return back()
-                ->with('error', 'Erro ao atualizar o usuário.')
-                ->withInput(); 
+            // Salva novo avatar
+            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        } else {
+            // Mantém o avatar atual
+            $data['avatar'] = $usuario->avatar;
         }
+
+        // Atualiza slug
+        $data['slug'] = Str::slug($data['name']);
+
+        // Atualizar usuário
+        $usuario->update($data);
+
+        return redirect()
+            ->route('admin.list.usuarios')
+            ->with('success', 'Usuário atualizado com sucesso!');
+
+    } catch (\Exception $e) {
+
+        return back()
+            ->with('error', 'Erro ao atualizar o usuário.')
+            ->withInput();
     }
+}
+
 
     public function destroy(User $usuario)
     {
