@@ -42,7 +42,7 @@ const handleAvatar = (event) => {
                             </li>
 
                             <li class="font-medium text-primary">
-                                Cadastrar desenvolvedor
+                                Adicionar Usuario
                             </li>
                         </ul>
                     </nav>

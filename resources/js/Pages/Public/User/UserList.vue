@@ -4,14 +4,20 @@ import { ref, watch, computed } from "vue";
 import { route } from 'ziggy-js';
 import { Link, router, usePage } from "@inertiajs/vue3";
 
-
 const page = usePage();
 
 const props = defineProps({
     users: Object,
     filters: Object,
     id: Array,
+    totalUsuarios: {
+        type: Number,
+        required: true,
+    },
+
+    user_total: Number,
 });
+
 
 // Atalho para verificar permissão de admin e usuario normal.
 const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
@@ -77,6 +83,7 @@ function goTo(link) {
     const pageNumber = urlObj.searchParams.get("page");
 
     applyFilters(pageNumber);
+    applyFiltersNormal(pageNumber);
 }
 
 // modal
@@ -135,6 +142,7 @@ const deleteUser = () => {
         <div class="p-6 max-w-7xl mx-auto">
 
             <!-- FILTROS  admin-->
+
             <div class="flex gap-4 mb-6" v-if="isAdmin">
 
                 <!-- Buscar -->
@@ -156,6 +164,19 @@ const deleteUser = () => {
                     <option value="admin">Admin</option>
                     <option value="normal">Normal</option>
                 </select>
+
+                <div class="w-40">
+                    <button class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-users-icon lucide-users">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <circle cx="9" cy="7" r="4" />
+                        </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ user_total }}</div>
+                    </button>
+                </div>
 
             </div>
 
@@ -181,6 +202,19 @@ const deleteUser = () => {
                     <option value="admin">Admin</option>
                     <option value="normal">Normal</option>
                 </select>
+
+                <div class="w-40">
+                    <button class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-users-icon lucide-users">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <circle cx="9" cy="7" r="4" />
+                        </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ totalUsuarios }}</div>
+                    </button>
+                </div>
 
             </div>
 
@@ -251,7 +285,7 @@ const deleteUser = () => {
                                             Ver
                                             </Link>
 
-                                             <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
+                                            <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
                                                 class="btn btn-sm btn-ghost">
                                             Ver
                                             </Link>
@@ -267,7 +301,8 @@ const deleteUser = () => {
                                             Editar
                                             </Link>
 
-                                            <Link v-if="isNormal && $page.props.auth.user.id === user.id" :href="route('usuario.edit', user.slug)"
+                                            <Link v-if="isNormal && $page.props.auth.user.id === user.id"
+                                                :href="route('usuario.edit', user.slug)"
                                                 class="btn btn-sm btn-info text-white">
                                             Editar
                                             </Link>
