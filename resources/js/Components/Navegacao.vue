@@ -33,9 +33,15 @@ const props = defineProps({
                     </Link>
                 </li>
 
-                <li>
+                <li v-if="$page.props.auth.user.tipo === 'admin'">
                     <Link :href="props.link">
                     {{ props.title }}
+                    </Link>
+                </li>
+
+                <li v-if="$page.props.auth.user.tipo === 'normal'">
+                    <Link href="/lista/usuarios">
+                       Lista de usuario
                     </Link>
                 </li>
 

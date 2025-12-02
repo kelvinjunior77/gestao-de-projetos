@@ -28,7 +28,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/usuario/editar/{usuario:slug}', [UserController::class, 'edit'])->name('usuario.edit');
     Route::post('/usuario/editar/{usuario}', [UserController::class, 'update'])->name('usuario.update');
 
-
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');

@@ -182,7 +182,11 @@ const handleAvatar = (event) => {
 
 
 
-                        <Link :href="route('admin.list.usuarios')" class="btn btn-ghost">
+                        <Link v-if="isAdmin" :href="route('admin.list.usuarios')" class="btn btn-ghost">
+                        Voltar
+                        </Link>
+
+                        <Link v-if="isNormal" :href="route('usuario.lista')" class="btn btn-ghost">
                         Voltar
                         </Link>
                     </div>
