@@ -58,7 +58,7 @@ class AdminController extends Controller
         $user_auth = Auth::user();
         $id = $user_auth->id;
 
-        $user_total = User::count();
+        $contarUsuario = User::count();
 
         $query = User::query();
 
@@ -84,7 +84,7 @@ class AdminController extends Controller
             "users" => $users,
             "filters" => $request->only(["search", "cargo", "tipo"]),
             "id" => $id,
-            "user_total" => $user_total,
+            "contarUsuario" => $contarUsuario,
         ]);
     }
 

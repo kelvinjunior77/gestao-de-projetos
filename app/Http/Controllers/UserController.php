@@ -21,7 +21,7 @@ class UserController extends Controller
         $user_auth = Auth::user();
         $id = $user_auth->id;
 
-        $user_total = User::count();
+        $totalUsuarios = User::count();
 
 
         $query = User::query();
@@ -48,7 +48,7 @@ class UserController extends Controller
             "users" => $users,
             "filters" => $request->only(["search", "cargo", "tipo"]),
             "id" => $id,
-            "totalUsuarios" => $user_total, 
+            "totalUsuarios" => $totalUsuarios, 
         ]);
     }
 

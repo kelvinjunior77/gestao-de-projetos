@@ -5,15 +5,34 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCargoRequest;
 use App\Http\Requests\UpdateCargoRequest;
 use App\Models\Cargo;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CargoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
+        $cargo_total = Cargo::count();
+
+        $query = Cargo::query();
+
+         // Search
+        if ($request->search) {
+            $query->where('nome', 'like', "%{$request->search}%");
+        }
+
+        $cargos = $query->paginate(4)->withQueryString();
+        
+        return Inertia::render('Admin/Cargo/CargoList',[
+            "cargos" => $cargos,
+            "filters" => $request->only("search"),
+            "cargo_total" => $cargo_total,
+        ]);
     }
 
     /**
@@ -21,7 +40,8 @@ class CargoController extends Controller
      */
     public function create()
     {
-        //
+        
+        return Inertia::render('Admin/Cargo/CargoCreate');
     }
 
     /**
@@ -29,7 +49,21 @@ class CargoController extends Controller
      */
     public function store(StoreCargoRequest $request)
     {
-        //
+        try {
+
+            // dd("$request");
+            $data = $request->validated();
+
+            Cargo::create($data);
+
+            return redirect()->route('admin.lista.cargos')
+                ->with('success', 'Cadastrado com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()
+                ->with('error', 'Erro ao salvar cargo.')
+                ->withInput();
+        }
     }
 
     /**
@@ -45,7 +79,10 @@ class CargoController extends Controller
      */
     public function edit(Cargo $cargo)
     {
-        //
+        
+        return Inertia::render('Admin/Cargo/CargoEdit', [
+            'cargo' => $cargo,
+        ]);
     }
 
     /**
@@ -53,7 +90,19 @@ class CargoController extends Controller
      */
     public function update(UpdateCargoRequest $request, Cargo $cargo)
     {
-        //
+        try {
+            $data = $request->validated();
+
+            $cargo->update($data);
+
+            return redirect()->route('admin.lista.cargos')
+                ->with('success', 'Compontencias atualizado com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()
+                ->with('error', 'Erro ao atualizar o cargo.')
+                ->withInput();
+        }
     }
 
     /**
@@ -61,6 +110,15 @@ class CargoController extends Controller
      */
     public function destroy(Cargo $cargo)
     {
-        //
+        try {
+            $cargo->delete();
+
+            return redirect()->route('admin.lista.cargos')
+                ->with('success', 'Cargo deletado com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()
+                ->with('error', 'Erro ao deletar o cargo.');
+        }
     }
 }

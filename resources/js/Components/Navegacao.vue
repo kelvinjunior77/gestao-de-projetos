@@ -17,7 +17,7 @@ const props = defineProps({
     },
     user: {
         type: Object,
-        required: true,
+        required: false,
     }
 });
 </script>
@@ -48,6 +48,7 @@ const props = defineProps({
                 <li v-if="$page.props.auth.user.id === props.user.id" class="font-medium text-primary">
                     Editar meu perfil
                 </li>
+                
                 <li v-else class="font-medium text-primary">
                     {{ props.pagina_ativo }}
                 </li>

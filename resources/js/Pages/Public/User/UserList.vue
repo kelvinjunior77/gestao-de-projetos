@@ -10,12 +10,16 @@ const props = defineProps({
     users: Object,
     filters: Object,
     id: Array,
+
     totalUsuarios: {
         type: Number,
         required: true,
     },
 
-    user_total: Number,
+    contarUsuario: {
+        type: Number,
+        required: true,
+    }
 });
 
 
@@ -174,7 +178,7 @@ const deleteUser = () => {
                             <path d="M16 3.128a4 4 0 0 1 0 7.744" />
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                             <circle cx="9" cy="7" r="4" />
-                        </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ user_total }}</div>
+                        </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ contarUsuario }}</div>
                     </button>
                 </div>
 

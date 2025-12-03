@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
@@ -49,4 +50,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post("/admin/editar/usuario/{usuario}", [AdminController::class, 'update'])->name('admin.update.usuario');
 
     Route::delete("/admin/deletar/usuario/{usuario}", [AdminController::class, 'destroy'])->name('admin.delete.usuario');
+
+    // Cargo
+
+    Route::get("/admin/cadastrar/cargo", [CargoController::class, 'create'])->name('admin.cad.cargo');
+    Route::post('/admin/cadastrar/cargo', [CargoController::class, 'store']);
+    Route::get('/admin/lista/cargos', [CargoController::class, 'index'])->name('admin.lista.cargos');
+
+    Route::delete('/admin/deletar/cargo/{cargo}', [CargoController::class, 'destroy'])->name('admin.delete.cargo');
+
+    Route::get('/admin/editar/cargo/{cargo}', [CargoController::class, 'edit'])->name('admin.edit.cargo');
+    Route::post('/admin/editar/cargo/{cargo}', [CargoController::class, 'update'])->name('admin.update.cargo');
 });
