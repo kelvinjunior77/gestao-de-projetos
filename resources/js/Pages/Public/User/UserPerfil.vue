@@ -170,7 +170,7 @@ const deleteUser = () => {
         <div class="flex items-center mb-6 mt-4 gap-2">
 
             <Link v-if="$page.props.auth.user.id == user.id" v-show="!isAdmin"
-                :href="route('admin.edit.usuario', user.slug)" class="btn btn-success  w-2xs ">Editar</Link>
+                :href="route('usuario.edit', user.slug)" class="btn btn-success  w-2xs ">Editar</Link>
 
             <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)" class="btn btn-success  w-2xs ">Editar
             </Link>
