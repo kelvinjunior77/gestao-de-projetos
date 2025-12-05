@@ -13,6 +13,13 @@ const form = useForm({
     avatar: null,
 });
 
+
+const props = defineProps({
+    cargos: {
+        type: Array,
+        required: true,
+    },
+});
 const avatarPreview = ref(null);
 
 const handleAvatar = (event) => {
@@ -64,8 +71,7 @@ const handleAvatar = (event) => {
                         <span>{{ $page.props.flash.success }}</span>
                     </div>
 
-                    <div v-if="$page.props.flash.error" role="alert" 
-                        class="alert alert-error alert-outline" >
+                    <div v-if="$page.props.flash.error" role="alert" class="alert alert-error alert-outline">
                         <span>{{ $page.props.flash.error }}</span>
                     </div>
 
@@ -107,16 +113,16 @@ const handleAvatar = (event) => {
                                             <span class="label-text font-medium">Cargo</span>
                                         </label>
 
+
                                         <select class="select select-bordered w-full outline-0" v-model="form.cargo">
-                                            <option disabled value="">Selecione um cargo</option>
-                                            <option value="designer">Designer</option>
-                                            <option value="desenvolvedor">Desenvolvedor</option>
-                                            <option value="gestor">Gestor</option>
-                                            <option value="suporte">Suporte</option>
+                                            <option disabled >Selecione um cargo</option>
+                                            <option v-for="(nome, id) in cargos" :key="id" :value="id">
+                                                {{ nome }}          
+                                            </option>
                                         </select>
 
                                         <p class="text-error text-sm mt-1" v-if="form.errors.cargo">{{ form.errors.cargo
-                                        }}
+                                            }}
                                         </p>
                                     </div>
 
@@ -132,7 +138,7 @@ const handleAvatar = (event) => {
                                         </select>
 
                                         <p class="text-error text-sm mt-1" v-if="form.errors.tipo">{{ form.errors.tipo
-                                        }}
+                                            }}
                                         </p>
                                     </div>
 
@@ -170,7 +176,7 @@ const handleAvatar = (event) => {
 
                                 <label class="btn btn-outline btn-sm">
                                     Selecionar Foto
-                                    <input type="file" accept="image/*"  class="hidden" @change="handleAvatar" />
+                                    <input type="file" accept="image/*" class="hidden" @change="handleAvatar" />
                                 </label>
 
                                 <p class="text-error text-sm mt-2" v-if="form.errors.avatar">

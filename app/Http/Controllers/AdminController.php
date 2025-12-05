@@ -22,7 +22,11 @@ class AdminController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/User/UserCreate');
+        $cargos = Cargo::pluck('nome', 'id');
+
+        return Inertia::render('Admin/User/UserCreate', [
+            'cargos' => $cargos,
+        ]);
     }
 
     public function store(StoreUserRequest $request)

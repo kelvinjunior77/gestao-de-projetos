@@ -73,7 +73,7 @@ const form = useForm({
                                     </label>
                                     <input type="text" v-model="form.nome" placeholder="Nome do usuário"
                                         class="input input-bordered w-full outline-0" />
-                                    <p class="text-error text-sm mt-1" v-if="form.errors.name">{{ form.errors.nome }}
+                                    <p class="text-error text-sm mt-1" v-if="form.errors.nome">{{ form.errors.nome }}
                                     </p>
                                 </div>
 

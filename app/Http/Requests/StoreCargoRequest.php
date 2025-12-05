@@ -32,7 +32,7 @@ class StoreCargoRequest extends FormRequest
     {
         return [
             'nome.required' => 'O campo nome é obrigatório.',
-            'nome.unique' => 'O nome do cargo já está em uso.',
+            'nome.unique' => 'O nome da competência já está em uso.',
             'nome.string' => 'O campo nome deve ser uma string.',
             'nome.max' => 'O campo nome não pode exceder 255 caracteres.',
             'descricao.string' => 'O campo descrição deve ser uma string.',
