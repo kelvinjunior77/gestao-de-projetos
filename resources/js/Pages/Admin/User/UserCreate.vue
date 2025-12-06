@@ -152,7 +152,7 @@ const handleAvatar = (event) => {
                                         <span class="label-text font-medium">Senha Inicial</span>
                                     </label>
                                     <input type="password" v-model="form.password"
-                                        placeholder="Deixe vazio para gerar automaticamente"
+                                        placeholder="" readonly
                                         class="input input-bordered w-full outline-0" />
 
                                     <p class="text-xs opacity-70 mt-1">Senha padrão.</p>
@@ -194,7 +194,7 @@ const handleAvatar = (event) => {
                                 <span v-else class="loading loading-spinner"></span>
                             </button>
 
-                            <button class="btn btn-accent px-10" type="reset">
+                            <button class="btn btn-accent px-10" type="reset" disabled>
                                 Limpar
                             </button>
                         </div>

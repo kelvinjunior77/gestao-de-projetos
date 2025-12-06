@@ -159,7 +159,7 @@ const deleteUser = () => {
 
                 <!-- Cargo -->
                 <select v-model="cargo" class="select select-bordered w-48 outline-0">
-                    <option value="">Cargo (todos)</option>
+                    <option value="">Competências (todos)</option>
                     <option v-for="cargo in cargos" :key="cargo.id" :value="cargo.nome">
                         {{ cargo.nome }}
                     </option>
@@ -197,7 +197,7 @@ const deleteUser = () => {
 
                 <!-- Cargo -->
                 <select v-model="cargo" class="select select-bordered w-48 outline-0">
-                    <option value="">Cargo (todos)</option>
+                    <option value="">Competências(todos)</option>
                     <option v-for="cargo in cargos" :key="cargo.id" :value="cargo.nome">
                         {{ cargo.nome }}
                     </option>
@@ -247,8 +247,8 @@ const deleteUser = () => {
                             <thead>
                                 <tr class="text-sm text-base-content/70">
                                     <th>Usuário</th>
-                                    <th>Cargo</th>
-                                    <th>Tipo</th>
+                                    <th>Competências - Cargo</th>
+                                    <th></th>
                                     <th class="text-right">Ações</th>
                                 </tr>
                             </thead>
