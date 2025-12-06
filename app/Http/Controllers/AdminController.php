@@ -62,6 +62,9 @@ class AdminController extends Controller
         $user_auth = Auth::user();
         $id = $user_auth->id;
 
+
+        $cargos = Cargo::select('nome', 'id')->get();
+
         $contarUsuario = User::count();
 
         $query = User::query();
@@ -89,6 +92,7 @@ class AdminController extends Controller
             "filters" => $request->only(["search", "cargo", "tipo"]),
             "id" => $id,
             "contarUsuario" => $contarUsuario,
+            "cargos" => $cargos,
         ]);
     }
 
@@ -103,8 +107,11 @@ class AdminController extends Controller
     public function edit(User $usuario)
     {
 
+        $cargos = Cargo::pluck('nome', 'id');
+
         return Inertia::render('Public/User/UserEdit', [
-            'user' => $usuario
+            'user' => $usuario,
+            'cargos' => $cargos
         ]);
     }
 

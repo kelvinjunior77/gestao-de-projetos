@@ -115,14 +115,14 @@ const handleAvatar = (event) => {
 
 
                                         <select class="select select-bordered w-full outline-0" v-model="form.cargo">
-                                            <option disabled >Selecione um cargo</option>
-                                            <option v-for="(nome, id) in cargos" :key="id" :value="id">
+                                            <option disabled value="">Selecione um cargo</option>
+                                            <option v-for="(nome, id) in cargos" :key="id" :value="nome">
                                                 {{ nome }}          
                                             </option>
                                         </select>
 
-                                        <p class="text-error text-sm mt-1" v-if="form.errors.cargo">{{ form.errors.cargo
-                                            }}
+                                        <p class="text-error text-sm mt-1" v-if="form.errors.cargo">
+                                            {{ form.errors.cargo}}
                                         </p>
                                     </div>
 
@@ -194,7 +194,7 @@ const handleAvatar = (event) => {
                                 <span v-else class="loading loading-spinner"></span>
                             </button>
 
-                            <button class="btn btn-accent px-10" @click="form.reset()">
+                            <button class="btn btn-accent px-10" type="reset">
                                 Limpar
                             </button>
                         </div>

@@ -13,6 +13,10 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
 
 const props = defineProps({
     user: Object,
+    cargos: {
+        type: Array,
+        required: true
+    }
 });
 
 // Form de edição já preenchido
@@ -103,10 +107,9 @@ const handleAvatar = (event) => {
                                     <span class="font-medium">Cargo</span>
                                 </label>
                                 <select v-model="form.cargo" class="select select-bordered outline-0 w-full">
-                                    <option value="designer">Designer</option>
-                                    <option value="desenvolvedor">Desenvolvedor</option>
-                                    <option value="gestor">Gestor</option>
-                                    <option value="suporte">Suporte</option>
+                                    <option v-for="(nome, id) in cargos" :key="id" :value="nome">
+                                        {{ nome }}
+                                    </option>
                                 </select>
 
                                 <p v-if="form.errors.cargo" class="text-error text-sm mt-1">
@@ -135,9 +138,10 @@ const handleAvatar = (event) => {
                                 <label class="label">
                                     <span class="font-medium">Nova Senha</span>
                                 </label>
-                                <input v-model="form.password" type="password" class="input input-bordered outline-0 w-full"
-                                    placeholder="Digite a nova senha" />
-                                <p v-if="form.errors.password == 'A senha deve ter pelo menos 6 caracteres.'" class="text-error text-sm mt-1">
+                                <input v-model="form.password" type="password"
+                                    class="input input-bordered outline-0 w-full" placeholder="Digite a nova senha" />
+                                <p v-if="form.errors.password == 'A senha deve ter pelo menos 6 caracteres.'"
+                                    class="text-error text-sm mt-1">
                                     {{ form.errors.password }}
                                 </p>
                             </div>
@@ -147,9 +151,10 @@ const handleAvatar = (event) => {
                                 <label class="label">
                                     <span class="font-medium">Confirmar Senha</span>
                                 </label>
-                                <input v-model="form.password_confirmation" type="password" class="input input-bordered outline-0 w-full"
-                                    placeholder="Confirme a nova senha" />
-                                <p v-if="form.errors.password == 'A confirmação da senha não corresponde.'" class="text-error text-sm mt-1">
+                                <input v-model="form.password_confirmation" type="password"
+                                    class="input input-bordered outline-0 w-full" placeholder="Confirme a nova senha" />
+                                <p v-if="form.errors.password == 'A confirmação da senha não corresponde.'"
+                                    class="text-error text-sm mt-1">
                                     {{ form.errors.password }}
                                 </p>
                             </div>

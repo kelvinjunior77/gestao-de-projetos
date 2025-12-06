@@ -10,6 +10,10 @@ const props = defineProps({
     users: Object,
     filters: Object,
     id: Array,
+    cargos: {
+        type: Object,
+        required: true,
+    },
 
     totalUsuarios: {
         type: Number,
@@ -156,10 +160,9 @@ const deleteUser = () => {
                 <!-- Cargo -->
                 <select v-model="cargo" class="select select-bordered w-48 outline-0">
                     <option value="">Cargo (todos)</option>
-                    <option value="designer">Designer</option>
-                    <option value="desenvolvedor">Desenvolvedor</option>
-                    <option value="gestor">Gestor</option>
-                    <option value="suporte">Suporte</option>
+                    <option v-for="cargo in cargos" :key="cargo.id" :value="cargo.nome">
+                        {{ cargo.nome }}
+                    </option>
                 </select>
 
                 <!-- Tipo -->
@@ -178,7 +181,8 @@ const deleteUser = () => {
                             <path d="M16 3.128a4 4 0 0 1 0 7.744" />
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                             <circle cx="9" cy="7" r="4" />
-                        </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ contarUsuario }}</div>
+                        </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ contarUsuario }} {{ totalUsuarios
+                            }}</div>
                     </button>
                 </div>
 
@@ -194,10 +198,9 @@ const deleteUser = () => {
                 <!-- Cargo -->
                 <select v-model="cargo" class="select select-bordered w-48 outline-0">
                     <option value="">Cargo (todos)</option>
-                    <option value="designer">Designer</option>
-                    <option value="desenvolvedor">Desenvolvedor</option>
-                    <option value="gestor">Gestor</option>
-                    <option value="suporte">Suporte</option>
+                    <option v-for="cargo in cargos" :key="cargo.id" :value="cargo.nome">
+                        {{ cargo.nome }}
+                    </option>
                 </select>
 
                 <!-- Tipo -->

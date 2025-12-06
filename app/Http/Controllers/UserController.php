@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Cargo;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -20,6 +21,8 @@ class UserController extends Controller
     {
         $user_auth = Auth::user();
         $id = $user_auth->id;
+
+        $cargos = Cargo::select('nome', 'id')->get();
 
         $totalUsuarios = User::count();
 
@@ -49,6 +52,7 @@ class UserController extends Controller
             "filters" => $request->only(["search", "cargo", "tipo"]),
             "id" => $id,
             "totalUsuarios" => $totalUsuarios, 
+            "cargos" => $cargos,
         ]);
     }
 
