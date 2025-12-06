@@ -86,7 +86,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
 
                     <li>
                         <Link href="/admin/listar/usuarios"
-                        :class="getLinkClass('/admin/listar/usuarios', '/admin/editar/usuario')">
+                            :class="getLinkClass('/admin/listar/usuarios', '/admin/editar/usuario')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -125,15 +125,13 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                 </li>
 
                 <li>
-                    <Link href="/projetos/criar" :class="getLinkClass('/projetos/criar')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                        <path d="M20 9v11" />
-                        <path d="M10 3v6a2 2 0 0 1-2 2H4" />
-                        <path d="M16 14h2" />
-                        <path d="M16 10h2" />
-                        <path d="M16 18h2" />
+                    <Link href="/projeto/criar" :class="getLinkClass('/projeto/criar')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-folder-dot-icon lucide-folder-dot">
+                        <path
+                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                        <circle cx="12" cy="13" r="1" />
                     </svg>
                     <span>Novo Projeto</span>
                     </Link>

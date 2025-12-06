@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/usuario/editar/{usuario:slug}', [UserController::class, 'edit'])->name('usuario.edit');
     Route::post('/usuario/editar/{usuario}', [UserController::class, 'update'])->name('usuario.update');
+
+    //Projetos
+    Route::get('/projetos', [ProjetoController::class, 'index'])->name('projeto.index');
+    Route::get('/projeto/criar', [ProjetoController::class, 'create'])->name('projeto.create');
+    Route::post('/projeto/criar', [ProjetoController::class, 'store'])->name('projeto.store');
+    Route::get('/projeto/editar/{projeto}', [ProjetoController::class, 'edit'])->name('projeto.edit');
+    Route::post('/projeto/editar/{projeto}', [ProjetoController::class, 'update'])->name('projeto.update');
+    Route::delete('/projeto/deletar/{projeto}', [ProjetoController::class, 'destroy'])->name('projeto.delete');
+    Route::get('/projeto/{projeto}', [ProjetoController::class, 'show'])->name('projeto.show');
 
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
