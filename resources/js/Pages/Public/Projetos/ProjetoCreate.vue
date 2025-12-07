@@ -153,8 +153,8 @@ const reset = () => {
                             <!-- Data final -->
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Data final (prazo)</span></label>
-                                <input v-model="form.end_date" type="date" class="input input-bordered w-full outline-0" />
-                                <p v-if="form.errors.end_date" class="text-error text-sm mt-1">{{ form.errors.end_date
+                                <input v-model="form.data_fim" type="date" class="input input-bordered w-full outline-0" />
+                                <p v-if="form.errors.data_fim" class="text-error text-sm mt-1">{{ form.errors.data_fim
                                     }}</p>
                             </div>
 

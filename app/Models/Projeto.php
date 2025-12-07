@@ -22,7 +22,7 @@ class Projeto extends Model
     public function user()
     {
         // muitos para um (inverso)
-        return $this->belongsTo(User::class);  
+        return $this->belongsTo(User::class, 'user_id');  
     }
 
     public function tarefas()
