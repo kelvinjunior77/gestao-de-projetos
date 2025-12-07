@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjetoRequest;
 use App\Http\Requests\UpdateProjetoRequest;
 use App\Models\Projeto;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class ProjetoController extends Controller
 {
@@ -15,6 +17,7 @@ class ProjetoController extends Controller
     public function index()
     {
         
+        return Inertia::render('Public/Projetos/ProjetoList');
     }
 
     /**
@@ -31,7 +34,22 @@ class ProjetoController extends Controller
      */
     public function store(StoreProjetoRequest $request)
     {
-        //
+        try {
+
+            $data = $request->validated();
+
+            $data['slug'] = Str::slug($data['nome']);
+            $data['user_id'] = Auth::user()->id;  
+
+            Projeto::create($data);
+
+            return redirect()->route('projetos.index')->with('success', 'Projeto criado com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao criar o projeto: ' . $e->getMessage())->withInput();
+        }
+        
+
     }
 
     /**

@@ -9,7 +9,11 @@ class Projeto extends Model
     protected $fillable = [
         'nome',
         'descricao',
-        'data_inicio',
+        'slug',
+        'github_link',
+        'prioridade',
+        'visibilidade',
+        'user_id',
         'data_fim',
         'status',
     ];

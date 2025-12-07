@@ -1,56 +1,36 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Link } from '@inertiajs/vue3';
 import Layout from '../../Layouts/Layout.vue';
 
 // Formulário Inertia
 const form = useForm({
-    name: '',
-    description: '',
-    github_link: '',
-    priority: 'medium',      // low | medium | high | critical
-    visibility: 'private',   // public | private | internal
-    end_date: '',            // yyyy-mm-dd
+    nome: '',
+    descricao: '',
+    link_github: '',
+    prioridade: 'media',      // baixa | media | alta | critica
+    visibilidade: 'privado',   // publico | privado | interno
+    status: 'pendente',        // planejado | em_andamento | concluido | 
+    data_fim: '',            // yyyy-mm-dd
 });
 
 // Prioridades / visibilidade (pode vir do server se preferir)
-const priorities = [
-    { value: 'low', label: 'Baixa' },
-    { value: 'medium', label: 'Média' },
-    { value: 'high', label: 'Alta' },
-    { value: 'critical', label: 'Crítica' },
+const prioridades = [
+    { value: 'baixa', label: 'Baixa' },
+    { value: 'media', label: 'Média' },
+    { value: 'alta', label: 'Alta' },
+    //{ value: 'critica', label: 'Crítica' },
 ];
 
-const statuses = [
-    { value: 'not_started', label: 'Não Iniciado' },
-    { value: 'in_progress', label: 'Em Progresso' },
-    { value: 'completed', label: 'Concluído' },
-    { value: 'on_hold', label: 'Em Espera' },
+const visibilidades = [
+    { value: 'publico', label: 'Público' },
+    { value: 'privado', label: 'Privado' },
+    //{ value: 'interno', label: 'Interno' },
 ];
-
-const visibilities = [
-    { value: 'public', label: 'Público' },
-    { value: 'private', label: 'Privado' },
-    { value: 'internal', label: 'Interno' },
-];
-
-// submit
-const submit = () => {
-    form.post('/projetos', {
-        onSuccess: () => {
-            // opcional: limpar formulário ou redirecionar
-            // form.reset();
-        },
-        onError: (errors) => {
-            // os erros ficam em form.errors automaticamente
-            console.log('Erros:', errors);
-        }
-    });
-};
 
 // reset
 const reset = () => {
-    form.reset('name', 'description', 'github_link', 'priority', 'visibility', 'end_date');
+    form.reset('nome', 'descricao', 'link_github', 'prioridade', 'visibilidade', 'data_fim');
 };
 </script>
 
@@ -67,7 +47,7 @@ const reset = () => {
                     <nav class="text-sm breadcrumbs mt-1 p-2 opacity-70">
                         <ul>
                             <li>
-                                <Link href="/admin/dashboard">
+                                <Link href="/">
                                 Home
                                 </Link>
                             </li>
@@ -111,15 +91,15 @@ const reset = () => {
 
                 <div class="card-body p-6">
 
-                    <form @submit.prevent="submit" class="space-y-6">
+                    <form @submit.prevent="form.post('/projeto/criar')" class="space-y-6">
                         <!-- GRID 2 COLUNAS -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Nome -->
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Nome do projeto</span></label>
-                                <input v-model="form.name" type="text" placeholder="Ex: Plataforma X"
+                                <input v-model="form.nome" type="text" placeholder="Ex: Plataforma X"
                                     class="input input-bordered w-full outline-0" />
-                                <p v-if="form.errors.name" class="text-error text-sm mt-1">{{ form.errors.name }}</p>
+                                <p v-if="form.errors.nome" class="text-error text-sm mt-1">{{ form.errors.nome }}</p>
                             </div>
 
                             <!-- Link GitHub -->
@@ -135,30 +115,36 @@ const reset = () => {
                             <!-- Prioridade -->
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Prioridade</span></label>
-                                <select v-model="form.priority" class="select select-bordered w-full outline-0">
-                                    <option v-for="p in priorities" :key="p.value" :value="p.value">{{ p.label }}
+                                <select v-model="form.prioridade" class="select select-bordered w-full outline-0">
+                                    <option v-for="p in prioridades" :key="p.value" :value="p.value">{{ p.label }}
                                     </option>
                                 </select>
-                                <p v-if="form.errors.priority" class="text-error text-sm mt-1">{{ form.errors.priority
+                                <p v-if="form.errors.prioridade" class="text-error text-sm mt-1">{{ form.errors.prioridade
                                     }}</p>
                             </div>
 
                             <!-- Visibilidade -->
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Visibilidade</span></label>
-                                <select v-model="form.visibility" class="select select-bordered w-full outline-0">
-                                    <option v-for="v in visibilities" :key="v.value" :value="v.value">{{ v.label }}
+                                <select v-model="form.visibilidade" class="select select-bordered w-full outline-0">
+                                    <option v-for="v in visibilidades" :key="v.value" :value="v.value">{{ v.label }}
                                     </option>
                                 </select>
-                                <p v-if="form.errors.visibility" class="text-error text-sm mt-1">{{
-                                    form.errors.visibility }}</p>
+                                <p v-if="form.errors.visibilidade" class="text-error text-sm mt-1">{{
+                                    form.errors.visibilidade }}</p>
                             </div>
 
                             <!-- Status -->
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Status</span></label>
+
                                 <select v-model="form.status" class="select select-bordered w-full outline-0">
-                                    <option v-for="s in statuses" :key="s.value" :value="s.value">{{ s.label }}</option>
+
+                                    <option value="pendente">Pendente</option>
+
+                                    <option value="em_andamento">Em andamento</option>
+                                    <option value="concluido">Concluído</option>
+
                                 </select>
                                 <p v-if="form.errors.status" class="text-error text-sm mt-1">{{ form.errors.status }}
                                 </p>
