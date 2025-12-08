@@ -18,7 +18,7 @@ class ProjetoController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user(); // usuário autenticado
+        $user = Auth::user();
 
         $query = Projeto::with('user:id,name')
             ->where(function ($q) use ($user) {
@@ -46,6 +46,13 @@ class ProjetoController extends Controller
             $query->where('visibilidade', $request->visibilidade);
         }
 
+        // FILTRO:  (todos / meus projetos)
+        if ($request->filled('autor')) {
+            if ($request->autor === 'meus' && $user) {
+                $query->where('user_id', $user->id);
+            }
+        }
+
         // Ordenação e paginação
         $projetos = $query->orderBy('created_at', 'desc')
             ->paginate(5)
@@ -53,7 +60,7 @@ class ProjetoController extends Controller
 
         return Inertia::render('Public/Projetos/ProjetoList', [
             'projetos' => $projetos,
-            'filtros' => $request->only('search', 'prioridade', 'visibilidade'),
+            'filtros' => $request->only('search', 'prioridade', 'visibilidade', 'autor'),
         ]);
     }
 

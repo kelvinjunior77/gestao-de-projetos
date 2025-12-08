@@ -12,26 +12,13 @@ const props = defineProps({
 const search = ref(props.filtros.search || "");
 const prioridade = ref(props.filtros.prioridade || "");
 const visibilidade = ref(props.filtros.visibilidade || "");
-
+const autor = ref(props.filtros.autor || "");
 
 // Atualiza listagem sempre que filtro mudar
-watch([search, prioridade, visibilidade], () => {
+watch([search, prioridade, visibilidade, autor], () => {
     applyFilters();
 });
-// Envia filtros para a rota
-/** 
-const filtrar = () => {
-    router.get("/projetos",
-        {
-            search: search.value,
-            prioridade: prioridade.value,
-            visibilidade: visibilidade.value,
-        },
-        { preserveState: true, preserveScroll: true }
-    );
-}; */
 
-// Função de filtros admin
 function applyFilters(page = 1) {
     router.get(
         "/projetos",
@@ -39,6 +26,7 @@ function applyFilters(page = 1) {
             search: search.value,
             prioridade: prioridade.value,
             visibilidade: visibilidade.value,
+            autor: autor.value,
             page,
         },
         {
@@ -120,9 +108,13 @@ function goTo(link) {
                 <option value="privado">Privado</option>
             </select>
 
-                <Link class="btn btn-success w-33">Meus Projetos</Link>
-         
-                <Link class="btn btn-primary w-33">Criar Projeto</Link>
+            <select v-model="autor" class="select select-bordered outline-0 w-50">
+                <option value="">Todos os Projetos</option>
+                <option value="meus">Meus Projetos</option>
+            </select>
+
+      
+                
            
 
         </div>
