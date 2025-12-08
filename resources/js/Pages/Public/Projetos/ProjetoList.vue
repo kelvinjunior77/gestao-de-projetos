@@ -186,11 +186,12 @@ function goTo(link) {
                                 </td>
 
                                 <td class="flex gap-2">
-                                    <Link :href="`/admin/editar/projeto/${projeto.id}`" class="btn btn-sm btn-info">
+
+                                    <Link v-if="$page.props.auth.user.id == projeto.user?.id" :href="`/admin/editar/projeto/${projeto.id}`" class="btn btn-sm btn-info">
                                         Editar
                                     </Link>
 
-                                    <Link :href="`/admin/excluir/projeto/${projeto.id}`" method="delete" as="button"
+                                    <Link v-if="$page.props.auth.user.id == projeto.user?.id" :href="`/admin/excluir/projeto/${projeto.id}`" method="delete" as="button"
                                         class="btn btn-sm btn-error">
                                         Excluir
                                     </Link>

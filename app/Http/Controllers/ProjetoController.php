@@ -33,7 +33,7 @@ class ProjetoController extends Controller
 
         // FILTRO: busca por nome/título
         if ($request->filled('search')) {
-            $query->where('titulo', 'like', '%' . $request->search . '%');
+            $query->where('nome', 'like', '%' . $request->search . '%');
         }
 
         // FILTRO: prioridade
