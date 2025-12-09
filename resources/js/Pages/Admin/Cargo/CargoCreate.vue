@@ -101,7 +101,7 @@ const form = useForm({
                                 <span v-else class="loading loading-spinner"></span>
                             </button>
 
-                            <button class="btn btn-accent px-10" @click="form.reset()">
+                            <button class="btn btn-accent px-10" type="reset">
                                 Limpar
                             </button>
                         </div>

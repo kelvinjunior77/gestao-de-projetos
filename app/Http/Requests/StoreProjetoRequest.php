@@ -27,7 +27,7 @@ class StoreProjetoRequest extends FormRequest
             'data_fim' => 'nullable|date|after_or_equal:data_inicio',
             'status' => 'required|in:pendente,em_andamento,concluido',
             //'responsavel_id' => 'required|exists:users,id',
-            'prioridade' => 'nullable|in:baixa,media,alta',
+            'prioridade' => 'nullable|in:baixa,média,alta',
             'visibilidade' => 'nullable|in:publico,privado',
             'github_link' => 'nullable|url|max:255',
         ];

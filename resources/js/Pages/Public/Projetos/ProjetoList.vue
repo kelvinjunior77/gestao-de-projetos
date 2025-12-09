@@ -1,7 +1,8 @@
 <script setup>
+import Layout from "../../Layouts/Layout.vue";
 import { Link, router } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
-import Layout from "../../Layouts/Layout.vue";
+import { route } from 'ziggy-js';
 
 const props = defineProps({
     projetos: Object,
@@ -49,8 +50,27 @@ function goTo(link) {
     //applyFiltersNormal(pageNumber);
 }
 
-// Refiltra automaticamente quando mudar prioridade ou visibilidade
-//watch([prioridade, visibilidade], filtrar);
+// modal
+const showDeleteModal = ref(false);
+const projetoToDelete = ref(null);
+
+// Abre o modal recebendo o usuário
+const confirmDelete = (projeto) => {
+    projetoToDelete.value = projeto;
+    showDeleteModal.value = true;
+};
+
+// Envia requisição para excluir
+const deleteProjeto = () => {
+    if (!projetoToDelete.value) return;
+
+    router.delete(`/projeto/deletar/${projetoToDelete.value.id}`, {
+        onSuccess: () => {
+            showDeleteModal.value = false;
+            projetoToDelete.value = null;
+        },
+    });
+};
 </script>
 
 <template>
@@ -82,16 +102,16 @@ function goTo(link) {
             </div>
         </div>
 
-    
+
         <!-- FILTROS -->
         <div class="flex gap-4 mb-6">
 
             <!-- Busca -->
-             
-                <input type="text" v-model="search" @keyup.enter="filtrar" class="input input-bordered  outline-0 w-full"
+
+            <input type="text" v-model="search" @keyup.enter="filtrar" class="input input-bordered  outline-0 w-full"
                 placeholder="Buscar por título..." />
-            
-            
+
+
 
             <!-- Prioridade -->
             <select v-model="prioridade" class="select select-bordered outline-0 w-50">
@@ -113,10 +133,16 @@ function goTo(link) {
                 <option value="meus">Meus Projetos</option>
             </select>
 
-      
-                
-           
-
+            <Link :href="route('projeto.create')"
+                class="btn bg-primary/10 rounded-lg text-primary border-0 hover:bg-primary/20 gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-circle-plus-icon lucide-circle-plus">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 12h8" />
+                    <path d="M12 8v8" />
+                </svg>Usuario
+            </Link>
         </div>
 
         <!-- LISTA DE PROJETOS -->
@@ -151,8 +177,8 @@ function goTo(link) {
                                 </td>
 
                                 <td>
-                                    <a v-if="projeto.github" :href="projeto.github" class="text-primary underline"
-                                        target="_blank">
+                                    <a v-if="projeto.github_link" :href="projeto.github_link"
+                                        class="badge badge-link link-hover text-blue-600" target="_blank">
                                         Link
                                     </a>
                                     <span v-else class="opacity-50">—</span>
@@ -187,14 +213,15 @@ function goTo(link) {
 
                                 <td class="flex gap-2">
 
-                                    <Link v-if="$page.props.auth.user.id == projeto.user?.id" :href="`/admin/editar/projeto/${projeto.id}`" class="btn btn-sm btn-info">
+                                    <Link v-if="$page.props.auth.user.id == projeto.user?.id"
+                                        :href="`/projeto/editar/${projeto.slug}`" class="btn btn-sm btn-info">
                                         Editar
                                     </Link>
 
-                                    <Link v-if="$page.props.auth.user.id == projeto.user?.id" :href="`/admin/excluir/projeto/${projeto.id}`" method="delete" as="button"
-                                        class="btn btn-sm btn-error">
+                                    <button v-if="$page.props.auth.user.id == projeto.user?.id"
+                                        @click="confirmDelete(projeto)" class="btn btn-sm btn-error">
                                         Excluir
-                                    </Link>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -222,5 +249,43 @@ function goTo(link) {
             </div>
         </div>
 
+        <!-- MODAL DE CONFIRMAÇÃO -->
+        <dialog class="modal" :open="showDeleteModal">
+            <div class="modal-box border border-base-300 shadow-xl">
+
+                <h3 class="font-bold text-lg text-error flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-error" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zM11 7h2v6h-2V7zm0 8h2v2h-2v-2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Confirmar exclusão
+                </h3>
+
+                <p class="py-4 text-base-content/80 mt-4 mb-0">
+                    Tem certeza que deseja excluir o projeto
+                    <strong class="text-primary font-bold">{{ projetoToDelete?.nome }}</strong> ?
+
+                <p>Esta ação não pode ser desfeita.</p>
+                </p>
+
+                <div class="modal-action">
+                    <button class="btn" @click="showDeleteModal = false">
+                        Cancelar
+                    </button>
+
+                    <button class="btn btn-error" @click="deleteProjeto">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </dialog>
+
     </Layout>
 </template>
+
+<style scoped>
+.modal-box {
+    margin-top: -500px !important;
+}
+</style>

@@ -110,7 +110,11 @@ class ProjetoController extends Controller
      */
     public function edit(Projeto $projeto)
     {
-        //
+        
+
+        return Inertia::render('Public/Projetos/ProjetoEdit', [
+            'projeto' => $projeto,
+        ]);
     }
 
     /**
@@ -118,7 +122,17 @@ class ProjetoController extends Controller
      */
     public function update(UpdateProjetoRequest $request, Projeto $projeto)
     {
-        //
+        try {
+            $data = $request->validated();
+
+            $data['slug'] = Str::slug($data['nome']);
+
+            $projeto->update($data);
+
+            return redirect()->route('projetos.index')->with('success', 'Projeto atualizado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao atualizar o projeto: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**
@@ -126,6 +140,15 @@ class ProjetoController extends Controller
      */
     public function destroy(Projeto $projeto)
     {
-        //
+         try {
+            $projeto->delete();
+
+            return redirect()->route('projetos.index')
+                ->with('success', 'Projeto deletado com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()
+                ->with('error', 'Erro ao deletar o projeto.');
+        }
     }
 }

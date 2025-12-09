@@ -133,7 +133,7 @@ const deleteUser = () => {
                         <ul>
                             <li>
                                 <Link href="/">
-                                Home
+                                    Home
                                 </Link>
                             </li>
 
@@ -184,6 +184,18 @@ const deleteUser = () => {
                         </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ contarUsuario }} {{ totalUsuarios
                             }}</div>
                     </button>
+                </div>
+
+                <div class="w-40">
+                    <Link :href="route('admin.cad.usuario')" class="btn bg-primary/10 rounded-lg text-primary border-0 hover:bg-primary/20 gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-circle-plus-icon lucide-circle-plus">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M8 12h8" />
+                            <path d="M12 8v8" />
+                        </svg>Usuario
+                    </Link>
                 </div>
 
             </div>
@@ -289,12 +301,12 @@ const deleteUser = () => {
 
                                             <Link v-if="isAdmin" :href="`/admin/perfil/usuario/${user.slug}`"
                                                 class="btn btn-sm btn-ghost">
-                                            Ver
+                                                Ver
                                             </Link>
 
                                             <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
                                                 class="btn btn-sm btn-ghost">
-                                            Ver
+                                                Ver
                                             </Link>
 
                                             <!---
@@ -305,13 +317,13 @@ const deleteUser = () => {
 
                                             <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)"
                                                 class="btn btn-sm btn-info text-white">
-                                            Editar
+                                                Editar
                                             </Link>
 
                                             <Link v-if="isNormal && $page.props.auth.user.id === user.id"
                                                 :href="route('usuario.edit', user.slug)"
                                                 class="btn btn-sm btn-info text-white">
-                                            Editar
+                                                Editar
                                             </Link>
 
                                             <!-----

@@ -8,7 +8,7 @@ const form = useForm({
     nome: '',
     descricao: '',
     link_github: '',
-    prioridade: 'media',      // baixa | media | alta | critica
+    prioridade: 'média',      // baixa | media | alta | critica
     visibilidade: 'privado',   // publico | privado | interno
     status: 'pendente',        // planejado | em_andamento | concluido | 
     data_fim: '',            // yyyy-mm-dd
@@ -17,7 +17,7 @@ const form = useForm({
 // Prioridades / visibilidade (pode vir do server se preferir)
 const prioridades = [
     { value: 'baixa', label: 'Baixa' },
-    { value: 'media', label: 'Média' },
+    { value: 'média', label: 'Média' },
     { value: 'alta', label: 'Alta' },
     //{ value: 'critica', label: 'Crítica' },
 ];

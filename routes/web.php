@@ -34,8 +34,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projetos', [ProjetoController::class, 'index'])->name('projetos.index');
     Route::get('/projeto/criar', [ProjetoController::class, 'create'])->name('projeto.create');
     Route::post('/projeto/criar', [ProjetoController::class, 'store'])->name('projeto.store');
-    Route::get('/projeto/editar/{projeto}', [ProjetoController::class, 'edit'])->name('projeto.edit');
+
+    Route::get('/projeto/editar/{projeto:slug}', [ProjetoController::class, 'edit'])->name('projeto.edit');
     Route::post('/projeto/editar/{projeto}', [ProjetoController::class, 'update'])->name('projeto.update');
+    
     Route::delete('/projeto/deletar/{projeto}', [ProjetoController::class, 'destroy'])->name('projeto.delete');
     Route::get('/projeto/{projeto}', [ProjetoController::class, 'show'])->name('projeto.show');
 
