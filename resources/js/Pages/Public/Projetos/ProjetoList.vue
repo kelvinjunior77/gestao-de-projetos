@@ -1,5 +1,6 @@
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
+import ProjectViewModal from "../../../Components/Projetos/ProjectViewModal.vue";
 import { Link, router } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
 import { route } from 'ziggy-js';
@@ -60,6 +61,17 @@ const confirmDelete = (projeto) => {
     showDeleteModal.value = true;
 };
 
+// modal projeto
+const showModal = ref(false);
+const projetoSelecionado = ref(null);
+
+// Função que recebe o projeto ao clicar
+function abrirModal(projeto) {
+    projetoSelecionado.value = projeto;
+    showModal.value = true;
+}
+
+
 // Envia requisição para excluir
 const deleteProjeto = () => {
     if (!projetoToDelete.value) return;
@@ -75,6 +87,7 @@ const deleteProjeto = () => {
 
 <template>
     <Layout>
+         <ProjectViewModal :show="showModal" :projeto="projetoSelecionado" @close="showModal = false" />
 
         <div class="max-w-10xl h-10 mb-6">
             <div
@@ -173,7 +186,10 @@ const deleteProjeto = () => {
                             <tr v-for="projeto in projetos.data" :key="projeto.id">
 
                                 <td>
-                                    <span class="font-bold text-info">{{ projeto.nome }}</span>
+                                    <button class="cursor-pointer" @click="abrirModal(projeto)">
+                                        <span class="font-bold text-info">{{ projeto.nome }}</span>
+                                    </button>
+                                    
                                 </td>
 
                                 <td>
@@ -213,14 +229,43 @@ const deleteProjeto = () => {
 
                                 <td class="flex gap-2">
 
+
+
+                                    <button @click="abrirModal(projeto)" class="btn text-success btn-sm btn-outline">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-eye-icon lucide-eye">
+                                            <path
+                                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+
+
                                     <Link v-if="$page.props.auth.user.id == projeto.user?.id"
-                                        :href="`/projeto/editar/${projeto.slug}`" class="btn btn-sm btn-info">
-                                        Editar
+                                        :href="`/projeto/editar/${projeto.slug}`"
+                                        class="btn btn-sm btn-info btn-outline">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-pencil-icon lucide-pencil">
+                                            <path
+                                                d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                            <path d="m15 5 4 4" />
+                                        </svg>
                                     </Link>
 
                                     <button v-if="$page.props.auth.user.id == projeto.user?.id"
-                                        @click="confirmDelete(projeto)" class="btn btn-sm btn-error">
-                                        Excluir
+                                        @click="confirmDelete(projeto)" class="btn btn-sm btn-error btn-outline">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-trash-icon lucide-trash">
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                            <path d="M3 6h18" />
+                                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                        </svg>
                                     </button>
                                 </td>
                             </tr>
@@ -280,6 +325,9 @@ const deleteProjeto = () => {
                 </div>
             </div>
         </dialog>
+
+   
+
 
     </Layout>
 </template>

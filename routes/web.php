@@ -5,6 +5,7 @@ use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjetoController;
+use App\Http\Controllers\TarefaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/usuario/editar/{usuario}', [UserController::class, 'update'])->name('usuario.update');
 
     //Projetos
-    Route::get('/projetos', [ProjetoController::class, 'index'])->name('projetos.index');
+    Route::get('/projetos/lista', [ProjetoController::class, 'index'])->name('projetos.index');
     Route::get('/projeto/criar', [ProjetoController::class, 'create'])->name('projeto.create');
     Route::post('/projeto/criar', [ProjetoController::class, 'store'])->name('projeto.store');
 
@@ -40,6 +41,16 @@ Route::middleware(['auth'])->group(function () {
     
     Route::delete('/projeto/deletar/{projeto}', [ProjetoController::class, 'destroy'])->name('projeto.delete');
     Route::get('/projeto/{projeto}', [ProjetoController::class, 'show'])->name('projeto.show');
+
+    //Tarefas
+    Route::get('/projetos/lista/tarefas', [TarefaController::class, 'index'])->name('projeto.tarefas');
+    Route::get('/projeto/tarefa/criar/{projeto:slug}', [TarefaController::class, 'create'])->name('tarefa.create');
+    Route::post('/projeto/tarefa/criar/{projeto}', [TarefaController::class, 'store'])->name('tarefa.store');
+    Route::get('/projeto/tarefa/editar/{tarefa:slug}', [TarefaController::class, 'edit'])->name('tarefa.edit');
+    Route::post('/projeto/tarefa/editar/{tarefa}', [TarefaController::class, 'update'])->name('tarefa.update');
+    Route::delete('/projeto/tarefa/deletar/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.delete');
+
+
 
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
