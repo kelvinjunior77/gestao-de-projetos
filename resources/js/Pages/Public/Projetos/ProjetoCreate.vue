@@ -7,7 +7,7 @@ import Layout from '../../Layouts/Layout.vue';
 const form = useForm({
     nome: '',
     descricao: '',
-    link_github: '',
+    github_link: '',
     prioridade: 'média',      // baixa | media | alta | critica
     visibilidade: 'privado',   // publico | privado | interno
     status: 'pendente',        // planejado | em_andamento | concluido | 
@@ -62,7 +62,7 @@ const reset = () => {
 
             </div>
         </div>
-
+        
         <!-- Mensagem de sucesso flash (se enviada pelo backend) -->
 
 

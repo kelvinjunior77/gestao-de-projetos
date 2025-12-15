@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -55,13 +56,17 @@ class User extends Authenticatable
         // um para muitos
         return $this->hasMany(Projeto::class);
     }
- 
-    public function tarefas()
+
+    // Tarefas criadas
+    public function tarefasCriadas()
     {
-        // um para muitos
-        return $this->hasMany(Tarefa::class, 'atribuida_para');
+        return $this->hasMany(Tarefa::class);
     }
 
-
-
+    // Tarefas em que o usuário está envolvido
+    public function tarefas(): BelongsToMany
+    {
+        return $this->belongsToMany(Tarefa::class, 'tarefa_user')
+            ->withTimestamps();
+    }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
-import ProjectViewModal from "../../../Components/Projetos/ProjectViewModal.vue";
+import ProjectViewModal from "../../Modal/ProjectViewModal.vue";
 import { Link, router } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
 import { route } from 'ziggy-js';
@@ -23,7 +23,7 @@ watch([search, prioridade, visibilidade, autor], () => {
 
 function applyFilters(page = 1) {
     router.get(
-        "/projetos",
+        "/projetos/lista",
         {
             search: search.value,
             prioridade: prioridade.value,
@@ -154,7 +154,7 @@ const deleteProjeto = () => {
                     <circle cx="12" cy="12" r="10" />
                     <path d="M8 12h8" />
                     <path d="M12 8v8" />
-                </svg>Usuario
+                </svg>Projeto
             </Link>
         </div>
 
@@ -241,6 +241,11 @@ const deleteProjeto = () => {
                                             <circle cx="12" cy="12" r="3" />
                                         </svg>
                                     </button>
+
+                                    <Link :href="route('tarefa.create', { projeto: projeto.slug })"
+                                        class="btn btn-sm btn-primary btn-outline">
+                                        Criar Tarefa
+                                    </Link>
 
 
                                     <Link v-if="$page.props.auth.user.id == projeto.user?.id"
