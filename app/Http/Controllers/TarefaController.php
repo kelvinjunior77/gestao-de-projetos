@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTarefaRequest;
-use App\Http\Requests\UpdateTarefaRequest;
-use App\Models\Tarefa;
+use App\Models\Projeto;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TarefaController extends Controller
 {
@@ -19,15 +20,19 @@ class TarefaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Projeto $projeto)
     {
-        //
+
+        return Inertia::render('Public/Tarefas/TarefaCreate', [
+            'projeto' => $projeto,
+        ]);
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTarefaRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +40,7 @@ class TarefaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tarefa $tarefa)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +48,7 @@ class TarefaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tarefa $tarefa)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +56,7 @@ class TarefaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTarefaRequest $request, Tarefa $tarefa)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +64,7 @@ class TarefaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tarefa $tarefa)
+    public function destroy(string $id)
     {
         //
     }

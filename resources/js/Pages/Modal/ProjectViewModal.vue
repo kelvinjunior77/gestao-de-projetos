@@ -1,11 +1,13 @@
 <script setup>
-import { defineProps } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router} from "@inertiajs/vue3";
+import { defineProps, computed } from "vue";
+import { route } from "ziggy-js";
 
 const props = defineProps({
     show: Boolean,
     projeto: Object, // pode vir null
 });
+
 </script>
 
 <template>
@@ -107,14 +109,15 @@ const props = defineProps({
 
 
                 <div class="flex gap-4">
-                    <Link class="btn btn-info" :href="`/tarefas/criar/${projeto?.id}`">
+                    <Link class="btn btn-info" :href="`/projetos/lista/tarefas?projeto=${projeto.slug}`">
                         Ver Tarefas
                     </Link>
 
-                    <!-- Link para criar tarefa -->
-                    <Link class="btn btn-primary px-6" :href="`/tarefas/criar/${projeto?.id}`">
+                    <!-- Link para criar tarefa -->    
+                    <Link class="btn btn-primary" :href="`/criar/tarefa/${projeto.slug}`">
                         Criar Tarefa
-                    </Link>
+                    </Link>    
+                    
                 </div>
 
 

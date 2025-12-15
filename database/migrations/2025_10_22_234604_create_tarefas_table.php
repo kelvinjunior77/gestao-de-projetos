@@ -16,16 +16,20 @@ return new class extends Migration
             $table->string('titulo');
             $table->string('slug')->unique();
             $table->text('descricao')->nullable();
+            $table->text('funcao')->nullable();
+
             $table->enum('status', ['pendente', 'em_andamento', 'concluido', 'cancelado'])->default('pendente');
             $table->enum('prioridade', ['baixa', 'media', 'alta'])->default('media');
             $table->date('data_fim')->nullable();
 
+            //criador da tarefa
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
             $table->unsignedBigInteger('projeto_id');
             $table->foreign('projeto_id')->references('id')->on('projetos')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('atribuida_para');
-            $table->foreign('atribuida_para')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-     
+
             $table->timestamps();
         });
     }
