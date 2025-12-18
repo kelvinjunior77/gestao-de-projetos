@@ -39,7 +39,7 @@ function applyFilters(page = 1) {
     );
 }
 
-// Paginação corrigida
+// Paginação 
 function goTo(link) {
     if (!link.url) return;
 
