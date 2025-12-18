@@ -28,6 +28,8 @@ class StoreTarefaRequest extends FormRequest
             'status' => 'required|in:pendente,em_andamento,concluida',
             'prioridade' => 'required|in:baixa,media,alta',
             'data_fim' => 'nullable|date|after_or_equal:data_inicio',
+            'usuarios' => 'required|array',
+           // 'usuarios.*' => 'exists:users,id',
         ];
     }
 
@@ -45,6 +47,9 @@ class StoreTarefaRequest extends FormRequest
             'prioridade.in' => 'A prioridade deve ser um dos seguintes: baixa, media, alta.',
             'data_fim.date' => 'A data de fim deve ser uma data válida.',
             'data_fim.after_or_equal' => 'A data de fim deve ser igual ou posterior à data de início.',
+            'usuarios.required' => 'Selecione pelo menos um usuário para atribuir à tarefa.',
+            'usuarios.array' => 'O campo de usuários deve ser um array.',
+           // 'usuarios.*.exists' => 'Um dos usuários selecionados é inválido.',
         ];
     }
 }

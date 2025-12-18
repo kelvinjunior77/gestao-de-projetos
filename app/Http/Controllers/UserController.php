@@ -85,9 +85,11 @@ class UserController extends Controller
      */
     public function edit(User $usuario)
     {
+         $cargos = Cargo::pluck('nome', 'id');
 
         return Inertia::render('Public/User/UserEdit', [
-            'user' => $usuario
+            'user' => $usuario,
+            'cargos' => $cargos,
         ]);
     }
 
