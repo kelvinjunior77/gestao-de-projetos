@@ -37,7 +37,7 @@ const props = defineProps({
                     <p class="opacity-80 mt-1 leading-relaxed mb-4">
                         {{ projeto?.descricao }}
                     </p>
-                    <p class="badge badge-primary">Repositório: <a :href="projeto?.github_link" target="_blank"
+                    <p class="badge badge-soft badge-info">Repositório: <a :href="projeto?.github_link" target="_blank"
                             class="link link-info">{{ projeto?.github_link }}</a></p>
                 </div>
 

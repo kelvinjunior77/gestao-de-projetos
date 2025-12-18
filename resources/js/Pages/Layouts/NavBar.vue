@@ -155,7 +155,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                 </li>
 
                 <li>
-                    <Link href="/tarefas/criar" :class="getLinkClass('/tarefas/criar')">
+                    <Link href="/lista/tarefas" :class="getLinkClass('/lista/tarefas')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
@@ -165,20 +165,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                         <path d="M8 11h.01" />
                         <path d="M8 16h.01" />
                     </svg>
-                    <span>Adicionar Tarefa</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/tarefas" :class="getLinkClass('/tarefas')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 2v4" />
-                        <path d="M16 2v4" />
-                        <rect width="18" height="18" x="3" y="4" rx="2" />
-                        <path d="M3 10h18" />
-                        <path d="M9 16l2 2 4-4" />
-                    </svg>
-                    <span>Minhas Tarefas</span>
+                    <span>Lista de Tarefas</span>
                     </Link>
                 </li>
 

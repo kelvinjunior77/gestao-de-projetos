@@ -1,7 +1,8 @@
 <script setup>
 import Layout from '../../Layouts/Layout.vue';
+import ProjectViewModal from "../../Modal/ProjectViewModal.vue";
 import { useForm, Link } from "@inertiajs/vue3";
-import { defineProps } from "vue";
+import { ref, defineProps } from "vue";
 import { route } from 'ziggy-js';
 
 const props = defineProps({
@@ -20,6 +21,18 @@ const form = useForm({
     usuarios: [], // usuários atribuídos (IDs)
 });
 
+
+
+// modal projeto
+const showModal = ref(false);
+const projetoSelecionado = ref(null);
+
+// Função que recebe o projeto ao clicar
+function abrirModal(projeto) {
+    projetoSelecionado.value = projeto;
+    showModal.value = true;
+}
+
 const submit = () => {
     form.post(route("tarefa.store", props.projeto.slug));
 };
@@ -27,6 +40,7 @@ const submit = () => {
 
 <template>
     <Layout>
+        <ProjectViewModal :show="showModal" :projeto="projetoSelecionado" @close="showModal = false" />
 
         <div class="max-w-10xl h-10 mb-6">
             <div
@@ -61,16 +75,6 @@ const submit = () => {
 
         <div class="max-w-5xl mx-auto">
 
-            <div v-if="$page.props.flash.success" role="alert" class="alert alert-success mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{{ $page.props.flash.success }}</span>
-            </div>
-
-
             <div v-if="$page.props.flash.error" role="alert" class="alert alert-error mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
                     viewBox="0 0 24 24">
@@ -95,7 +99,7 @@ const submit = () => {
                         </svg>
                         <span class="font-bold">{{ projeto.nome }}</span>
                         <div>
-                            <button class="btn btn-sm btn-info">Ver</button>
+                            <button @click="abrirModal(projeto)" class="btn btn-sm btn-info">Ver</button>
                         </div>
                     </div>
 
@@ -134,7 +138,7 @@ const submit = () => {
                                 <select v-model="form.status" class="select select-bordered w-full">
                                     <option value="pendente">Pendente</option>
                                     <option value="em_andamento">Em andamento</option>
-                                    <option value="concluido">Concluído</option>
+                                   <!-- <option value="concluido">Concluído</option>-->
                                     <option value="cancelado">Cancelado</option>
                                 </select>
                             </div>

@@ -45,6 +45,11 @@ Route::middleware(['auth'])->group(function () {
     //Tarefas
     Route::get('/criar/tarefa/{projeto:slug}', [TarefaController::class, 'create'])->name('tarefa.create');
     Route::post('/criar/tarefa', [TarefaController::class, 'store'])->name('tarefa.store');
+    Route::get('/lista/tarefas', [TarefaController::class, 'index'])->name('tarefa.list');
+
+    Route::get('/tarefa/editar/{tarefa:slug}', [TarefaController::class, 'edit'])->name('tarefa.edit');
+    Route::post('/tarefa/editar/{tarefa}', [TarefaController::class, 'update'])->name('tarefa.update');
+    Route::delete('/tarefa/deletar/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.delete');
    
 
     // Área do Usuário normal

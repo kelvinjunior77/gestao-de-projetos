@@ -16,9 +16,68 @@ class TarefaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        $query = Tarefa::with([
+            'user:id,name',              // criador da tarefa
+            'projeto:id,nome,slug',    // projeto
+            'usuarios:id,name'           // usuários atribuídos
+        ]);
+
+        if ($request->filled('tipo') && $request->tipo === 'minhas') {
+            $query->where(function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhereHas('usuarios', function ($q2) use ($user) {
+                        $q2->where('users.id', $user->id);
+                    });
+            });
+        }
+
+
+        // filtros meus, projeto.
+        if ($request->filled('meus')) {
+            $query->whereHas('usuarios', function ($q) use ($user) {
+                $q->where('users.id', $user->id);
+            });
+        }
+
+
+        if ($request->filled('projeto')) {
+            $query->where('projeto_id', $request->projeto);
+        }
+
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+
+        if ($request->filled('prioridade')) {
+            $query->where('prioridade', $request->prioridade);
+        }
+
+
+        if ($request->filled('search')) {
+            $query->where('titulo', 'like', '%' . $request->search . '%');
+        }
+
+        $tarefas = $query
+            ->orderBy('created_at', 'desc')
+            ->paginate(5)
+            ->withQueryString();
+
+        return Inertia::render('Public/Tarefas/TarefaList', [
+            'tarefas' => $tarefas,
+            'filtros' => $request->only([
+                'search',
+                'status',
+                'prioridade',
+                'projeto',
+                'tipo'
+            ]),
+        ]);
     }
 
     /**
@@ -50,14 +109,15 @@ class TarefaController extends Controller
 
             $tarefa = Tarefa::create($dados);
 
+
             if ($request->filled('usuarios')) {
                 $tarefa->usuarios()->sync($request->usuarios);
             }
 
-            $projeto = Projeto::findOrFail($request->projeto_id);
+            //$projeto = Projeto::findOrFail($request->projeto_id);
 
             return redirect()
-                ->route('tarefa.create', $projeto->slug)
+                ->route('tarefa.list')
                 ->with('success', 'Tarefa criada com sucesso!');
         } catch (\Throwable $e) {
             return back()

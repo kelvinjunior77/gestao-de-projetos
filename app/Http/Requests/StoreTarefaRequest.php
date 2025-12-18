@@ -25,7 +25,7 @@ class StoreTarefaRequest extends FormRequest
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'funcao' => 'nullable|string',
-            'status' => 'required|in:pendente,em_andamento,concluida',
+            'status' => 'required|in:pendente,em_andamento',
             'prioridade' => 'required|in:baixa,media,alta',
             'data_fim' => 'nullable|date|after_or_equal:data_inicio',
             'usuarios' => 'required|array',
