@@ -24,6 +24,7 @@ class StoreTarefaRequest extends FormRequest
         return [
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
+            'funcao' => 'nullable|string',
             'status' => 'required|in:pendente,em_andamento,concluida',
             'prioridade' => 'required|in:baixa,media,alta',
             'data_fim' => 'nullable|date|after_or_equal:data_inicio',
@@ -37,6 +38,7 @@ class StoreTarefaRequest extends FormRequest
             'titulo.string' => 'O título deve ser uma string.',
             'titulo.max' => 'O título não pode exceder 255 caracteres.',
             'descricao.string' => 'A descrição deve ser uma string.',
+            'funcao.string' => 'A função deve ser uma string.',
             'status.required' => 'O status é obrigatório.',
             'status.in' => 'O status deve ser um dos seguintes: pendente, em_andamento, concluida.',
             'prioridade.required' => 'A prioridade é obrigatória.',

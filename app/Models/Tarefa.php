@@ -35,7 +35,7 @@ class Tarefa extends Model
     }
 
     // Usuários atribuídos à tarefa (devs, colaboradores)
-    public function responsaveis(): BelongsToMany
+    public function usuarios(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'tarefa_user')
             ->withTimestamps();

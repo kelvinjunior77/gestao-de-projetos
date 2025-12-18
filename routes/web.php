@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Tarefas
     Route::get('/criar/tarefa/{projeto:slug}', [TarefaController::class, 'create'])->name('tarefa.create');
+    Route::post('/criar/tarefa', [TarefaController::class, 'store'])->name('tarefa.store');
    
 
     // Área do Usuário normal
