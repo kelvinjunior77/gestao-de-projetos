@@ -16,7 +16,7 @@ const props = defineProps({
 const search = ref(props.filtros.search || "");
 const status = ref(props.filtros.status || "");
 const prioridade = ref(props.filtros.prioridade || "");
-const tipo = ref(props.filtros.tipo || '');
+const tipo = ref(props.filtros.tipo || "todas");
 
 
 watch([search, status, prioridade, tipo], () => {
@@ -117,9 +117,11 @@ function goTo(link) {
                     <option value="alta">Alta</option>
                 </select>
 
-                <select v-model="tipo" class="select select-bordered outline-0 w-48">
-                    <option value="">Todas tarefas</option>
-                    <option value="minhas">Minhas tarefas</option>
+
+                <select v-model="tipo" class="select select-bordered outline-0 w-58">
+                    <option value="todas">Todas tarefas</option>
+                    <option value="minhas">Criadas por mim</option>
+                    <option value="atribuidas">Atribuídas a mim</option>
                 </select>
 
 
@@ -196,25 +198,61 @@ function goTo(link) {
 
                             <td>
                                 <div class="grid grid-cols-2 gap-1">
-                                    <Link v-for="user in tarefa.usuarios" :key="user.id" href=""
-                                        class="text-sm badge badge-soft badge-accent">
-                                        {{ user.name }}
+                                    <Link  v-for="user in tarefa.usuarios" :key="user.id" href=""
+                                        class="text-sm">
+                                        
+                                        <span class="badge badge-soft badge-accent" 
+                                          v-if="$page.props.auth.user.id === user.id"
+                                          >
+                                            {{ user.name }} 
+                                        </span>
+
+                                        <span v-else class="badge badge-soft badge-primary">
+                                            {{ user.name }}
+                                        </span>
+                                       
                                     </Link>
                                 </div>
                             </td>
 
                             <td>
-                                {{ tarefa.user?.name ?? '-' }}
+                                {{ tarefa.user?.name ?? '-' }} 
                             </td>
 
                             <td class="text-right space-x-2">
-                                <Link class="btn btn-sm btn-outline">
-                                    Ver
+
+                                <button @click="abrirModal(projeto)" class="btn text-success btn-sm btn-outline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
+                                        <path
+                                            d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+
+                                <Link class="btn btn-sm btn-info btn-outline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
+                                        <path
+                                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                        <path d="m15 5 4 4" />
+                                    </svg>
                                 </Link>
 
-                                <Link class="btn btn-sm btn-outline btn-primary">
-                                    Editar
-                                </Link>
+                                <button v-if="$page.props.auth.user.id == tarefa.user?.id"
+                                    @click="confirmDelete(projeto)" class="btn btn-sm btn-error btn-outline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash">
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                        <path d="M3 6h18" />
+                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                    </svg>
+                                </button>
+
+
                             </td>
                         </tr>
                     </tbody>

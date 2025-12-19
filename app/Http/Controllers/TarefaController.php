@@ -26,13 +26,21 @@ class TarefaController extends Controller
             'usuarios:id,name'           // usuários atribuídos
         ]);
 
-        if ($request->filled('tipo') && $request->tipo === 'minhas') {
-            $query->where(function ($q) use ($user) {
-                $q->where('user_id', $user->id)
-                    ->orWhereHas('usuarios', function ($q2) use ($user) {
-                        $q2->where('users.id', $user->id);
-                    });
-            });
+
+
+        if ($request->filled('tipo')) {
+
+            // Tarefas criadas por mim
+            if ($request->tipo === 'minhas') {
+                $query->where('user_id', $user->id);
+            }
+
+            // Tarefas onde fui selecionado (many-to-many)
+            if ($request->tipo === 'atribuidas') {
+                $query->whereHas('usuarios', function ($q) use ($user) {
+                    $q->where('users.id', $user->id);
+                });
+            }
         }
 
 
