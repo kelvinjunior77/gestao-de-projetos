@@ -302,12 +302,12 @@ const deleteUser = () => {
                                             <Link v-if="isAdmin" :href="`/admin/perfil/usuario/${user.slug}`"
                                                 class="btn btn-sm btn-ghost">
                                                 Ver
-                                            </Link>
+                                            </Link> 
 
                                             <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
                                                 class="btn btn-sm btn-ghost">
                                                 Ver
-                                            </Link>
+                                            </Link> 
 
                                             <!---
                                             <Link :href="`/admin/editar/usuario/${user.slug}`"
