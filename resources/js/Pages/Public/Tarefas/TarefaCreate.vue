@@ -141,7 +141,7 @@ const submit = () => {
                                    <!-- <option value="concluido">Concluído</option>-->
                                     <option value="cancelado">Cancelado</option>
                                 </select>
-                            </div>
+                            </div>              
 
                             <div>
                                 <label class="label font-medium">Prioridade</label>
