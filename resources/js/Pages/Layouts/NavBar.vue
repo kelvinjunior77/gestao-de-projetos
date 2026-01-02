@@ -43,7 +43,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
         <div class="h-16 flex items-center px-6 border-b border-base-200 shrink-0">
             <Link href="/" class="flex items-center gap-2">
             <!---<img :src="logo" class="h-8 w-auto" alt="Logo do Sistema"/>-->
-            <h1 class="text-2xl uppercase font-bold">Dashboard</h1>
+            <h1 class="text-2xl uppercase font-bold"> Gest. Projetos </h1>
             </Link>
         </div>
 

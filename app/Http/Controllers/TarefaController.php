@@ -145,10 +145,20 @@ class TarefaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Tarefa $tarefa)
     {
-        //
+        $tarefa->load([
+            'usuarios:id,name',
+            'projeto:id,nome,slug',
+            'user:id,name', // criador da tarefa (opcional, mas útil)
+        ]);
+
+        return Inertia::render('Public/Tarefas/TarefaEdit', [
+            'tarefa' => $tarefa,
+            'usuarios' => User::select('id', 'name', 'avatar')->get(),
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
