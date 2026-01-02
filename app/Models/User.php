@@ -69,4 +69,5 @@ class User extends Authenticatable
         return $this->belongsToMany(Tarefa::class, 'tarefa_user')
             ->withTimestamps();
     }
+
 }
