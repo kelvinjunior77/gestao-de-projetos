@@ -73,7 +73,7 @@ class TarefaController extends Controller
 
         $tarefas = $query
             ->orderBy('created_at', 'desc')
-            ->paginate(5)
+            ->paginate(4)
             ->withQueryString();
 
         return Inertia::render('Public/Tarefas/TarefaList', [

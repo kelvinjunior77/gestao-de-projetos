@@ -1,7 +1,7 @@
 <script setup>
+import Layout from '../../Layouts/Layout.vue';
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
-import Layout from '../../Layouts/Layout.vue';
 import { route } from 'ziggy-js';
 
 const props = defineProps({
@@ -11,6 +11,9 @@ const props = defineProps({
         default: () => ({}),
     },
 });
+
+
+const page = usePage()
 
 // Atalho para verificar permissão de admin e usuario normal.
 const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
@@ -235,6 +238,8 @@ function goTo(link) {
                                     </svg>Ver
                                 </button>
 
+                              
+
                                 <Link v-if="$page.props.auth.user.id === tarefa.user?.id"
                                 class="btn btn-sm btn-info btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -246,7 +251,7 @@ function goTo(link) {
                                     </svg>Edit
                                 </Link>
 
-                                <button v-if="$page.props.auth.user.id == tarefa.user?.id"
+                                <button v-if="$page.props.auth.user.id === tarefa.user?.id"
                                     @click="confirmDelete(projeto)" class="btn btn-sm btn-error btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
