@@ -155,7 +155,7 @@ class TarefaController extends Controller
 
         return Inertia::render('Public/Tarefas/TarefaEdit', [
             'tarefa' => $tarefa,
-            'usuarios' => User::select('id', 'name', 'avatar')->get(),
+            'usuarios' => User::select('id', 'name', 'cargo', 'avatar')->get(),
         ]);
     }
 
