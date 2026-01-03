@@ -33,9 +33,6 @@ function abrirModal(projeto) {
     showModal.value = true;
 }
 
-const submit = () => {
-    form.post(route("tarefa.store", props.projeto.slug));
-};
 </script>
 
 <template>

@@ -1,9 +1,9 @@
 <script setup>
 import Layout from '../../Layouts/Layout.vue'
-import { usePage } from '@inertiajs/vue3'
+import ProjectViewModal from "../../Modal/ProjectViewModal.vue"
+import { usePage, useForm, Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js'
-import { useForm, Link } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const { props } = usePage()
 
@@ -24,6 +24,7 @@ const form = useForm({
     usuarios: props.tarefa.usuarios?.map(u => u.id) || [],
 })
 
+
 const submit = () => {
     form.put(route('tarefa.update', props.tarefa.id))
 }
@@ -31,6 +32,8 @@ const submit = () => {
 
 <template>
     <Layout>
+
+
         <div class="w-full px-6 py-6">
 
             <div class="max-w-10xl h-10 mb-10">
@@ -47,9 +50,10 @@ const submit = () => {
                                         Home
                                     </Link>
                                 </li>
-
-                                <li class="font-medium text-primary">
-                                    Lista de Tarefas
+                                <li>
+                                    <Link :href="route('projetos.index')">
+                                        Projetos
+                                    </Link>
                                 </li>
 
                                 <li class="font-medium text-primary">
@@ -73,7 +77,6 @@ const submit = () => {
             </div>
 
             <div class="mb-5 ">
-
                 <div role="alert" class="alert alert-vertical sm:alert-horizontal">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -84,9 +87,7 @@ const submit = () => {
                         <path d="M12 15v5" />
                     </svg>
                     <span class="font-bold">{{ projeto.nome }}</span>
-                    <div>
-                        <button @click="abrirModal(projeto)" class="btn btn-sm btn-info">Ver</button>
-                    </div>
+
                 </div>
             </div>
 
@@ -136,10 +137,10 @@ const submit = () => {
                                 <label class="label font-semibold">Status</label>
                                 <select v-model="form.status" class="select select-bordered w-full
                                 transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2 ">
-                                    <option value="pendente">Pendente</option>
-                                    <option value="em_andamento">Em andamento</option>
-                                    <option value="concluido">Concluído</option>
-                                    <option value="cancelado">Cancelado</option>
+                                    <option value="pendente" class="text-blue-500">Pendente</option>
+                                    <option value="em_andamento" class="text-yellow-500">Em andamento</option>
+                                    <option value="concluido" class="text-green-500">Concluído</option>
+                                    <option value="cancelado" class="text-red-500">Cancelado</option>
                                 </select>
                             </div>
 
@@ -148,9 +149,9 @@ const submit = () => {
                                 <label class="label font-semibold">Prioridade</label>
                                 <select v-model="form.prioridade" class="select select-bordered w-full 
                                 transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2">
-                                    <option value="baixa">Baixa</option>
-                                    <option value="media">Média</option>
-                                    <option value="alta">Alta</option>
+                                    <option value="baixa" class="text-blue-500">Baixa</option>
+                                    <option value="media" class="text-yellow-500">Média</option>
+                                    <option value="alta" class="text-red-500">Alta</option>
                                 </select>
                             </div>
 
@@ -173,8 +174,8 @@ const submit = () => {
                                 <label v-for="user in usuarios" :key="user.id" class="flex items-center gap-3 p-3 
                                 border border-base-300 rounded-xl cursor-pointer hover:bg-base-200 transition">
                                     <!-- Checkbox -->
-                                    <input type="checkbox" class="checkbox checkbox-primary" :value="user.id"
-                                        v-model="form.usuarios" />
+                                    <input type="checkbox" class="checkbox checkbox-primary border-text-blue-950"
+                                        :value="user.id" v-model="form.usuarios" />
 
                                     <!-- Avatar -->
                                     <div class="avatar">
@@ -189,10 +190,16 @@ const submit = () => {
                                         </div>
                                     </div>
 
-                                    <!-- Nome -->
-                                    <span class="text-sm font-medium">
-                                        {{ user.name }}
-                                    </span>
+                                    <!-- Nome + Cargo -->
+                                    <div class="flex flex-col leading-tight">
+                                        <span class="text-sm font-semibold">
+                                            {{ user.name }}
+                                        </span>
+
+                                        <span class="text-xs text-base-content/60">
+                                            {{ user.cargo ?? 'Sem cargo' }}
+                                        </span>
+                                    </div>
                                 </label>
                             </div>
                         </div>
@@ -205,6 +212,7 @@ const submit = () => {
 
             <!-- AÇÕES -->
             <div class="flex justify-end gap-3 mt-6">
+
                 <Link class="btn btn-ghost">
                     Cancelar
                 </Link>

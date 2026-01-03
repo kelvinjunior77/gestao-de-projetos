@@ -48,7 +48,7 @@ function logout() {
 </script>
 
 <template>
-  <header class="navbar bg-base-100 shadow-sm sticky top-0 z-40 px-4">
+  <header class="navbar bg-base-300 shadow-sm sticky top-0 z-40 px-4 mb-0">
     <!-- LEFT -->
     <div class="navbar-start gap-2">
 
