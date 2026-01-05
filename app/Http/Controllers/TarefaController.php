@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTarefaRequest;
+use App\Http\Requests\UpdateTarefaRequest;
 use App\Models\Projeto;
 use App\Models\Tarefa;
 use Illuminate\Support\Str;
@@ -163,11 +164,60 @@ class TarefaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Tarefa $tarefa)
     {
-        //
+
+        try {
+            $dados = $request->validate(
+                [
+                    'titulo' => 'required|string|max:255',
+                    'descricao' => 'nullable|string',
+                    'funcao' => 'nullable|string',
+                    'prioridade' => 'nullable|in:baixa,media,alta',
+                    'status' => 'required|in:pendente,em_andamento,concluido,cancelado',
+                    'data_fim' => 'nullable|date',
+                    //'projeto_id' => 'required|exists:projetos,id',
+                    'usuarios' => 'nullable|array',
+                ],
+                [
+                    'titulo.required' => 'O título é obrigatório.',
+                    'titulo.string' => 'O título deve ser uma string.',
+                    'titulo.max' => 'O título não pode exceder 255 caracteres.',
+                    'descricao.string' => 'A descrição deve ser uma string.',
+                    'funcao.string' => 'A função deve ser uma string.',
+                    'prioridade.in' => 'A prioridade selecionada é inválida.',
+                    'prioridade.required' => 'A prioridade é obrigatória.',
+                    'status.required' => 'O status é obrigatório.',
+                    'status.in' => 'O status selecionado é inválido.',
+                    'data_fim.date' => 'A data_fim deve ser uma data válida.',
+                    //'projeto_id.required' => 'O projeto é obrigatório.',
+                    //'projeto_id.exists' => 'O projeto selecionado é inválido.',
+                    'usuarios.array' => 'Os usuários devem ser um array.',
+                ]
+            );
+
+            $dados['slug'] = Str::slug($dados['titulo']);
+
+            $tarefa->update($dados);
+
+            // Sincroniza usuários atribuídos
+            if ($request->has('usuarios')) {
+                $tarefa->usuarios()->sync($request->usuarios);
+            } else {
+                $tarefa->usuarios()->sync([]); // remove todos
+            }
+
+            return redirect()
+                ->route('tarefa.list')
+                ->with('success', 'Tarefa atualizada com sucesso!');
+        } catch (\Throwable $e) {
+            return back()
+                ->with('error', 'Erro ao atualizar a tarefa.')
+                ->withInput();
+        }
     }
 
+ 
     /**
      * Remove the specified resource from storage.
      */

@@ -1,10 +1,12 @@
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
 import './bootstrap';
 //import '../css/teste.css';
+
 import { ZiggyVue } from 'ziggy-js'   // vem do pacote npm ziggy-js
 import { Ziggy } from './ziggy'       // gerado pelo artisan
 
-import { createApp, h } from 'vue'
-import { createInertiaApp } from '@inertiajs/vue3'
+
 
 createInertiaApp({
   resolve: name => {

@@ -1,9 +1,11 @@
 <script setup>
 import Layout from '../../Layouts/Layout.vue'
-import ProjectViewModal from "../../Modal/ProjectViewModal.vue"
 import { usePage, useForm, Link } from '@inertiajs/vue3'
-import { route } from 'ziggy-js'
+
 import { computed, ref } from 'vue'
+import { router } from '@inertiajs/vue3'
+import { route } from 'ziggy-js'
+
 
 const { props } = usePage()
 
@@ -26,8 +28,10 @@ const form = useForm({
 
 
 const submit = () => {
-    form.put(route('tarefa.update', props.tarefa.id))
+    form.put(route('tarefa.update', props.tarefa.id), {
+    })
 }
+
 </script>
 
 <template>
@@ -51,8 +55,8 @@ const submit = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link :href="route('projetos.index')">
-                                        Projetos
+                                    <Link :href="route('tarefa.list')">
+                                        Lista de Tarefas
                                     </Link>
                                 </li>
 
@@ -91,136 +95,144 @@ const submit = () => {
                 </div>
             </div>
 
-            <!-- Conteúdo principal -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <form @submit.prevent="form.post(`/tarefa/editar/${props.tarefa.id}`)" class="space-y-6">
+                <!-- Conteúdo principal -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                <!-- COLUNA ESQUERDA -->
-                <div class="card bg-base-100 shadow-md border border-base-300">
-                    <div class="card-body space-y-5">
+                    <!-- COLUNA ESQUERDA -->
+                    <div class="card bg-base-100 shadow-md border border-base-300">
+                        <div class="card-body space-y-5">
 
 
-                        <div>
-                            <label class="label font-semibold">Título</label>
-                            <input v-model="form.titulo" type="text"
-                                class="input input-bordered w-full transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2" />
-                            <p v-if="form.errors.titulo" class="text-error text-sm">
-                                {{ form.errors.titulo }}
-                            </p>
-                        </div>
+                            <!-- Título -->
 
-                        <!-- Descrição -->
-                        <div>
-                            <label class="label font-semibold">Descrição</label>
-                            <textarea v-model="form.descricao" rows="4"
-                                class="textarea textarea-bordered w-full transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2" />
-                        </div>
+                            <div>
+                                <label class="label font-semibold">Título</label>
+                                <input v-model="form.titulo" type="text"
+                                    class="input input-bordered w-full transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2" />
+                                <p v-if="form.errors.titulo" class="text-error text-sm">
+                                    {{ form.errors.titulo }}
+                                </p>
+                            </div>
 
-                        <!-- Função -->
-                        <div>
-                            <label class="label font-semibold">Função</label>
-                            <textarea v-model="form.funcao" rows="3" class="textarea textarea-bordered w-full 
+                            <!-- Descrição -->
+                            <div>
+                                <label class="label font-semibold">Descrição</label>
+                                <textarea v-model="form.descricao" rows="4"
+                                    class="textarea textarea-bordered w-full transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2" />
+                            </div>
+
+                            <!-- Função -->
+                            <div>
+                                <label class="label font-semibold">Função</label>
+                                <textarea v-model="form.funcao" rows="3" class="textarea textarea-bordered w-full 
                             transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2" />
-                        </div>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
 
-                <!-- COLUNA DIREITA -->
-                <div class="card bg-base-100 shadow-md border border-base-300">
-                    <div class="card-body space-y-5">
+                    <!-- COLUNA DIREITA -->
+                    <div class="card bg-base-100 shadow-md border border-base-300">
+                        <div class="card-body space-y-5">
 
-                        <!-- Grid status -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Grid status -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                            <!-- Status -->
-                            <div>
-                                <label class="label font-semibold">Status</label>
-                                <select v-model="form.status" class="select select-bordered w-full
+                                <!-- Status -->
+                                <div>
+                                    <label class="label font-semibold">Status</label>
+                                    <select v-model="form.status" class="select select-bordered w-full
                                 transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2 ">
-                                    <option value="pendente" class="text-blue-500">Pendente</option>
-                                    <option value="em_andamento" class="text-yellow-500">Em andamento</option>
-                                    <option value="concluido" class="text-green-500">Concluído</option>
-                                    <option value="cancelado" class="text-red-500">Cancelado</option>
-                                </select>
-                            </div>
+                                        <option value="pendente" class="text-blue-500">Pendente</option>
+                                        <option value="em_andamento" class="text-yellow-500">Em andamento</option>
+                                        <option value="concluido" class="text-green-500">Concluído</option>
+                                        <option value="cancelado" class="text-red-500">Cancelado</option>
+                                    </select>
+                                </div>
 
-                            <!-- Prioridade -->
-                            <div>
-                                <label class="label font-semibold">Prioridade</label>
-                                <select v-model="form.prioridade" class="select select-bordered w-full 
+                                <!-- Prioridade -->
+                                <div>
+                                    <label class="label font-semibold">Prioridade</label>
+                                    <select v-model="form.prioridade" class="select select-bordered w-full 
                                 transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2">
-                                    <option value="baixa" class="text-blue-500">Baixa</option>
-                                    <option value="media" class="text-yellow-500">Média</option>
-                                    <option value="alta" class="text-red-500">Alta</option>
-                                </select>
-                            </div>
+                                        <option value="baixa" class="text-blue-500">Baixa</option>
+                                        <option value="media" class="text-yellow-500">Média</option>
+                                        <option value="alta" class="text-red-500">Alta</option>
+                                    </select>
+                                </div>
 
-                            <!-- Data final -->
-                            <div>
-                                <label class="label font-semibold">Data final</label>
-                                <input v-model="form.data_fim" type="date" class="input input-bordered w-full 
+                                <!-- Data final -->
+                                <div>
+                                    <label class="label font-semibold">Data final</label>
+                                    <input v-model="form.data_fim" type="date" class="input input-bordered w-full 
                                 transition-all duration-100 outline-0 focus:border-blue-900 focus:border-2" />
+                                </div>
+
                             </div>
 
-                        </div>
+                            <!-- Usuários -->
+                            <div>
+                                <label class="label font-semibold mb-2">
+                                    Usuários atribuídos
+                                </label>
 
-                        <!-- Usuários -->
-                        <div>
-                            <label class="label font-semibold mb-2">
-                                Usuários atribuídos
-                            </label>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                <label v-for="user in usuarios" :key="user.id" class="flex items-center gap-3 p-3 
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    <label v-for="user in usuarios" :key="user.id" class="flex items-center gap-3 p-3 
                                 border border-base-300 rounded-xl cursor-pointer hover:bg-base-200 transition">
-                                    <!-- Checkbox -->
-                                    <input type="checkbox" class="checkbox checkbox-primary border-text-blue-950"
-                                        :value="user.id" v-model="form.usuarios" />
+                                        <!-- Checkbox -->
+                                        <input type="checkbox" class="checkbox checkbox-primary border-text-blue-950"
+                                            :value="user.id" v-model="form.usuarios" />
 
-                                    <!-- Avatar -->
-                                    <div class="avatar">
-                                        <div class="w-9 h-9 rounded-full ring ring-base-300">
-                                            <img v-if="user.avatar" :src="`/storage/${user.avatar}`" :alt="user.name" />
+                                        <!-- Avatar -->
+                                        <div class="avatar">
+                                            <div class="w-9 h-9 rounded-full ring ring-base-300">
+                                                <img v-if="user.avatar" :src="`/storage/${user.avatar}`"
+                                                    :alt="user.name" />
 
-                                            <div v-else
-                                                class="flex items-center justify-center bg-primary text-primary-content font-bold">
-                                                {{ user.name.charAt(0).toUpperCase() }}
+                                                <div v-else
+                                                    class="flex items-center justify-center bg-primary text-primary-content font-bold">
+                                                    {{ user.name.charAt(0).toUpperCase() }}
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Nome + Cargo -->
-                                    <div class="flex flex-col leading-tight">
-                                        <span class="text-sm font-semibold">
-                                            {{ user.name }}
-                                        </span>
+                                        <!-- Nome + Cargo -->
+                                        <div class="flex flex-col leading-tight">
+                                            <span class="text-sm font-semibold">
+                                                {{ user.name }}
+                                            </span>
 
-                                        <span class="text-xs text-base-content/60">
-                                            {{ user.cargo ?? 'Sem cargo' }}
-                                        </span>
-                                    </div>
-                                </label>
+                                            <span class="text-xs text-base-content/60">
+                                                {{ user.cargo ?? 'Sem cargo' }}
+                                            </span>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
+
                         </div>
 
-
                     </div>
+
                 </div>
 
-            </div>
 
-            <!-- AÇÕES -->
-            <div class="flex justify-end gap-3 mt-6">
+                <!-- AÇÕES -->
+                <div class="flex justify-end gap-3 mt-6">
 
-                <Link class="btn btn-ghost">
-                    Cancelar
-                </Link>
+                    <Link class="btn btn-ghost">
+                        Cancelar
+                    </Link>
 
-                <button @click="submit" :disabled="form.processing" class="btn btn-primary px-10">
-                    Salvar alterações
-                </button>
-            </div>
+                    <button type="submit" class="btn btn-primary w-50" :disabled="form.processing">
+                        <span v-if="!form.processing">Salvar Alterações</span>
+                        <span v-else class="loading loading-spinner"></span>
+                    </button>
+
+                </div>
+            </form>
 
         </div>
     </Layout>
