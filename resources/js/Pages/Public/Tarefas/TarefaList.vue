@@ -1,5 +1,6 @@
 <script setup>
 import Layout from '../../Layouts/Layout.vue';
+import TarefaModal from '../../../Components/Tarefa/TarefaModal.vue';
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { ref, watch, computed } from "vue";
 import { route } from 'ziggy-js';
@@ -48,6 +49,15 @@ function applyFilters(page = 1) {
     );
 }
 
+// modal
+const showModal = ref(false)
+const tarefaSelecionada = ref(null)
+
+const abrirModal = (tarefa) => {
+    tarefaSelecionada.value = tarefa
+    showModal.value = true
+}
+
 
 // Paginação 
 function goTo(link) {
@@ -60,9 +70,13 @@ function goTo(link) {
     applyFilters(pageNumber);
     //applyFiltersNormal(pageNumber);
 }
+
+
 </script>
 
 <template>
+    <TarefaModal :show="showModal" :tarefa="tarefaSelecionada" @close="showModal = false" />
+
     <Layout>
         <div class="max-w-10xl h-10 mb-6">
             <div
@@ -111,17 +125,17 @@ function goTo(link) {
 
                 <select v-model="status" class="select select-bordered w-50 outline-0">
                     <option value="">Status (todos)</option>
-                    <option value="pendente">Pendente</option>
-                    <option value="em_andamento">Em andamento</option>
-                    <option value="concluido">Concluído</option>
-                    <option value="cancelado">Cancelado</option>
+                    <option value="pendente" class="text-blue-500">Pendente</option>
+                    <option value="em_andamento" class="text-yellow-500">Em andamento</option>
+                    <option value="concluido" class="text-green-500">Concluído</option>
+                    <option value="cancelado" class="text-red-500">Cancelado</option>
                 </select>
 
                 <select v-model="prioridade" class="select select-bordered  w-50 outline-0">
                     <option value="">Prioridade (todas)</option>
-                    <option value="baixa">Baixa</option>
-                    <option value="media">Média</option>
-                    <option value="alta">Alta</option>
+                    <option value="baixa" class="text-blue-500">Baixa</option>
+                    <option value="media" class="text-yellow-500">Média</option>
+                    <option value="alta" class="text-red-500">Alta</option>
                 </select>
 
 
@@ -172,14 +186,17 @@ function goTo(link) {
 
                         <tr v-for="tarefa in tarefas.data" :key="tarefa.id">
                             <td class="font-medium">
-                                <span class="font-bold text-info">
+                                <span class="font-bold text-info
+                                 line-clamp-1 cursor-pointer" :title="tarefa.titulo">
                                     {{ tarefa.titulo }}
                                 </span>
 
                             </td>
 
                             <td>
-                                {{ tarefa.projeto?.nome ?? '-' }}
+                                <span class="badge" :title="tarefa.projeto?.nome">
+                                    {{ tarefa.projeto?.nome ?? '-' }}
+                                </span>
                             </td>
 
                             <td>
@@ -205,31 +222,33 @@ function goTo(link) {
 
                             <td>
                                 <div class="grid grid-cols-2 gap-1">
-                                    <Link  v-for="user in tarefa.usuarios" :key="user.id" href=""
-                                        class="text-sm">
-                                        
-                                        <span class="badge badge-soft badge-accent" 
-                                          v-if="$page.props.auth.user.id === user.id"
-                                          >
-                                            {{ user.name }} 
-                                        </span>
+                                    <Link v-for="user in tarefa.usuarios" :key="user.id" href="" class="text-sm">
 
-                                        <span v-else class="badge badge-soft badge-primary">
+                                        <span class="badge badge-soft badge-accent line-clamp-1" :title="user.name"
+                                            v-if="$page.props.auth.user.id === user.id">
                                             {{ user.name }}
                                         </span>
-                                       
+
+                                        <span v-else class="badge badge-soft badge-primary line-clamp-1"
+                                            :title="user.name">
+                                            {{ user.name }}
+                                        </span>
+
                                     </Link>
                                 </div>
                             </td>
 
                             <td>
-                                {{ tarefa.user?.name ?? '-' }} 
+                                <Link href="" class="badge badge-soft line-clamp-1" :title="tarefa.user?.name">
+                                    {{ tarefa.user?.name ?? '-' }}
+                                </Link>
+
                             </td>
 
-                            <td class="text-right space-x-2">
+                            <td class="flex justify-end gap-2">
 
                                 <!---ver---->
-                                <button @click="abrirModal(projeto)" class="btn text-success btn-sm btn-outline">
+                                <button @click="abrirModal(tarefa)" class="btn text-success btn-sm btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
@@ -239,12 +258,10 @@ function goTo(link) {
                                     </svg>
                                 </button>
 
-                              
-                                <!---edit---->
-                                <Link v-if=" isAdmin || $page.props.auth.user.id === tarefa.user?.id"  
-                                :href="route('tarefa.edit', tarefa.slug)"
 
-                                class="btn btn-sm btn-info btn-outline">
+                                <!---edit---->
+                                <Link v-if="isAdmin || $page.props.auth.user.id === tarefa.user?.id"
+                                    :href="route('tarefa.edit', tarefa.slug)" class="btn btn-sm btn-info btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
@@ -255,7 +272,7 @@ function goTo(link) {
                                 </Link>
 
                                 <!---delete---->
-                                <button v-if=" isAdmin || $page.props.auth.user.id === tarefa.user?.id"
+                                <button v-if="isAdmin || $page.props.auth.user.id === tarefa.user?.id"
                                     @click="confirmDelete(projeto)" class="btn btn-sm btn-error btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -263,7 +280,7 @@ function goTo(link) {
                                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
                                         <path d="M3 6h18" />
                                         <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                    </svg> 
+                                    </svg>
                                 </button>
 
 
