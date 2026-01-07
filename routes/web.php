@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lista/tarefas', [TarefaController::class, 'index'])->name('tarefa.list');
 
     Route::get('/tarefa/editar/{tarefa:slug}', [TarefaController::class, 'edit'])->name('tarefa.edit');
-    Route::post('/tarefa/editar/{tarefa}', [TarefaController::class, 'update'])->name('tarefa.update');
+    Route::put('/tarefa/editar/{tarefa}', [TarefaController::class, 'update'])->name('tarefa.update');
 
     //Route::get('/tarefa/editar/{tarefa:slug}', [ProjetoController::class, 'editarTarefa'])->name('tarefa.edit');
     //Route::post('/tarefa/editar/teste/{tarefa}', [ProjetoController::class, 'updateTarefa'])->name('tarefa.update');

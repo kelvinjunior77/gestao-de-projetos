@@ -80,7 +80,7 @@ const submit = () => {
                 <span>{{ $page.props.flash.error }}</span>
             </div>
 
-            <div class="mb-5 ">
+            <div class="mb-5">
                 <div role="alert" class="alert alert-vertical sm:alert-horizontal">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -90,12 +90,32 @@ const submit = () => {
                         <circle cx="12" cy="13" r="2" />
                         <path d="M12 15v5" />
                     </svg>
-                    <span class="font-bold">{{ projeto.nome }}</span>
+                    <span class="font-bold" title="Projeto">{{ projeto.nome }}</span>
+                    <span class="opacity-70 mt-2 flex items-center gap-2 badge badge-soft" title="Título da tarefa">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-clipboard-check-icon lucide-clipboard-check ">
+                            <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                            <path d="m9 14 2 2 4-4" />
+                        </svg>
+                        <strong>{{ tarefa.titulo }}</strong>
+                    </span>
+                    <span class="opacity-70 mt-2 flex items-center gap-2 badge badge-soft" title="Criador da tarefa">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-user-round-icon lucide-user-round">
+                            <circle cx="12" cy="8" r="5" />
+                            <path d="M20 21a8 8 0 0 0-16 0" />
+                        </svg>
+                        <strong>{{ tarefa.user?.name }}</strong>
+                    </span>
 
                 </div>
             </div>
 
-            <form @submit.prevent="form.post(`/tarefa/editar/${props.tarefa.id}`)" class="space-y-6">
+            <form @submit.prevent="form.put(`/tarefa/editar/${props.tarefa.id}`)" class="space-y-6">
                 <!-- Conteúdo principal -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 

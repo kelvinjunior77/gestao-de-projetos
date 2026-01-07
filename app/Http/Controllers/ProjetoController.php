@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjetoRequest;
 use App\Http\Requests\UpdateProjetoRequest;
+use App\Http\Requests\UpdateTarefaRequest;
 use App\Models\Projeto;
+use App\Models\Tarefa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -110,7 +113,7 @@ class ProjetoController extends Controller
      */
     public function edit(Projeto $projeto)
     {
-        
+
 
         return Inertia::render('Public/Projetos/ProjetoEdit', [
             'projeto' => $projeto,
@@ -140,7 +143,7 @@ class ProjetoController extends Controller
      */
     public function destroy(Projeto $projeto)
     {
-         try {
+        try {
             $projeto->delete();
 
             return redirect()->route('projetos.index')
@@ -151,4 +154,5 @@ class ProjetoController extends Controller
                 ->with('error', 'Erro ao deletar o projeto.');
         }
     }
+
 }
