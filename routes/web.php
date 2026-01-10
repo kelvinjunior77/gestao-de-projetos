@@ -31,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/usuario/editar/{usuario:slug}', [UserController::class, 'edit'])->name('usuario.edit');
     Route::post('/usuario/editar/{usuario}', [UserController::class, 'update'])->name('usuario.update');
 
+    Route::get('/show/perfil', [UserController::class, 'showPerfil'])->name('usuario.perfil');
+
     //Projetos
     Route::get('/projetos/lista', [ProjetoController::class, 'index'])->name('projetos.index');
     Route::get('/projeto/criar', [ProjetoController::class, 'create'])->name('projeto.create');
