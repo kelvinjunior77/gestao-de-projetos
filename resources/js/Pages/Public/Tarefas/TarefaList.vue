@@ -58,6 +58,29 @@ const abrirModal = (tarefa) => {
     showModal.value = true
 }
 
+// modal de delete 
+const showDeleteModal = ref(false);
+const tarefaDelete = ref(null);
+
+// Abre o modal recebendo o usuário
+const confirmDelete = (tarefa) => {
+    tarefaDelete.value = tarefa;
+    showDeleteModal.value = true;
+};
+
+// Envia requisição para excluir
+const deleteTarefa = () => {
+    if (!tarefaDelete.value) return;
+
+    router.delete(`/tarefa/deletar/${tarefaDelete.value.id}`, {
+        onSuccess: () => {
+            showDeleteModal.value = false;
+            tarefaDelete.value = null;
+        },
+    });
+};
+
+
 
 // Paginação 
 function goTo(link) {
@@ -273,7 +296,7 @@ function goTo(link) {
 
                                 <!---delete---->
                                 <button v-if="isAdmin || $page.props.auth.user.id === tarefa.user?.id"
-                                    @click="confirmDelete(projeto)" class="btn btn-sm btn-error btn-outline">
+                                     @click="confirmDelete(tarefa)" class="btn btn-sm btn-error btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash">
@@ -315,5 +338,45 @@ function goTo(link) {
             </div>
 
         </div>
+
+          <!-- MODAL DE CONFIRMAÇÃO -->
+        <dialog class="modal" :open="showDeleteModal">
+            <div class="modal-box border border-base-300 shadow-xl">
+
+                <h3 class="font-bold text-lg text-error flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-error" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zM11 7h2v6h-2V7zm0 8h2v2h-2v-2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Confirmar exclusão
+                </h3>
+
+                <p class="py-4 text-base-content/80 mt-4 mb-0">
+                    Tem certeza que deseja excluir tarefa
+                    <strong class="text-primary font-bold">{{ tarefaDelete?.titulo }}</strong> ?
+
+                <p>Esta ação não pode ser desfeita.</p>
+                </p>
+
+                <div class="modal-action">
+                    <button class="btn" @click="showDeleteModal = false">
+                        Cancelar
+                    </button>
+
+                    <button class="btn btn-error" @click="deleteTarefa">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </dialog>
     </Layout>
 </template>
+
+<style scoped>
+.modal-box {
+    margin-top: -500px !important;
+}
+
+
+</style>

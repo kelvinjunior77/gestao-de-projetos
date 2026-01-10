@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/tarefa/editar/{tarefa:slug}', [TarefaController::class, 'edit'])->name('tarefa.edit');
     Route::put('/tarefa/editar/{tarefa}', [TarefaController::class, 'update'])->name('tarefa.update');
+    Route::delete('/tarefa/deletar/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.delete');
 
     //Route::get('/tarefa/editar/{tarefa:slug}', [ProjetoController::class, 'editarTarefa'])->name('tarefa.edit');
     //Route::post('/tarefa/editar/teste/{tarefa}', [ProjetoController::class, 'updateTarefa'])->name('tarefa.update');

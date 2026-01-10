@@ -216,12 +216,25 @@ class TarefaController extends Controller
         }
     }
 
- 
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tarefa $tarefa)
     {
-        //
+        try {
+            // Remove relações many-to-many
+            $tarefa->usuarios()->detach();
+
+            // Deleta a tarefa
+            $tarefa->delete();
+
+            return redirect()
+                ->route('tarefa.list')
+                ->with('success', 'Tarefa deletada com sucesso!');
+        } catch (\Throwable $e) {
+            return back()
+                ->with('error', 'Erro ao deletar a tarefa.');
+        }
     }
 }
