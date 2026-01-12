@@ -209,10 +209,10 @@ function goTo(link) {
 
                         <tr v-for="tarefa in tarefas.data" :key="tarefa.id">
                             <td class="font-medium">
-                                <span class="font-bold text-info
+                                <button  @click="abrirModal(tarefa)" class="font-bold text-info
                                  line-clamp-1 cursor-pointer" :title="tarefa.titulo">
                                     {{ tarefa.titulo }}
-                                </span>
+                                </button>
 
                             </td>
 
@@ -245,24 +245,24 @@ function goTo(link) {
 
                             <td>
                                 <div class="grid grid-cols-2 gap-1">
-                                    <Link v-for="user in tarefa.usuarios" :key="user.id" href="" class="text-sm">
+                                    <div v-for="user in tarefa.usuarios" :key="user.id" href="" class="text-sm">
 
-                                        <span class="badge badge-soft badge-accent line-clamp-1" :title="user.name"
+                                        <Link :href="route('usuario.perfil', { slug: user.slug })" class="badge badge-soft badge-accent line-clamp-1" :title="user.name"
                                             v-if="$page.props.auth.user.id === user.id">
                                             {{ user.name }}
-                                        </span>
+                                        </Link>
 
-                                        <span v-else class="badge badge-soft badge-primary line-clamp-1"
+                                        <Link v-else :href="route('usuario.perfil', { slug: user.slug })" class="badge badge-soft badge-primary line-clamp-1"
                                             :title="user.name">
                                             {{ user.name }}
-                                        </span>
+                                        </Link>
 
-                                    </Link>
+                                    </div>
                                 </div>
                             </td>
 
                             <td>
-                                <Link href="" class="badge badge-soft line-clamp-1" :title="tarefa.user?.name">
+                                <Link :href="route('usuario.perfil', { slug: tarefa.user?.slug })" class="badge badge-soft line-clamp-1" :title="tarefa.user?.name">
                                     {{ tarefa.user?.name ?? '-' }}
                                 </Link>
 

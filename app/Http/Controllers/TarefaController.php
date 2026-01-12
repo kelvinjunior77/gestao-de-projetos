@@ -22,9 +22,9 @@ class TarefaController extends Controller
         $user = Auth::user();
 
         $query = Tarefa::with([
-            'user:id,name,avatar,cargo',              // criador da tarefa
+            'user:id,name,avatar,cargo,slug',              // criador da tarefa
             'projeto:id,nome,slug',    // projeto
-            'usuarios:id,name,avatar,cargo', // usuários atribuídos
+            'usuarios:id,name,avatar,cargo,slug', // usuários atribuídos
         ]);
 
 

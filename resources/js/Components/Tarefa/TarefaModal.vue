@@ -44,14 +44,14 @@ defineEmits(['close'])
         <div class="space-y-4">
           <div class="bg-base-200 p-4 rounded-lg">
             <p class="font-semibold text-base-content/70 ">Descrição</p>
-            <p class="text-base-content ">
+            <p class="text-sm mt-2">
               {{ tarefa.descricao || '—' }}
             </p>
           </div>
 
           <div class="bg-base-200 p-4 rounded-lg">
             <p class="font-semibold text-base-content/70">Função</p>
-            <p>{{ tarefa.funcao || '—' }}</p>
+            <p class="text-sm mt-2">{{ tarefa.funcao || '—' }}</p>
           </div>
 
           <div class="bg-base-200 p-4 rounded-lg">
@@ -59,7 +59,7 @@ defineEmits(['close'])
               Criado por
             </p>
 
-            <Link :href="route('usuario.perfil', { id: tarefa.user.id })" v-if="tarefa.user" class="flex items-center gap-3 px-3 py-2 border border-base-300 
+            <Link :href="route('usuario.perfil', { slug: tarefa.user.slug })" v-if="tarefa.user" class="flex items-center gap-3 px-3 py-2 border border-base-300 
                rounded-xl bg-base-100 shadow-sm w-fit">
 
               <div class="avatar">
@@ -105,12 +105,12 @@ defineEmits(['close'])
 
             <div>
               <p class="font-semibold text-base-content/70">Data final</p>
-              <p>{{ tarefa.data_fim ? new Date(tarefa.data_fim).toLocaleDateString('pt-BR') : 'Sem prazo' }}</p>
+              <p class="text-sm">{{ tarefa.data_fim ? new Date(tarefa.data_fim).toLocaleDateString('pt-BR') : 'Sem prazo' }}</p>
             </div>
 
             <div>
               <p class="font-semibold text-base-content/70">Data Criação</p>
-              <p> {{ tarefa?.created_at
+              <p class="text-sm"> {{ tarefa?.created_at
                 ? new Date(tarefa.created_at).toLocaleDateString('pt-BR')
                 : 'Sem data'
                 }} </p>
@@ -125,7 +125,7 @@ defineEmits(['close'])
             <div class="flex flex-wrap gap-3">
               <div v-for="user in tarefa.usuarios" :key="user.id"
                 class="flex items-center gap-3 px-3 py-2 border border-base-300 rounded-xl bg-base-100 shadow-sm">
-                <Link :href="route('usuario.perfil', { id: user.id })" class="flex items-center gap-3">
+                <Link :href="route('usuario.perfil', { slug: user.slug })" class="flex items-center gap-3">
                   <div class="avatar">
                     <div class="w-10 h-10 rounded-full ring ring-base-300">
                       <img v-if="user.avatar" :src="`/storage/${user.avatar}`" :alt="user.name" />
@@ -160,7 +160,7 @@ defineEmits(['close'])
           Fechar
         </button>
 
-        <Link :href="route('tarefa.create', tarefa.projeto?.slug)" class="btn btn-primary">
+        <Link :href="route('tarefa.create', tarefa.projeto?.slug)" class="btn btn-soft btn-primary">
           Criar nova tarefa
         </Link>
       </div>
