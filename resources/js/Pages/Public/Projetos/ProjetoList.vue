@@ -87,7 +87,7 @@ const deleteProjeto = () => {
 
 <template>
     <Layout>
-         <ProjectViewModal :show="showModal" :projeto="projetoSelecionado" @close="showModal = false" />
+        <ProjectViewModal :show="showModal" :projeto="projetoSelecionado" @close="showModal = false" />
 
         <div class="max-w-10xl h-10 mb-6">
             <div
@@ -189,7 +189,7 @@ const deleteProjeto = () => {
                                     <button class="cursor-pointer" @click="abrirModal(projeto)">
                                         <span class="font-bold text-info">{{ projeto.nome }}</span>
                                     </button>
-                                    
+
                                 </td>
 
                                 <td>
@@ -220,16 +220,16 @@ const deleteProjeto = () => {
                                 </td>
 
                                 <td>
-                                    {{ projeto.user?.name || '—' }}
+                                    <Link :href="route('usuario.perfil', { slug: projeto.user?.slug })" class="badge badge-ghost">
+                                       {{ projeto.user?.name || '—' }}
+                                    </Link>
                                 </td>
 
                                 <td>
-                                    {{ projeto.data_fim ?? '—' }}
+                                    {{ projeto.data_fim ? new Date(projeto.data_fim).toLocaleDateString('pt-BR') : 'Sem data' }}
                                 </td>
 
                                 <td class="flex gap-2">
-
-
 
                                     <button @click="abrirModal(projeto)" class="btn text-success btn-sm btn-outline">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -331,7 +331,7 @@ const deleteProjeto = () => {
             </div>
         </dialog>
 
-   
+
 
 
     </Layout>

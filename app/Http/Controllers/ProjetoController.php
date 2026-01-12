@@ -23,7 +23,7 @@ class ProjetoController extends Controller
     {
         $user = Auth::user();
 
-        $query = Projeto::with('user:id,name')
+        $query = Projeto::with('user:id,name,slug')
             ->where(function ($q) use ($user) {
                 $q->where('visibilidade', 'publico')   // todos podem ver públicos
                     ->orWhere(function ($q2) use ($user) {
