@@ -74,10 +74,7 @@ class UserController extends Controller
      */
     public function show(User $usuario)
     {
-
-        return Inertia::render('Public/User/UserPerfil', [
-            'user' => $usuario,
-        ]);
+        return 'Mostrando perfil do usuário: ' . $usuario->name;
     }
 
     /**
