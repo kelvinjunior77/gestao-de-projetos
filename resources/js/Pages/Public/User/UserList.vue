@@ -182,12 +182,13 @@ const deleteUser = () => {
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                             <circle cx="9" cy="7" r="4" />
                         </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ contarUsuario }} {{ totalUsuarios
-                            }}</div>
+                        }}</div>
                     </button>
                 </div>
 
                 <div class="w-40">
-                    <Link :href="route('admin.cad.usuario')" class="btn bg-primary/10 rounded-lg text-primary border-0 hover:bg-primary/20 gap-2">
+                    <Link :href="route('admin.cad.usuario')"
+                        class="btn bg-primary/10 rounded-lg text-primary border-0 hover:bg-primary/20 gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-circle-plus-icon lucide-circle-plus">
@@ -269,7 +270,7 @@ const deleteUser = () => {
                                 <tr v-for="user in users.data" :key="user.id">
 
                                     <td>
-                                        <div class="flex items-center gap-3">
+                                        <Link :href="`/admin/perfil/usuario/${user.slug}`" class="flex items-center gap-3">
                                             <div class="avatar">
                                                 <div class="w-12 h-12 rounded-full">
                                                     <img
@@ -283,7 +284,7 @@ const deleteUser = () => {
                                                     {{ user.email }}
                                                 </p>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </td>
 
                                     <td>{{ user.cargo || "-" }}</td>
@@ -300,14 +301,28 @@ const deleteUser = () => {
                                         <div class="flex justify-end gap-2">
 
                                             <Link v-if="isAdmin" :href="`/admin/perfil/usuario/${user.slug}`"
-                                                class="btn btn-sm btn-ghost">
-                                                Ver
-                                            </Link> 
+                                                class="btn text-success btn-sm btn-outline">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-eye-icon lucide-eye">
+                                                    <path
+                                                        d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                                    <circle cx="12" cy="12" r="3" />
+                                                </svg>
+                                            </Link>
 
                                             <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
-                                                class="btn btn-sm btn-ghost">
-                                                Ver
-                                            </Link> 
+                                                class="btn text-success btn-sm btn-outline">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-eye-icon lucide-eye">
+                                                    <path
+                                                        d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                                    <circle cx="12" cy="12" r="3" />
+                                                </svg>
+                                            </Link>
 
                                             <!---
                                             <Link :href="`/admin/editar/usuario/${user.slug}`"
@@ -316,14 +331,28 @@ const deleteUser = () => {
                                             </Link>--->
 
                                             <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)"
-                                                class="btn btn-sm btn-info text-white">
-                                                Editar
+                                                class="btn btn-sm btn-info btn-outline">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-pencil-icon lucide-pencil">
+                                                    <path
+                                                        d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
                                             </Link>
 
                                             <Link v-if="isNormal && $page.props.auth.user.id === user.id"
                                                 :href="route('usuario.edit', user.slug)"
-                                                class="btn btn-sm btn-info text-white">
-                                                Editar
+                                                class="btn btn-sm btn-info btn-outline">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-pencil-icon lucide-pencil">
+                                                    <path
+                                                        d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
                                             </Link>
 
                                             <!-----
@@ -332,9 +361,16 @@ const deleteUser = () => {
                                                 Excluir
                                             </button> -->
 
-                                            <button class="btn btn-error btn-sm" @click="confirmDelete(user)"
-                                                v-if="id !== user.id && isAdmin">
-                                                Excluir
+                                            <button class="btn btn-sm btn-error btn-outline"
+                                                @click="confirmDelete(user)" v-if="id !== user.id && isAdmin">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-trash-icon lucide-trash">
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                                    <path d="M3 6h18" />
+                                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                </svg>
                                             </button>
 
 
