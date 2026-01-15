@@ -23,9 +23,13 @@ class ProjetoController extends Controller
     {
         $user = Auth::user();
 
-        $query = Projeto::with('user:id,name,slug')
+        $query = Projeto::with([
+            'user:id,name,slug',
+            'tarefas:id,projeto_id,titulo,status,slug',
+        ])
+            ->withCount('tarefas')
             ->where(function ($q) use ($user) {
-                $q->where('visibilidade', 'publico')   // todos podem ver públicos
+                $q->where('visibilidade', 'publico') // todos veem públicos
                     ->orWhere(function ($q2) use ($user) {
                         if ($user) {
                             $q2->where('visibilidade', 'privado')
@@ -33,6 +37,7 @@ class ProjetoController extends Controller
                         }
                     });
             });
+
 
         // FILTRO: busca por nome/título
         if ($request->filled('search')) {
@@ -154,5 +159,4 @@ class ProjetoController extends Controller
                 ->with('error', 'Erro ao deletar o projeto.');
         }
     }
-
 }

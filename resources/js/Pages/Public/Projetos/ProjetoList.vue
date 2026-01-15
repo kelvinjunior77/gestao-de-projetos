@@ -129,15 +129,15 @@ const deleteProjeto = () => {
             <!-- Prioridade -->
             <select v-model="prioridade" class="select select-bordered outline-0 w-50">
                 <option value="">Todas prioridades</option>
-                <option value="baixa">Baixa</option>
-                <option value="media">Média</option>
-                <option value="alta">Alta</option>
+                <option value="baixa" class="text-blue-500">Baixa</option>
+                <option value="media" class="text-yellow-500">Média</option>
+                <option value="alta" class="text-red-500">Alta</option>
             </select>
 
             <!-- Visibilidade -->
             <select v-model="visibilidade" class="select select-bordered outline-0 w-50">
                 <option value="">Todas visibilidades</option>
-                <option value="publico">Público</option>
+                <option value="publico" class="">Público</option>
                 <option value="privado">Privado</option>
             </select>
 
