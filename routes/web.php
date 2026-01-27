@@ -26,12 +26,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/lista/usuarios', [UserController::class, 'index'])->name('usuario.lista');
-    Route::get('/usuario/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.update.perfil');
+    Route::get('/usuario/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.perfil');
 
     Route::get('/usuario/editar/{usuario:slug}', [UserController::class, 'edit'])->name('usuario.edit');
     Route::post('/usuario/editar/{usuario}', [UserController::class, 'update'])->name('usuario.update');
 
-    Route::get('/usuario/show/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.perfil');
+    //Route::get('/usuario/show/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.perfil');
 
     //Projetos
     Route::get('/projetos/lista', [ProjetoController::class, 'index'])->name('projetos.index');

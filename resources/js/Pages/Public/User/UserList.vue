@@ -270,7 +270,7 @@ const deleteUser = () => {
                                 <tr v-for="user in users.data" :key="user.id">
 
                                     <td>
-                                        <Link :href="`/admin/perfil/usuario/${user.slug}`" class="flex items-center gap-3">
+                                        <div class="flex items-center gap-3">
                                             <div class="avatar">
                                                 <div class="w-12 h-12 rounded-full">
                                                     <img
@@ -284,7 +284,7 @@ const deleteUser = () => {
                                                     {{ user.email }}
                                                 </p>
                                             </div>
-                                        </Link>
+                                        </div>
                                     </td>
 
                                     <td>{{ user.cargo || "-" }}</td>
@@ -312,7 +312,7 @@ const deleteUser = () => {
                                                 </svg>
                                             </Link>
 
-                                            <Link v-if="isNormal" :href="`/usuario/perfil/${user.slug}`"
+                                            <Link v-if="isNormal" :href="route('usuario.perfil', user.slug)"
                                                 class="btn text-success btn-sm btn-outline">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -330,6 +330,7 @@ const deleteUser = () => {
                                             Editar
                                             </Link>--->
 
+                                            <!--editar admin-->
                                             <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)"
                                                 class="btn btn-sm btn-info btn-outline">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -342,6 +343,7 @@ const deleteUser = () => {
                                                 </svg>
                                             </Link>
 
+                                            <!--editar-->
                                             <Link v-if="isNormal && $page.props.auth.user.id === user.id"
                                                 :href="route('usuario.edit', user.slug)"
                                                 class="btn btn-sm btn-info btn-outline">
@@ -361,6 +363,7 @@ const deleteUser = () => {
                                                 Excluir
                                             </button> -->
 
+                                            <!---delete-->
                                             <button class="btn btn-sm btn-error btn-outline"
                                                 @click="confirmDelete(user)" v-if="id !== user.id && isAdmin">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"

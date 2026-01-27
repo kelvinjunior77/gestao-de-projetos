@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
-import { defineProps, computed, ref} from "vue";
+import { defineProps, computed, ref } from "vue";
 import { Link, router, usePage } from "@inertiajs/vue3";
 
 import { route } from "ziggy-js";
@@ -46,6 +46,7 @@ const deleteUser = () => {
     });
 };
 // --->
+
 </script>
 
 <template>
@@ -62,13 +63,13 @@ const deleteUser = () => {
                         <ul>
                             <li>
                                 <Link href="/">
-                                Home
+                                    Home
                                 </Link>
                             </li>
 
                             <li>
                                 <Link :href="route('usuario.lista')">
-                                Lista de usuarios
+                                    Lista de usuarios
                                 </Link>
                             </li>
 
@@ -169,16 +170,24 @@ const deleteUser = () => {
 
         <div class="flex items-center mb-6 mt-4 gap-2">
 
-            <Link v-if="$page.props.auth.user.id == user.id" v-show="!isAdmin"
-                :href="route('usuario.edit', user.slug)" class="btn btn-success  w-2xs ">Editar</Link>
+            <Link v-if="isNormal && $page.props.auth.user.id === user.id" :href="route('usuario.edit', user.slug)"
+                class="btn btn-success  w-2xs ">Editar</Link>
 
-            <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)" class="btn btn-success  w-2xs ">Editar
+            <Link v-if="isAdmin" :href="route('admin.edit.usuario', user.slug)" class="btn btn-success  w-2xs ">
+                Editar
             </Link>
 
-          
-            <button v-if="isAdmin" class="btn btn-error w-2xs text-white" @click="confirmDelete(user)">
-                Excluir
+            <button v-if="isNormal && $page.props.auth.user.id === user.id" class="btn btn-error w-2xs text-white"
+                @click="confirmDelete(user)">
+                Excluir sua conta
             </button>
+
+              <button v-if="isAdmin" class="btn btn-error w-2xs text-white"
+                @click="confirmDelete(user)">
+                Excluir conta
+            </button>
+
+        
         </div>
 
 
@@ -196,12 +205,11 @@ const deleteUser = () => {
                 </h3>
 
                 <p class="py-4 text-base-content/80 mt-4 mb-0">
-                    Tem certeza que deseja excluir o usuário
+                    Tem certeza que deseja excluir conta
                     <strong class="text-primary font-bold">{{ userToDelete?.name }}</strong> ?
 
                 <p>Esta ação não pode ser desfeita.</p>
                 </p>
-
 
                 <div class="modal-action">
                     <button class="btn" @click="showDeleteModal = false">
@@ -214,9 +222,10 @@ const deleteUser = () => {
                 </div>
 
             </div>
+        </dialog>                               
+    
+        
 
 
-
-        </dialog>
     </Layout>
 </template>
