@@ -51,6 +51,12 @@ class User extends Authenticatable
         ];
     }
 
+    // Projetos criados pelo usuário
+    public function projetosCriados()
+    {
+        return $this->hasMany(Projeto::class, 'user_id');
+    }
+
     public function projetos()
     {
         // um para muitos
@@ -69,5 +75,4 @@ class User extends Authenticatable
         return $this->belongsToMany(Tarefa::class, 'tarefa_user')
             ->withTimestamps();
     }
-
 }

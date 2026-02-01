@@ -98,10 +98,24 @@ class AdminController extends Controller
 
     public function perfilUser(User $usuario)
     {
+
+        // projetos criados pelo usuário
+        $projetosCriados = $usuario->projetosCriados()->count();
+
+        // tarefas criadas pelo usuário
+        $tarefasCriadas = $usuario->tarefasCriadas()->count();
+
+        // tarefas atribuídas ao usuário
+        $tarefasSelecionadas = $usuario->tarefas()->count();
+
         return Inertia::render('Public/User/UserPerfil', [
             'user' => $usuario,
-
+            //contagens
+            'projetosCriados' => $projetosCriados,
+            'tarefasCriadas' => $tarefasCriadas,
+            'tarefasSelecionadas' => $tarefasSelecionadas,
         ]);
+
     }
 
     public function edit(User $usuario)
@@ -115,52 +129,52 @@ class AdminController extends Controller
         ]);
     }
 
-   public function update(Request $request, User $usuario) {
-    try {
-        $data = $request->validate([
-            'name'=> 'required|string|max:255',
-            'email'=> 'required|email|unique:users,email,' . $usuario->id,
-            'avatar'=> 'nullable|image',
-        ], [
-            'name.required'=> 'O campo nome é obrigatório.',
-            'email.required'=> 'O campo email é obrigatório.',
-            'email.email'=> 'Por favor, insira um email válido.',
-            'email.unique'=> 'Este email já está em uso.',
-            'avatar.image'=> 'O arquivo enviado deve ser uma imagem.',
-        ]);
+    public function update(Request $request, User $usuario)
+    {
+        try {
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $usuario->id,
+                'avatar' => 'nullable|image',
+            ], [
+                'name.required' => 'O campo nome é obrigatório.',
+                'email.required' => 'O campo email é obrigatório.',
+                'email.email' => 'Por favor, insira um email válido.',
+                'email.unique' => 'Este email já está em uso.',
+                'avatar.image' => 'O arquivo enviado deve ser uma imagem.',
+            ]);
 
-        // Processar avatar
-        if ($request->hasFile('avatar')) {
+            // Processar avatar
+            if ($request->hasFile('avatar')) {
 
-            // Deleta avatar antigo se existir
-            if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
-                Storage::disk('public')->delete($usuario->avatar);
+                // Deleta avatar antigo se existir
+                if ($usuario->avatar && Storage::disk('public')->exists($usuario->avatar)) {
+                    Storage::disk('public')->delete($usuario->avatar);
+                }
+
+                // Salva novo avatar
+                $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            } else {
+                // Mantém o avatar atual
+                $data['avatar'] = $usuario->avatar;
             }
 
-            // Salva novo avatar
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
-        } else {
-            // Mantém o avatar atual
-            $data['avatar'] = $usuario->avatar;
+            // Atualiza slug
+            $data['slug'] = Str::slug($data['name']);
+
+            // Atualizar usuário
+            $usuario->update($data);
+
+            return redirect()
+                ->route('admin.list.usuarios')
+                ->with('success', 'Usuário atualizado com sucesso!');
+        } catch (\Exception $e) {
+
+            return back()
+                ->with('error', 'Erro ao atualizar o usuário.')
+                ->withInput();
         }
-
-        // Atualiza slug
-        $data['slug'] = Str::slug($data['name']);
-
-        // Atualizar usuário
-        $usuario->update($data);
-
-        return redirect()
-            ->route('admin.list.usuarios')
-            ->with('success', 'Usuário atualizado com sucesso!');
-
-    } catch (\Exception $e) {
-
-        return back()
-            ->with('error', 'Erro ao atualizar o usuário.')
-            ->withInput();
     }
- }
 
 
     public function destroy(User $usuario)
