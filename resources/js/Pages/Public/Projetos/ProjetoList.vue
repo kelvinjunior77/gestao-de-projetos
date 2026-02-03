@@ -163,7 +163,7 @@ const deleteProjeto = () => {
             <div class="card-body">
 
                 <!-- Se não existir projetos -->
-                <p v-if="projetos.data.length === 0" class="text-center py-6 opacity-60">
+                <p v-if="projetos.data.length === 0" class="text-center py-6 opacity-60 text-2xl">
                     Nenhum projeto encontrado.
                 </p>
 

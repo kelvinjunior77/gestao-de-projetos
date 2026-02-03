@@ -16,22 +16,19 @@ const form = useForm({
 
 // Prioridades / visibilidade (pode vir do server se preferir)
 const prioridades = [
-    { value: 'baixa', label: 'Baixa' },
-    { value: 'média', label: 'Média' },
-    { value: 'alta', label: 'Alta' },
+    { value: 'baixa', label: 'Baixa', class: 'text-blue-500' },
+    { value: 'média', label: 'Média', class: 'text-yellow-600'},
+    { value: 'alta', label: 'Alta', class: 'text-red-600'},
     //{ value: 'critica', label: 'Crítica' },
 ];
 
 const visibilidades = [
-    { value: 'publico', label: 'Público' },
-    { value: 'privado', label: 'Privado' },
+    { value: 'publico', label: 'Público', class: 'text-green-600' },
+    { value: 'privado', label: 'Privado', class: 'text-gray-600' },
     //{ value: 'interno', label: 'Interno' },
 ];
 
-// reset
-const reset = () => {
-    form.reset('nome', 'descricao', 'link_github', 'prioridade', 'visibilidade', 'data_fim');
-};
+
 </script>
 
 <template>
@@ -107,7 +104,8 @@ const reset = () => {
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Prioridade</span></label>
                                 <select v-model="form.prioridade" class="select select-bordered w-full outline-0">
-                                    <option v-for="p in prioridades" :key="p.value" :value="p.value">{{ p.label }}
+                                    <option v-for="p in prioridades" :key="p.value" :value="p.value" :class="p.class">
+                                        {{ p.label }}
                                     </option>
                                 </select>
                                 <p v-if="form.errors.prioridade" class="text-error text-sm mt-1">{{ form.errors.prioridade
@@ -118,7 +116,8 @@ const reset = () => {
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Visibilidade</span></label>
                                 <select v-model="form.visibilidade" class="select select-bordered w-full outline-0">
-                                    <option v-for="v in visibilidades" :key="v.value" :value="v.value">{{ v.label }}
+                                    <option v-for="v in visibilidades" :key="v.value" :value="v.value" :class="v.class">
+                                        {{ v.label }}
                                     </option>
                                 </select>
                                 <p v-if="form.errors.visibilidade" class="text-error text-sm mt-1">{{
@@ -131,10 +130,10 @@ const reset = () => {
 
                                 <select v-model="form.status" class="select select-bordered w-full outline-0">
 
-                                    <option value="pendente">Pendente</option>
+                                    <option value="pendente" class="text-blue-500">Pendente</option>
 
-                                    <option value="em_andamento">Em andamento</option>
-                                    <option value="concluido">Concluído</option>
+                                    <option value="em_andamento" class="text-yellow-500">Em andamento</option>
+                                    <option value="concluido" class="text-green-500">Concluído</option>
 
                                 </select>
                                 <p v-if="form.errors.status" class="text-error text-sm mt-1">{{ form.errors.status }}
@@ -164,7 +163,7 @@ const reset = () => {
 
                         <!-- Ações -->
                         <div class="flex gap-2 items-center">
-                            <button type="submit" class="btn btn-primary w-full" :disabled="form.processing">
+                            <button type="submit" class="btn btn-soft btn-primary w-full" :disabled="form.processing">
                                 <span v-if="!form.processing">Salvar Projeto</span>
                                 <span v-else class="loading loading-spinner"></span>
                             </button>
