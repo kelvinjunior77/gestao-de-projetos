@@ -189,7 +189,7 @@ const handleAvatar = (event) => {
 
                         <!-- BOTÕES -->
                         <div class="mt-10 flex gap-4">
-                            <button type="submit" class="btn btn-primary px-10" :disabled="form.processing">
+                            <button type="submit" class="btn btn-soft btn-primary px-10" :disabled="form.processing">
                                 <span v-if="!form.processing">Cadastrar</span>
                                 <span v-else class="loading loading-spinner"></span>
                             </button>

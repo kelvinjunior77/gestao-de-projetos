@@ -74,8 +74,23 @@ class UserController extends Controller
      */
     public function show(User $usuario)
     {
+        // projetos criados pelo usuário
+        $projetosCriados = $usuario->projetosCriados()->count();
+
+        // tarefas criadas pelo usuário
+        $tarefasCriadas = $usuario->tarefasCriadas()->count();
+
+        // tarefas atribuídas ao usuário
+        $tarefasSelecionadas = $usuario->tarefas()->count();
+
         return Inertia::render("Public/User/UserPerfil", [
-            'user' => $usuario
+            'user' => $usuario,
+
+            //contagens
+            'projetosCriados' => $projetosCriados,
+            'tarefasCriadas' => $tarefasCriadas,
+            'tarefasSelecionadas' => $tarefasSelecionadas,
+        
         ]);
     }
 

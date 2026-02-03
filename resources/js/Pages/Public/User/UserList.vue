@@ -47,7 +47,7 @@ watch([search, cargo, tipo], () => {
 // Função de filtros admin
 function applyFilters(page = 1) {
     router.get(
-        "/admin/listar/usuarios",
+        "/admin/usuarios/lista",
         {
             search: search.value,
             cargo: cargo.value,
@@ -66,7 +66,7 @@ function applyFilters(page = 1) {
 // Função de filtros
 function applyFiltersNormal(page = 1) {
     router.get(
-        "/lista/usuarios",
+        "/usuarios/lista",
         {
             search: search.value,
             cargo: cargo.value,
@@ -182,7 +182,7 @@ const deleteUser = () => {
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                             <circle cx="9" cy="7" r="4" />
                         </svg>Usuarios <div class="badge badge-sm badge-secondary">{{ contarUsuario }} {{ totalUsuarios
-                        }}</div>
+                            }}</div>
                     </button>
                 </div>
 
@@ -251,11 +251,14 @@ const deleteUser = () => {
             <!-- LISTA -->
             <div class="card bg-base-100 shadow-sm border border-base-200">
 
-
-
                 <div class="card-body">
 
-                    <div class="overflow-x-auto">
+                    <!-- Se não existir usuuarios -->
+                    <p v-if="users.data.length === 0" class="text-center py-6 opacity-60 text-2xl">
+                        Nenhum usuário encontrado.
+                    </p>
+
+                    <div v-else class="overflow-x-auto">
                         <table class="table table-zebra w-full">
                             <thead>
                                 <tr class="text-sm text-base-content/70">
