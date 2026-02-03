@@ -14,10 +14,11 @@ const props = defineProps({
 const search = ref(props.filtros.search || "");
 const prioridade = ref(props.filtros.prioridade || "");
 const visibilidade = ref(props.filtros.visibilidade || "");
+const status = ref(props.filtros.status || "");
 const autor = ref(props.filtros.autor || "");
 
 // Atualiza listagem sempre que filtro mudar
-watch([search, prioridade, visibilidade, autor], () => {
+watch([search, prioridade, status, visibilidade, autor], () => {
     applyFilters();
 });
 
@@ -28,6 +29,7 @@ function applyFilters(page = 1) {
             search: search.value,
             prioridade: prioridade.value,
             visibilidade: visibilidade.value,
+            status: status.value,
             autor: autor.value,
             page,
         },
@@ -124,8 +126,6 @@ const deleteProjeto = () => {
             <input type="text" v-model="search" @keyup.enter="filtrar" class="input input-bordered  outline-0 w-full"
                 placeholder="Buscar por título..." />
 
-
-
             <!-- Prioridade -->
             <select v-model="prioridade" class="select select-bordered outline-0 w-50">
                 <option value="">Todas prioridades</option>
@@ -134,11 +134,19 @@ const deleteProjeto = () => {
                 <option value="alta" class="text-red-500">Alta</option>
             </select>
 
+            <!-- Status ---->
+             <select v-model="status" class="select select-bordered outline-0 w-50">
+                <option value="">Todos status</option>
+                <option value="em_andamento" class="text-yellow-500">Em andamento</option>
+                <option value="concluido" class="text-green-500">Concluído</option>
+                <option value="cancelado" class="text-red-500">Cancelado</option>
+            </select>
+
             <!-- Visibilidade -->
             <select v-model="visibilidade" class="select select-bordered outline-0 w-50">
                 <option value="">Todas visibilidades</option>
-                <option value="publico" class="">Público</option>
-                <option value="privado">Privado</option>
+                <option value="publico" class="text-green-500">Público</option>
+                <option value="privado" class="text-gray-500">Privado</option>
             </select>
 
             <select v-model="autor" class="select select-bordered outline-0 w-50">

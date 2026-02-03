@@ -49,6 +49,11 @@ class ProjetoController extends Controller
             $query->where('prioridade', $request->prioridade);
         }
 
+        // FILTRO: status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         // FILTRO: visibilidade
         if ($request->filled('visibilidade')) {
             $query->where('visibilidade', $request->visibilidade);
@@ -68,7 +73,7 @@ class ProjetoController extends Controller
 
         return Inertia::render('Public/Projetos/ProjetoList', [
             'projetos' => $projetos,
-            'filtros' => $request->only('search', 'prioridade', 'visibilidade', 'autor'),
+            'filtros' => $request->only('search', 'prioridade', 'status', 'visibilidade', 'autor'),
         ]);
     }
 
