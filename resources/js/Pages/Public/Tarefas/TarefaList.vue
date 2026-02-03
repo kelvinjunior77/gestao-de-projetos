@@ -187,7 +187,13 @@ function goTo(link) {
 
             <!-- Tabela -->
             <div class="overflow-x-auto bg-base-100 border border-base-300 rounded-xl">
-                <table class="table table-zebra">
+
+                <!-- Se não existir tarefas -->
+                <p v-if="tarefas.data.length === 0" class="text-center py-6 opacity-60 text-2xl">
+                    Nenhuma tarefa encontrada.
+                </p>
+
+                <table v-else class="table table-zebra">
                     <thead>
                         <tr>
                             <th>Título</th>
@@ -201,15 +207,11 @@ function goTo(link) {
                     </thead>
 
                     <tbody>
-                        <tr v-if="tarefas.data.length === 0">
-                            <td colspan="7" class="text-center py-6 opacity-60">
-                                Nenhuma tarefa encontrada.
-                            </td>
-                        </tr>
+
 
                         <tr v-for="tarefa in tarefas.data" :key="tarefa.id">
                             <td class="font-medium">
-                                <button  @click="abrirModal(tarefa)" class="font-bold text-info
+                                <button @click="abrirModal(tarefa)" class="font-bold text-info
                                  line-clamp-1 cursor-pointer" :title="tarefa.titulo">
                                     {{ tarefa.titulo }}
                                 </button>
@@ -247,13 +249,14 @@ function goTo(link) {
                                 <div class="grid grid-cols-2 gap-1">
                                     <div v-for="user in tarefa.usuarios" :key="user.id" href="" class="text-sm">
 
-                                        <Link :href="route('usuario.perfil', { slug: user.slug })" class="badge badge-soft badge-accent line-clamp-1" :title="user.name"
+                                        <Link :href="route('usuario.perfil', { slug: user.slug })"
+                                            class="badge badge-soft badge-accent line-clamp-1" :title="user.name"
                                             v-if="$page.props.auth.user.id === user.id">
                                             {{ user.name }}
                                         </Link>
 
-                                        <Link v-else :href="route('usuario.perfil', { slug: user.slug })" class="badge badge-soft badge-primary line-clamp-1"
-                                            :title="user.name">
+                                        <Link v-else :href="route('usuario.perfil', { slug: user.slug })"
+                                            class="badge badge-soft badge-primary line-clamp-1" :title="user.name">
                                             {{ user.name }}
                                         </Link>
 
@@ -262,7 +265,8 @@ function goTo(link) {
                             </td>
 
                             <td>
-                                <Link :href="route('usuario.perfil', { slug: tarefa.user?.slug })" class="badge badge-soft line-clamp-1" :title="tarefa.user?.name">
+                                <Link :href="route('usuario.perfil', { slug: tarefa.user?.slug })"
+                                    class="badge badge-soft line-clamp-1" :title="tarefa.user?.name">
                                     {{ tarefa.user?.name ?? '-' }}
                                 </Link>
 
@@ -296,7 +300,7 @@ function goTo(link) {
 
                                 <!---delete---->
                                 <button v-if="isAdmin || $page.props.auth.user.id === tarefa.user?.id"
-                                     @click="confirmDelete(tarefa)" class="btn btn-sm btn-error btn-outline">
+                                    @click="confirmDelete(tarefa)" class="btn btn-sm btn-error btn-outline">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash">
@@ -321,7 +325,7 @@ function goTo(link) {
                 </div>
             </div>-->
 
-            <div class="flex justify-between items-center mt-6">
+            <div  class="flex justify-between items-center mt-6">
 
                 <p class="text-sm opacity-70">
                     Página {{ tarefas.current_page }} de {{ tarefas.last_page }}
@@ -339,7 +343,7 @@ function goTo(link) {
 
         </div>
 
-          <!-- MODAL DE CONFIRMAÇÃO -->
+        <!-- MODAL DE CONFIRMAÇÃO -->
         <dialog class="modal" :open="showDeleteModal">
             <div class="modal-box border border-base-300 shadow-xl">
 
@@ -377,6 +381,4 @@ function goTo(link) {
 .modal-box {
     margin-top: -500px !important;
 }
-
-
 </style>
