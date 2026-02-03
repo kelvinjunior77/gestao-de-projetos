@@ -96,12 +96,12 @@ const form = useForm({
 
                         <!-- BOTÕES -->
                         <div class="mt-10 flex gap-4">
-                            <button type="submit" class="btn btn-primary px-10" :disabled="form.processing">
+                            <button type="submit" class="btn btn-soft btn-primary px-10" :disabled="form.processing">
                                 <span v-if="!form.processing">Cadastrar</span>
                                 <span v-else class="loading loading-spinner"></span>
                             </button>
 
-                            <button class="btn btn-accent px-10" type="reset">
+                            <button class="btn btn-soft btn-error px-10" type="reset">
                                 Limpar
                             </button>
                         </div>

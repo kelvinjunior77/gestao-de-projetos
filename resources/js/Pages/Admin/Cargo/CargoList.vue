@@ -88,7 +88,7 @@ const deleteCargo = () => {
                         <ul>
                             <li>
                                 <Link href="/">
-                                Home
+                                    Home
                                 </Link>
                             </li>
 
@@ -113,7 +113,8 @@ const deleteCargo = () => {
                     class="input input-bordered w-full outline-0" />
 
                 <div class="w-40">
-                    <Link :href="route('admin.cad.cargo')" class="btn bg-primary/10 rounded-lg text-primary border-0 hover:bg-primary/20 gap-2">
+                    <Link :href="route('admin.cad.cargo')"
+                        class="btn bg-primary/10 rounded-lg text-primary border-0 hover:bg-primary/20 gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-circle-plus-icon lucide-circle-plus">
@@ -150,16 +151,18 @@ const deleteCargo = () => {
             <div class="card bg-base-100 shadow-sm border border-base-200">
 
 
-
                 <div class="card-body">
 
-                    <div class="overflow-x-auto">
+                    <!-- Se não existir cargos -->
+                    <p v-if="cargos.data.length === 0" class="text-center py-6 opacity-60 text-2xl">
+                        Nenhuma competência encontrada.
+                    </p>
+
+                    <div v-else class="overflow-x-auto">
                         <table class="table table-zebra w-full">
                             <thead>
                                 <tr class="text-sm text-base-content/70">
                                     <th>Nome</th>
-
-
                                     <th class="text-right">Ações</th>
                                 </tr>
                             </thead>
@@ -170,9 +173,8 @@ const deleteCargo = () => {
                                     <td>
                                         <div class="flex items-center gap-3">
 
-
                                             <div>
-                                                <p class="font-semibold">{{ cargo.nome }}</p>
+                                                <p class="font-semibold text-base-content">{{ cargo.nome }}</p>
                                                 <p class="text-sm text-base-content/60">
                                                     {{ cargo.descricao }}
                                                 </p>
@@ -180,20 +182,33 @@ const deleteCargo = () => {
                                         </div>
                                     </td>
 
-
-
                                     <td class="text-right">
                                         <div class="flex justify-end gap-2">
 
 
                                             <Link :href="route('admin.edit.cargo', cargo.id)"
-                                                class="btn btn-sm btn-info text-white">
-                                            Editar
+                                                class="btn btn-sm btn-info btn-outline gap-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-pencil-icon lucide-pencil">
+                                                    <path
+                                                        d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
                                             </Link>
 
 
-                                            <button class="btn btn-error btn-sm" @click="confirmDelete(cargo)">
-                                                Excluir
+                                            <button class="btn btn-sm btn-error btn-outline gap-2"
+                                                @click="confirmDelete(cargo)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-trash-icon lucide-trash">
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                                    <path d="M3 6h18" />
+                                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                </svg>
                                             </button>
 
 
