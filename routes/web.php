@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('/lista/usuarios', [UserController::class, 'index'])->name('usuario.lista');
+    Route::get('/usuarios/lista', [UserController::class, 'index'])->name('usuario.lista');
     Route::get('/usuario/perfil/{usuario:slug}', [UserController::class, 'show'])->name('usuario.perfil');
 
     Route::get('/usuario/editar/{usuario:slug}', [UserController::class, 'edit'])->name('usuario.edit');
@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     //Tarefas
     Route::get('/criar/tarefa/{projeto:slug}', [TarefaController::class, 'create'])->name('tarefa.create');
     Route::post('/criar/tarefa', [TarefaController::class, 'store'])->name('tarefa.store');
-    Route::get('/lista/tarefas', [TarefaController::class, 'index'])->name('tarefa.list');
+    Route::get('/tarefas/lista', [TarefaController::class, 'index'])->name('tarefa.list');
 
     Route::get('/tarefa/editar/{tarefa:slug}', [TarefaController::class, 'edit'])->name('tarefa.edit');
     Route::put('/tarefa/editar/{tarefa}', [TarefaController::class, 'update'])->name('tarefa.update');
@@ -58,7 +58,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/tarefa/deletar/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.delete');
    
-
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
@@ -73,7 +72,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::post("/admin/cadastrar/usuario", [AdminController::class, 'store'])->name('admin.users.store');
 
-    Route::get("/admin/listar/usuarios", [AdminController::class, 'listUsers'])->name('admin.list.usuarios');
+    Route::get("/admin/usuarios/lista", [AdminController::class, 'listUsers'])->name('admin.list.usuarios');
     Route::get("/admin/perfil/usuario/{usuario:slug}", [AdminController::class, 'perfilUser'])->name('admin.perfil.usuario');
 
     Route::get("/admin/editar/usuario/{usuario:slug}", [AdminController::class, 'edit'])->name('admin.edit.usuario');

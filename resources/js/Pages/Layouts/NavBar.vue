@@ -85,8 +85,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                     </li>
 
                     <li>
-                        <Link href="/admin/listar/usuarios"
-                            :class="getLinkClass('/admin/listar/usuarios', '/admin/editar/usuario')">
+                        <Link href="/admin/usuarios/lista" :class="getLinkClass('/admin/usuarios', '/admin/perfil/usuario')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -106,7 +105,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                         Usuarios
                     </li>
                     <li>
-                        <Link href="/lista/usuarios" :class="getLinkClass('/lista/usuarios', '/usuario/editar')">
+                        <Link href="/usuarios/lista" :class="getLinkClass('/usuarios', '/usuario/perfil')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -138,16 +137,16 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                 </li>
 
                 <li>
-                    <Link href="/projetos/lista" :class="getLinkClass('/projetos')">
+                    <Link href="/projetos/lista" :class="getLinkClass('/projetos', '/projeto/editar')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path
                             d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
                         <circle cx="12" cy="10" r="2" />
                     </svg>
-                    <span>Projetos</span>
+                    <span>Lista de Projetos</span>
                     </Link>
-                </li>
+                </li> 
 
 
                 <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
@@ -155,7 +154,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                 </li>
 
                 <li>
-                    <Link href="/lista/tarefas" :class="getLinkClass('/lista/tarefas')">
+                    <Link href="/tarefas/lista" :class="getLinkClass('/tarefas', '/tarefa/editar')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
@@ -185,7 +184,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                     </li>
 
                     <li>
-                        <Link href="/admin/lista/cargos" :class="getLinkClass('/admin/lista/cargos')">
+                        <Link href="/admin/lista/cargos" :class="getLinkClass('/admin/lista', '/admin/editar/cargo')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
