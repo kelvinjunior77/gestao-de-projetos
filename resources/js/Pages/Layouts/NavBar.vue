@@ -80,7 +80,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
                             <line x1="20" x2="20" y1="8" y2="14" />
                             <line x1="23" x2="17" y1="11" y2="11" />
                         </svg>
-                        <span>Usuario</span>
+                        <span>Adicionar Usuario</span>
                         </Link>
                     </li>
 
@@ -155,7 +155,7 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
 
                 <li>
                     <Link href="/tarefas/lista" :class="getLinkClass('/tarefas', '/tarefa/editar')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
                         <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
@@ -220,4 +220,9 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
     background: #d1d5db;
     /* gray-300 */
 }
+
+  /*Link, h1, li, span, svg {
+    color: #e5e7eb!important;
+   gray-200 
+}*/
 </style>
