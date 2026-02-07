@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
-import { defineProps, computed, ref } from "vue";
+import { computed, ref } from "vue";
 import { Link, router, usePage } from "@inertiajs/vue3";
 
 import { route } from "ziggy-js";
