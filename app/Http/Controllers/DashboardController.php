@@ -20,11 +20,14 @@ class DashboardController extends Controller
             $query->where('status', 'concluido');
         })->count();
 
+        $tarefasRecentes = Projeto::with('tarefas')->get()->pluck('tarefas')->flatten()->sortByDesc('created_at')->take(3);
+
         return Inertia::render('App', [
             'projectsCount' => $projectsCount,
             'tasksCount' => $tasksCount,
             'finishedProjectsCount' => $finishedProjectsCount,
-            'finishedTasksCount' => $finishedTasksCount
+            'finishedTasksCount' => $finishedTasksCount,
+            'tarefasRecentes' => $tarefasRecentes
         ]);
     }
 }
