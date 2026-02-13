@@ -29,6 +29,11 @@ const props = defineProps({
         required: false,
     },
 
+    tarefasRecentes: {
+        type: Array,
+        required: true,
+    }
+
 
 });
 
@@ -164,48 +169,59 @@ const props = defineProps({
 
             <div class="col-span-1 xl:col-span-2 card bg-base-100 shadow-sm border border-base-200">
                 <div class="card-body p-0">
-                    <div class="p-5 border-b border-base-200">
+                    <div class="p-2 border-b border-base-200">
                         <h3 class="font-bold text-lg">Tarefas Recentes</h3>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="table table-zebra w-full">
                             <thead>
                                 <tr>
-                                    <th>Usuário</th>
-                                    <th>Atividade</th>
+                                    <th>Titulo</th>
+                                    <th>Funcão</th>
                                     <th>Data</th>
                                     <th class="text-right">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="task in recentTasks" :key="task.id" class="hover">
+                                <tr v-for="tarefa in tarefasRecentes" :key="tarefa.id" class="hover">
                                     <td>
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar">
-                                                <div class="mask mask-squircle w-10 h-10">
-                                                    
-                                                </div>
-                                            </div>
+                                        <div class="flex items-center gap-3 w-20">
                                             <div>
-                                                <div class="font-bold">{{ task.name }}</div>
-                                                <div class="text-xs opacity-50">Dev Team</div>
+                                                <div class="font-bold">{{ tarefa.titulo }}</div>
+                                                <div class="text-xs opacity-50">{{ tarefa.prioridade }}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        {{ task.desc }}
-                                        <br />
-                                        <span class="badge badge-ghost badge-sm">Web Design</span>
+                                    <td :title="tarefa.descricao" class="max-w-sm truncate">
+                                        {{ tarefa.descricao }}
                                     </td>
                                     <td>
                                         <div class="flex items-center gap-2 text-xs text-base-content/70">
                                             <span class="w-2 h-2 rounded-full bg-success"></span>
-                                            {{ task.date }}
+                                            {{ tarefa.created_at
+                                                ? new Date(tarefa.created_at).toLocaleString('pt-BR', {
+                                                    day: '2-digit',
+                                                    month: '2-digit',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })
+                                                : 'Sem data'
+                                            }}
+
                                         </div>
                                     </td>
                                     <td class="text-right">
-                                        <button class="btn btn-xs btn-error btn-outline mr-2">Rejeitar</button>
-                                        <button class="btn btn-xs btn-success text-white">Aprovar</button>
+                                        <button type="button" class="badge badge-outline badge-success cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="lucide lucide-eye-icon lucide-eye">
+                                                <path
+                                                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
