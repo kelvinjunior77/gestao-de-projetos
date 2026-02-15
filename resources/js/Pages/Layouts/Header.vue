@@ -137,7 +137,8 @@ function logout() {
 
         <ul v-show="dProfile" class="dropdown-content z-50 mt-3 w-56 bg-base-200 rounded-box shadow p-2">
           <li class="px-3 py-2 text-center">
-            <div class="font-bold mb-2">{{ user.name }}</div>
+            <div class="font-bold mb-0">{{ user.name }}</div>
+            <span class="text-sm mb-4">{{ user.cargo }}</span>
             <div class="text-xs opacity-70 mb-2">
               <span class="badge badge-soft badge-primary">{{ user.email }}</span>
             </div>

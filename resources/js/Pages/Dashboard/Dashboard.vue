@@ -1,16 +1,11 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import Layout from '../Layouts/Layout.vue';
+import TarefaModal from '../../Components/Tarefa/TarefaModal.vue';
+import { ref } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps({
-    recentTasks: {
-        type: Array,
-        default: () => ([
-            { id: 1, name: 'Isabella Christensen', desc: 'Design da Home', date: '11 MAI 12:56', avatar: 'https://i.pravatar.cc/150?u=1', status: 'pending' },
-            { id: 2, name: 'Mathilde Andersen', desc: 'Correção de Bugs API', date: '11 MAI 10:35', avatar: 'https://i.pravatar.cc/150?u=2', status: 'rejected' },
-            { id: 3, name: 'Karla Sorenson', desc: 'Deploy Produção', date: '10 MAI 09:00', avatar: 'https://i.pravatar.cc/150?u=3', status: 'approved' },
-        ])
-    },
 
     projetos: {
         type: Number,
@@ -34,7 +29,6 @@ const props = defineProps({
         required: true,
     }
 
-
 });
 
 
@@ -43,6 +37,7 @@ const props = defineProps({
 <template>
 
     <Head title="Dashboard" />
+
 
     <Layout>
 
@@ -115,7 +110,7 @@ const props = defineProps({
                         </div>
                     </div>
                     <div class="mt-4">
-                        <progress class="progress progress-warning w-full" value="40" max="100"></progress>
+                        <progress class="progress progress-warning w-full" value="100" max="100"></progress>
                     </div>
                 </div>
             </div>
@@ -170,27 +165,27 @@ const props = defineProps({
             <div class="col-span-1 xl:col-span-2 card bg-base-100 shadow-sm border border-base-200">
                 <div class="card-body p-0">
                     <div class="p-2 border-b border-base-200">
-                        <h3 class="font-bold text-lg">Tarefas Recentes</h3>
+                        <h3 class="font-bold text-lg text-amber-400">Tarefas Recentes</h3>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="table table-zebra w-full">
                             <thead>
                                 <tr>
                                     <th>Titulo</th>
+                                    <th>Criador</th>
                                     <th>Funcão</th>
                                     <th>Data</th>
-                                    <th class="text-right">Ações</th>
+                                    <th class="text-right"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="tarefa in tarefasRecentes" :key="tarefa.id" class="hover">
                                     <td>
-                                        <div class="flex items-center gap-3 w-20">
-                                            <div>
-                                                <div class="font-bold">{{ tarefa.titulo }}</div>
-                                                <div class="text-xs opacity-50">{{ tarefa.prioridade }}</div>
-                                            </div>
-                                        </div>
+                                        <span class="font-bold text-primary">{{ tarefa.titulo }}</span>
+                                    </td>
+                                    <td>
+                                        
+                                        <span class="">{{ tarefa.user?.name }}</span>
                                     </td>
                                     <td :title="tarefa.descricao" class="max-w-sm truncate">
                                         {{ tarefa.descricao }}
@@ -212,16 +207,7 @@ const props = defineProps({
                                         </div>
                                     </td>
                                     <td class="text-right">
-                                        <button type="button" class="badge badge-outline badge-success cursor-pointer">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-eye-icon lucide-eye">
-                                                <path
-                                                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-                                                <circle cx="12" cy="12" r="3" />
-                                            </svg>
-                                        </button>
+
                                     </td>
                                 </tr>
                             </tbody>

@@ -49,7 +49,7 @@ function applyFilters(page = 1) {
     );
 }
 
-// modal
+// modal de tarefa
 const showModal = ref(false)
 const tarefaSelecionada = ref(null)
 
