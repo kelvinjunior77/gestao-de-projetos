@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { Link, usePage, router } from '@inertiajs/vue3';
 import { route } from "ziggy-js";
 
@@ -10,16 +10,12 @@ const user = page.props.auth.user;
 // Notificações fake
 const notifications = ref(3);
 
-// Dropdowns
-const dSearch = ref(false);
-
 const dSettings = ref(false);
 const dNotify = ref(false);
 const dProfile = ref(false);
 
 // Fecha todos os dropdowns
 function closeAll() {
-  dSearch.value = false;
   dSettings.value = false;
   dNotify.value = false;
   dProfile.value = false;
@@ -41,11 +37,24 @@ const toggleTheme = () => {
   localStorage.setItem("theme", currentTheme.value);
 };
 
+const notificacoes = computed(() => page.props.notificacoes ?? [])
 
-// Logout
-function logout() {
-  router.post(route('logout'));
+// Som 
+const playSound = () => {
+  const audio = new Audio('/sounds/notify.wav')
+  audio.volume = 0.5
+  audio.play()
 }
+
+let oldCount = 0
+
+watch(notificacoes, (newVal) => {
+  if (newVal.length > oldCount) {
+    playSound()
+  }
+  oldCount = newVal.length
+})
+
 </script>
 
 <template>
@@ -109,6 +118,7 @@ function logout() {
       <div class="dropdown dropdown-end ml-0 mr-3" @click.stop="closeAll(); dNotify = !dNotify">
         <button class="btn btn-ghost btn-circle">
           <div class="indicator">
+            <!-- Ícone -->
             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               class="lucide lucide-bell-icon lucide-bell">
@@ -116,7 +126,137 @@ function logout() {
               <path
                 d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
             </svg>
-            <span v-if="notifications" class="badge badge-xs badge-error indicator-item"></span>
+
+            <!-- Contador -->
+            <span v-if="notificacoes.length > 0" class="badge badge-xs badge-error indicator-item"></span>
+          </div>
+        </button>
+
+        <!-- DROPDOWN -->
+        <div v-show="dNotify"
+          class="dropdown-content z-50 mt-3 w-80 bg-base-100 border rounded-box shadow max-h-96 overflow-y-auto p-3 animate-fadeIn">
+
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="font-bold flex items-center gap-2 mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-bell-icon lucide-bell">
+                <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+                <path
+                  d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+              </svg>
+              Notificações
+            </h3>
+
+            <!-- Botão limpar tudo -->
+            <button v-if="notificacoes.length > 0" class="btn btn-xs btn-outline btn-error" @click.stop="limparTodas">
+              Limpar
+            </button>
+          </div>
+
+          <p v-if="notificacoes.length === 0" class="text-sm opacity-70"> Nenhuma notificação nova. </p>
+
+          <!-- Se não houver notificações -->
+          <span v-if="notificacoes.length > 0" class="badge badge-ghost mb-2 flex items-center gap-2 text-base-600">
+            <div class="status status-info animate-bounce"></div> Novas Tarefas
+            <span class="badge">{{ notificacoes.length }}</span>
+          </span>
+
+
+          <!-- LISTA DE NOTIFICAÇÕES -->
+          <div v-for="n in notificacoes" :key="n.id" class="mb-2">
+
+            <div
+              class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-lg shadow-sm hover:bg-base-300 transition">
+
+              <input type="checkbox" />
+
+              <!-- CABEÇALHO -->
+              <div class="collapse-title flex justify-between items-center py-3">
+
+                <div class="flex items-center gap-3">
+
+                  <!-- ÍCONE PERSONALIZADO -->
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center" :class="{
+                    'bg-blue-500': n.data.funcao === 'Desenvolvimento',
+                    'bg-green-500': n.data.funcao === 'Design',
+                    'bg-purple-500': n.data.funcao === 'Marketing',
+                    'bg-orange-500': n.data.funcao === 'Administração',
+                    'bg-gray-500': !n.data.funcao
+                  }">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-clipboard-list-icon lucide-clipboard-list">
+                      <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                      <path d="M12 11h4" />
+                      <path d="M12 16h4" />
+                      <path d="M8 11h.01" />
+                      <path d="M8 16h.01" />
+                    </svg>
+                  </div>
+
+                  <div>
+                    <h5 class="font-bold text-sm text-primary">{{ n.data.titulo }}</h5>
+
+                    <!--- <p class="font-semibold text-sm">
+                      {{ n.data.titulo }}
+                    </p>--->
+
+                    <p class="text-xs opacity-70">
+                      Criado por <span class="font-medium">{{ n.data.criador_nome }}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Botão marcar como lida -->
+                <button class="btn btn-xs btn-ghost text-success" @click.stop="marcarComoLida(n.id)"
+                  title="Marcar como lida">
+                  ✔
+                </button>
+
+              </div>
+
+              <!-- CONTEÚDO -->
+              <div class="collapse-content text-sm space-y-2">
+
+                <div class="opacity-80">
+                  {{ n.data.descricao }}
+                </div>
+
+                <div>
+                  <span class="badge badge-primary badge-sm">
+                    {{ n.data.funcao }}
+                  </span>
+                </div>
+
+                <div class="text-[10px] opacity-50">
+                  {{ new Date(n.created_at).toLocaleString('pt-BR') }}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+
+      <!-- NOTIFICAÇÕES 
+      <div class="dropdown dropdown-end ml-0 mr-3" @click.stop="closeAll(); dNotify = !dNotify">
+        <button class="btn btn-ghost btn-circle">
+          <div class="indicator">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-bell-icon lucide-bell">
+              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+              <path
+                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+            </svg>
+            <span v-if="notifications" class="badge badge-xs badge-error indicator-item">
+
+            </span>
           </div>
         </button>
 
@@ -124,8 +264,12 @@ function logout() {
           class="dropdown-content z-50 mt-3 w-72 bg-base-100 border rounded-box shadow max-h-80 overflow-y-auto p-3">
           <h3 class="font-bold mb-2">Notificações</h3>
           <p class="text-sm opacity-70">Nenhuma notificação nova.</p>
+
+          <div v-for="n in notificacoes" :key="n.id"> {{ n.data.titulo }} TESTE</div> ssss
+
         </div>
       </div>
+      -->
 
       <!-- USER DROPDOWN -->
       <div class="dropdown dropdown-end bg-base-200" @click.stop="closeAll(); dProfile = !dProfile">
@@ -175,3 +319,21 @@ function logout() {
   <!-- FECHAR DROPDOWNS AO CLICAR FORA -->
   <div @click="closeAll"></div>
 </template>
+
+<style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+</style>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Projeto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -21,13 +22,25 @@ class DashboardController extends Controller
         })->count();
 
         $tarefasRecentes = Projeto::with('tarefas.user')->get()->pluck('tarefas')->flatten()->sortByDesc('created_at')->take(3);
- 
+
+        // $notificacoes = Auth::user()->notifications->where('data->expires_at', '>', now())->get();
+
+        // Remove notificações expiradas 
+        Auth::user()->notifications()->where('data->expires_at', '<', now())->delete();
+
+        $notificacoes = Auth::user()
+            ->notifications()->where('data->expires_at', '>', now())
+            ->get();
+
+        //dd($notificacoes);
+
         return Inertia::render('App', [
             'projectsCount' => $projectsCount,
             'tasksCount' => $tasksCount,
             'finishedProjectsCount' => $finishedProjectsCount,
             'finishedTasksCount' => $finishedTasksCount,
-            'tarefasRecentes' => $tarefasRecentes
+            'tarefasRecentes' => $tarefasRecentes,
+            'notificacoes' => $notificacoes,
         ]);
     }
 }

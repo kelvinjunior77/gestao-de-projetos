@@ -1,5 +1,5 @@
 <template>
-    <Dashboard :projetos="projectsCount" :tarefas="tasksCount" :projetosFinalizados="finishedProjectsCount" :tarefasFeitas="finishedTasksCount" :tarefasRecentes="tarefasRecentes" />
+    <Dashboard :projetos="projectsCount" :tarefas="tasksCount" :projetosFinalizados="finishedProjectsCount" :tarefasFeitas="finishedTasksCount" :tarefasRecentes="tarefasRecentes" :notificacoes="notificacoes" />
 </template>
 
 <script setup>
@@ -10,7 +10,7 @@ defineProps({
     tasksCount: Number,
     finishedProjectsCount: Number,
     finishedTasksCount: Number,
-    tarefasRecentes: Array
-    
+    tarefasRecentes: Array,
+    notificacoes: Array,
 })
 </script>

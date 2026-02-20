@@ -27,10 +27,14 @@ const props = defineProps({
     tarefasRecentes: {
         type: Array,
         required: true,
-    }
+    },
+
+    notificacoes: {
+        type: Array,
+        required: true,
+    },
 
 });
-
 
 </script>
 
@@ -65,6 +69,9 @@ const props = defineProps({
                         <progress class="progress progress-primary w-full" value="100" max="100"></progress>
                         <p class="text-xs text-base-content/50 mt-1">70% da meta atingida</p>
                     </div>
+
+
+
                 </div>
             </div>
 
@@ -184,7 +191,7 @@ const props = defineProps({
                                         <span class="font-bold text-primary">{{ tarefa.titulo }}</span>
                                     </td>
                                     <td>
-                                        
+
                                         <span class="">{{ tarefa.user?.name }}</span>
                                     </td>
                                     <td :title="tarefa.descricao" class="max-w-sm truncate">
@@ -210,6 +217,7 @@ const props = defineProps({
 
                                     </td>
                                 </tr>
+  
                             </tbody>
                         </table>
                     </div>

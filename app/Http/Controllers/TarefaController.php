@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTarefaRequest;
 use App\Http\Requests\UpdateTarefaRequest;
+use App\Notifications\NovaTarefaCriada;
 use App\Models\Projeto;
 use App\Models\Tarefa;
 use Illuminate\Support\Str;
@@ -112,14 +113,25 @@ class TarefaController extends Controller
             $dados = $request->validated();
 
             $dados['slug'] = Str::slug($dados['titulo']);
-            $dados['user_id'] = Auth::id(); // criador da tarefa
+            $dados['user_id'] = Auth::id();
             $dados['projeto_id'] = $request->projeto_id;
 
             $tarefa = Tarefa::create($dados);
 
-
             if ($request->filled('usuarios')) {
                 $tarefa->usuarios()->sync($request->usuarios);
+            }
+
+           
+
+            // normaliza o array de usuários 
+            $usuarios = (array) $request->usuarios;
+            // notifica todos os usuários atribuídos 
+            foreach ($usuarios as $userId) {
+                $destinatario = User::find($userId);
+                if ($destinatario) {
+                    $destinatario->notify(new NovaTarefaCriada($tarefa));
+                }
             }
 
             //$projeto = Projeto::findOrFail($request->projeto_id);
