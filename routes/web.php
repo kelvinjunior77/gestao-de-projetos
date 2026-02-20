@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/projeto/editar/{projeto:slug}', [ProjetoController::class, 'edit'])->name('projeto.edit');
     Route::post('/projeto/editar/{projeto}', [ProjetoController::class, 'update'])->name('projeto.update');
-    
+
     Route::delete('/projeto/deletar/{projeto}', [ProjetoController::class, 'destroy'])->name('projeto.delete');
     Route::get('/projeto/{projeto}', [ProjetoController::class, 'show'])->name('projeto.show');
 
@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
     //Route::post('/tarefa/editar/teste/{tarefa}', [ProjetoController::class, 'updateTarefa'])->name('tarefa.update');
 
     Route::delete('/tarefa/deletar/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefa.delete');
-   
+
     // Área do Usuário normal
     Route::middleware(['user'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
