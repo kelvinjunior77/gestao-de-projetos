@@ -58,6 +58,7 @@ class HandleInertiaRequests extends Middleware
             //NOTIFICAÇÕES GLOBAIS 
             'notificacoes' => fn() => $request->user() ? $request->user()->notifications()->where('data->expires_at', '>', now())
                 ->orderBy('created_at', 'desc')
+                ->limit(5)
                 ->get() : [],
         ]);
     }
