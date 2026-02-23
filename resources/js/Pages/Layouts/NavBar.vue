@@ -225,4 +225,5 @@ const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
     color: #e5e7eb!important;
    gray-200 
 }*/
+
 </style>

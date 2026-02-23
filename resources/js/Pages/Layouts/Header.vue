@@ -39,6 +39,7 @@ const toggleTheme = () => {
 
 const notificacoes = computed(() => page.props.notificacoes ?? [])
 
+
 // Som 
 const playSound = () => {
   const audio = new Audio('/sounds/notify.wav')
@@ -54,6 +55,7 @@ watch(notificacoes, (newVal) => {
   }
   oldCount = newVal.length
 })
+
 
 </script>
 
@@ -98,8 +100,8 @@ watch(notificacoes, (newVal) => {
       <button class="btn btn-ghost btn-circle" @click="toggleTheme" title="Mudar Tema">
         <!-- Ícone do Sol (tema claro) -->
 
-        <svg v-if="currentTheme === 'light'" class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24">
+        <svg v-if="currentTheme === 'light'" class="swap-off h-6 w-6 fill-current text-warning"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path
             d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
         </svg>
@@ -121,20 +123,21 @@ watch(notificacoes, (newVal) => {
             <!-- Ícone -->
             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-bell-icon lucide-bell">
+              class="lucide lucide-bell-icon lucide-bell text-primary">
               <path d="M10.268 21a2 2 0 0 0 3.464 0" />
               <path
                 d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
             </svg>
 
             <!-- Contador -->
-            <span v-if="notificacoes.length > 0" class="badge badge-xs badge-error indicator-item"></span>
+            <span v-if="notificacoes.length > 0" class="badge badge-xs badge-error indicator-item">{{
+              notificacoes.length }}</span>
           </div>
         </button>
 
         <!-- DROPDOWN -->
         <div v-show="dNotify"
-          class="dropdown-content z-50 mt-3 w-80 bg-base-100 border rounded-box shadow max-h-96 overflow-y-auto p-3 animate-fadeIn">
+          class="dropdown-content z-50 mt-3 w-80 bg-base-100 border border-base-300 rounded-box shadow max-h-96 overflow-y-auto p-3 animate-fadeIn">
 
           <div class="flex justify-between items-center mb-3">
             <h3 class="font-bold flex items-center gap-2 mb-2">
@@ -177,13 +180,7 @@ watch(notificacoes, (newVal) => {
                 <div class="flex items-center gap-3">
 
                   <!-- ÍCONE PERSONALIZADO -->
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center" :class="{
-                    'bg-blue-500': n.data.funcao === 'Desenvolvimento',
-                    'bg-green-500': n.data.funcao === 'Design',
-                    'bg-purple-500': n.data.funcao === 'Marketing',
-                    'bg-orange-500': n.data.funcao === 'Administração',
-                    'bg-gray-500': !n.data.funcao
-                  }">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="39" height="39" viewBox="0 0 24 24" fill="none"
                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                       class="lucide lucide-clipboard-list-icon lucide-clipboard-list">
@@ -209,12 +206,6 @@ watch(notificacoes, (newVal) => {
                   </div>
                 </div>
 
-                <!-- Botão marcar como lida -->
-                <button class="btn btn-xs btn-ghost text-success" @click.stop="marcarComoLida(n.id)"
-                  title="Marcar como lida">
-                  ✔
-                </button>
-
               </div>
 
               <!-- CONTEÚDO -->
@@ -228,6 +219,32 @@ watch(notificacoes, (newVal) => {
                   <span class="badge badge-primary badge-sm">
                     {{ n.data.funcao }}
                   </span>
+
+                  <!-- Botão marcar como lida -->
+                  <button
+                    class="btn btn-xs btn-ghost text-success ml-0 hover:bg-base-300 hover:text-success hover:border-base-300"
+                    title="Marcar como lida" @click="marcarComoLida()">
+
+                     <svg v-if="NaoLido" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-check-check-icon lucide-check-check">
+                      <path d="M18 6 7 17l-5-5" />
+                      <path d="m22 10-7.5 7.5L13 16" />
+                    </svg>
+
+                    <svg v-show="lido" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-check-icon lucide-check">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+
+                    <!-- icone de lido -->
+
+                   
+
+
+
+                  </button>
                 </div>
 
                 <div class="text-[10px] opacity-50">
@@ -243,33 +260,6 @@ watch(notificacoes, (newVal) => {
         </div>
       </div>
 
-      <!-- NOTIFICAÇÕES 
-      <div class="dropdown dropdown-end ml-0 mr-3" @click.stop="closeAll(); dNotify = !dNotify">
-        <button class="btn btn-ghost btn-circle">
-          <div class="indicator">
-            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-bell-icon lucide-bell">
-              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-              <path
-                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
-            </svg>
-            <span v-if="notifications" class="badge badge-xs badge-error indicator-item">
-
-            </span>
-          </div>
-        </button>
-
-        <div v-show="dNotify"
-          class="dropdown-content z-50 mt-3 w-72 bg-base-100 border rounded-box shadow max-h-80 overflow-y-auto p-3">
-          <h3 class="font-bold mb-2">Notificações</h3>
-          <p class="text-sm opacity-70">Nenhuma notificação nova.</p>
-
-          <div v-for="n in notificacoes" :key="n.id"> {{ n.data.titulo }} TESTE</div> ssss
-
-        </div>
-      </div>
-      -->
 
       <!-- USER DROPDOWN -->
       <div class="dropdown dropdown-end bg-base-200" @click.stop="closeAll(); dProfile = !dProfile">
