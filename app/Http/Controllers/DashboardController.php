@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Projeto;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -17,9 +18,13 @@ class DashboardController extends Controller
 
         $finishedProjectsCount = Projeto::where('status', 'concluido')->count();
 
+        $userCount = User::count();
+        $cargoCount = User::select('cargo')->distinct()->count();
+
         $finishedTasksCount = Projeto::whereHas('tarefas', function ($query) {
             $query->where('status', 'concluido');
-        })->count();
+        })->count(); 
+
 
         $tarefasRecentes = Projeto::with('tarefas.user')->get()->pluck('tarefas')->flatten()->sortByDesc('created_at')->take(3);
 
@@ -32,8 +37,6 @@ class DashboardController extends Controller
             ->notifications()->where('data->expires_at', '>', now())
             ->get();
 
-        //dd($notificacoes);
-
         return Inertia::render('App', [
             'projectsCount' => $projectsCount,
             'tasksCount' => $tasksCount,
@@ -41,6 +44,8 @@ class DashboardController extends Controller
             'finishedTasksCount' => $finishedTasksCount,
             'tarefasRecentes' => $tarefasRecentes,
             'notificacoes' => $notificacoes,
+            'userCount' => $userCount,
+            'cargoCount' => $cargoCount,
         ]);
     }
 }
