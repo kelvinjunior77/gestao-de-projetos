@@ -3,7 +3,7 @@
 ![Dashboard do sistema](public/image/tela.png)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Laravel](https://img.shields.io/badge/Laravel-11.x-red)
+![Laravel](https://img.shields.io/badge/Laravel-12.x-red)
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen)
 ![Inertia](https://img.shields.io/badge/Inertia.js-latest-blue)
 
