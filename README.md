@@ -1,5 +1,7 @@
 # Gestão de Projetos
 
+![Dashboard do sistema](public/image/tela.png)
+
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Laravel](https://img.shields.io/badge/Laravel-11.x-red)
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen)
