@@ -24,7 +24,7 @@ Sistema completo para **gerenciamento de projetos, tarefas e usuários**, desenv
 
 ## Tecnologias Utilizadas
 
-- **Backend:** [Laravel 11](https://laravel.com/) (PHP 8.2+)
+- **Backend:** [Laravel 12](https://laravel.com/) (PHP 8.2+)
 - **Frontend:** [Vue.js 3](https://vuejs.org/) + [Inertia.js](https://inertiajs.com/)
 - **Banco de Dados:** MySQL 
 - **Estilização:** Tailwind CSS - Daisyui
