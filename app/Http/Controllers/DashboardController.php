@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo;
 use App\Models\Projeto;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +20,9 @@ class DashboardController extends Controller
         $finishedProjectsCount = Projeto::where('status', 'concluido')->count();
 
         $userCount = User::count();
-        $cargoCount = User::select('cargo')->distinct()->count();
+        //$cargoCount = User::select('cargo')->distinct()->count(); lista cargo selecionado pelo usuario
+
+        $cargoCount = Cargo::count();
 
         $finishedTasksCount = Projeto::whereHas('tarefas', function ($query) {
             $query->where('status', 'concluido');
