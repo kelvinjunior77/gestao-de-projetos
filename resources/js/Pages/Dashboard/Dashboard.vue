@@ -216,7 +216,11 @@ const props = defineProps({
                         <h3 class="font-bold text-lg text-amber-400">Tarefas Recentes</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="table table-zebra w-full">
+                        <!-- Se não existir tarefas -->
+                        <p v-if="tarefasRecentes.length === 0" class="text-center py-6 opacity-60 text-sm">
+                            Nenhuma tarefa recente encontrada.
+                        </p>
+                        <table v-else class="table table-zebra w-full">
                             <thead>
                                 <tr>
                                     <th>Titulo</th>
