@@ -7,6 +7,9 @@
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen)
 ![Inertia](https://img.shields.io/badge/Inertia.js-latest-blue)
 
+[Demostração](https://drive.google.com/file/d/182rgFSLov1utePUArK5JXeMfp6_xAHhW/view?usp=drive_link)
+
+
 Sistema completo para **gerenciamento de projetos, tarefas e usuários**, desenvolvido com Laravel, Vue.js e Inertia.js. Oferece uma interface moderna e reativa para facilitar o acompanhamento e a organização de equipes e atividades.
 
 ---
