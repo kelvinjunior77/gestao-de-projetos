@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -19,7 +20,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'slug',
+        'avatar',
+        'cargo',
         'email',
+        'tipo',
         'password',
     ];
 
@@ -44,5 +49,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Projetos criados pelo usuário
+    public function projetosCriados()
+    {
+        return $this->hasMany(Projeto::class, 'user_id');
+    }
+
+    public function projetos()
+    {
+        // um para muitos
+        return $this->hasMany(Projeto::class);
+    }
+
+    // Tarefas criadas
+    public function tarefasCriadas()
+    {
+        return $this->hasMany(Tarefa::class);
+    }
+
+    // Tarefas em que o usuário está envolvido
+    public function tarefas(): BelongsToMany
+    {
+        return $this->belongsToMany(Tarefa::class, 'tarefa_user')
+            ->withTimestamps();
     }
 }

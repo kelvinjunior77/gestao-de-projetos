@@ -1,10 +1,7 @@
 <template>
     <div>
-        Deu certo
+        Criar projeto
     </div>
 </template>
 
-<script setup>
-
-
-</script>
+<script setup></script>

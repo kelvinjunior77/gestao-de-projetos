@@ -35,9 +35,31 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
-            //
-        ];
+        return array_merge(parent::share($request), [
+            'auth' => [
+                'user' => fn() => $request->user()
+                    ? [
+                        'id' => $request->user()->id,
+                        'name' => $request->user()->name,
+                        'email' => $request->user()->email,
+                        'tipo' => $request->user()->tipo,
+                        'cargo' => $request->user()->cargo,
+                        'slug' => $request->user()->slug,
+                        'avatar' => $request->user()->avatar ? asset('storage/' . $request->user()->avatar) : null,
+                    ]
+                    : null,
+                'flash' => [
+                    'success' => fn() => $request->session()->get('success'),
+                    'error' => fn() => $request->session()->get('error'),
+                ],
+
+            ],
+
+            //NOTIFICAÇÕES GLOBAIS 
+            'notificacoes' => fn() => $request->user() ? $request->user()->notifications()->where('data->expires_at', '>', now())
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get() : [],
+        ]);
     }
 }

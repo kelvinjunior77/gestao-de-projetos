@@ -25,9 +25,13 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'slug' => fake()->unique()->slug(),
+            'cargo' => fake()->randomElement(['dev web full stack', 'dev web frontend', 'dev web backend', 'analista de sistemas', 'gerente de projetos']),
+             'avatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower(trim(fake()->unique()->safeEmail()))) . '?d=mp&s=200',
+            'tipo' => fake()->randomElement(['admin', 'normal']),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => static::$password ??= Hash::make('katnick99'),
             'remember_token' => Str::random(10),
         ];
     }

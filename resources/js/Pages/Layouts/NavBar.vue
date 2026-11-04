@@ -1,0 +1,229 @@
+<script setup>
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import { route } from 'ziggy-js';
+
+const page = usePage();
+
+// Função simplificada para gerar classes
+const getLinkClass = (...paths) => {
+    const currentUrl = page.url;
+
+    // Verifica se alguma das rotas deve ativar o link
+    const isActive = paths.some(path =>
+        currentUrl === path || currentUrl.startsWith(path + '/')
+    );
+
+    // Estilos Base (Layout, Espaçamento, Transição)
+    const baseClasses =
+        'flex items-center gap-3 py-3 px-5 hover:bg-base-200 transition-all duration-200 group';
+
+    // Ativo
+    const activeClasses =
+        'border-l-4 border-primary bg-primary/5 text-primary font-medium';
+
+    // Inativo
+    const inactiveClasses =
+        'border-l-4 border-transparent text-base-content/70 hover:text-base-content';
+
+    return isActive ? `${baseClasses} ${activeClasses}` : `${baseClasses} ${inactiveClasses}`;
+};
+
+
+// Atalho para verificar permissão de admin e usuario normal.
+const isAdmin = computed(() => page.props.auth.user.tipo === 'admin');
+const isNormal = computed(() => page.props.auth.user.tipo === 'normal')
+
+</script>
+
+<template>
+    <aside
+        class="w-64 h-screen bg-base-100 border-r border-base-200 flex flex-col sticky top-0 z-40 shadow-sm overflow-hidden">
+
+        <div class="h-16 flex items-center px-6 border-b border-base-200 shrink-0">
+            <Link href="/" class="flex items-center gap-2">
+            <!---<img :src="logo" class="h-8 w-auto" alt="Logo do Sistema"/>-->
+            <h1 class="text-2xl uppercase font-bold"> Gest. Projetos </h1>
+            </Link>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-4 custom-scroll">
+            <ul class="menu w-full p-0 text-sm">
+
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-2 px-6">
+                    Navegação
+                </li>
+
+                <li>
+                    <Link href="/" :class="getLinkClass('/')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+                        <path
+                            d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    </svg>
+                    <span>Dashboard</span>
+                    </Link>
+                </li>
+
+                <template v-if="isAdmin">
+                    <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                        Administração
+                    </li>
+
+                    <li>
+                        <Link href="/admin/cadastrar/usuario" :class="getLinkClass('/admin/cadastrar/usuario')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="8.5" cy="7" r="4" />
+                            <line x1="20" x2="20" y1="8" y2="14" />
+                            <line x1="23" x2="17" y1="11" y2="11" />
+                        </svg>
+                        <span>Adicionar Usuario</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/admin/usuarios/lista" :class="getLinkClass('/admin/usuarios', '/admin/perfil/usuario')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Lista de Usuarios</span>
+                        </Link>
+                    </li>
+
+                </template>
+
+                <template v-if="isNormal">
+
+                    <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                        Usuarios
+                    </li>
+                    <li>
+                        <Link href="/usuarios/lista" :class="getLinkClass('/usuarios', '/usuario/perfil')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Lista de Usuarios</span>
+                        </Link>
+                    </li>
+                </template>
+
+
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                    Projetos
+                </li>
+
+                <li>
+                    <Link href="/projeto/criar" :class="getLinkClass('/projeto/criar')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-folder-dot-icon lucide-folder-dot">
+                        <path
+                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                        <circle cx="12" cy="13" r="1" />
+                    </svg>
+                    <span>Novo Projeto</span>
+                    </Link>
+                </li>
+
+                <li>
+                    <Link href="/projetos/lista" :class="getLinkClass('/projetos', '/projeto/editar')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                        <circle cx="12" cy="10" r="2" />
+                    </svg>
+                    <span>Lista de Projetos</span>
+                    </Link>
+                </li> 
+
+
+                <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                    Tarefas
+                </li>
+
+                <li>
+                    <Link href="/tarefas/lista" :class="getLinkClass('/tarefas', '/tarefa/editar')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                        <path d="M12 11h4" />
+                        <path d="M12 16h4" />
+                        <path d="M8 11h.01" />
+                        <path d="M8 16h.01" />
+                    </svg>
+                    <span>Lista de Tarefas</span>
+                    </Link>
+                </li>
+
+                <template v-if="isAdmin">
+                    <li class="menu-title uppercase text-xs font-bold text-base-content/40 mt-4 px-6">
+                        Habilidades - Competência
+                    </li>
+                    <li>
+                        <Link href="/admin/cadastrar/cargo" :class="getLinkClass('/admin/cadastrar/cargo')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                            <line x1="9" x2="9" y1="3" y2="21" />
+                        </svg>
+                        <span>Adicionar</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/admin/lista/cargos" :class="getLinkClass('/admin/lista', '/admin/editar/cargo')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                            <line x1="9" x2="9" y1="3" y2="21" />
+                        </svg>
+                        <span>Competências</span>
+                        </Link>
+                    </li>
+                </template>
+
+            </ul>
+        </div>
+    </aside>
+</template>
+
+<style scoped>
+/* Personalização opcional da barra de rolagem para ficar fina e elegante */
+.custom-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    /* gray-200 */
+    border-radius: 10px;
+}
+
+.custom-scroll:hover::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    /* gray-300 */
+}
+
+  /*Link, h1, li, span, svg {
+    color: #e5e7eb!important;
+   gray-200 
+}*/
+
+</style>
